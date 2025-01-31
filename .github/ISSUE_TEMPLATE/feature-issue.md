@@ -2,7 +2,7 @@
 name: Feature Issue
 about: 새로운 기능 추가
 title: 'Feat: '
-labels: "\U0001F9D1‍\U0001F4BB Feat"
+labels: ''
 assignees: ''
 
 ---
