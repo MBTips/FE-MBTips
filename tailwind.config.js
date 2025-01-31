@@ -28,6 +28,6 @@ export default {
     }
   },
   plugins: [
-    sorting() // 플러그인 추가
+    sorting() // tailwind 클래스명 정렬 플러그인 추가
   ]
 };
