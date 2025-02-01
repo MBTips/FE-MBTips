@@ -1,11 +1,5 @@
-import StrokeBanner from "./components/StrokeBanner";
-
 function App() {
-  return (
-    <>
-      <StrokeBanner />
-    </>
-  );
+  return <></>;
 }
 
 export default App;
