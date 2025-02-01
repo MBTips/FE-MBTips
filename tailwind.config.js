@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import sorting from "tailwindcss-sorting";
 
 export default {
   content: [],
@@ -27,7 +26,5 @@ export default {
       }
     }
   },
-  plugins: [
-    sorting() // tailwind 클래스명 정렬 플러그인 추가
-  ]
+  plugins: []
 };
