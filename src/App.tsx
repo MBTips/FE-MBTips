@@ -2,7 +2,9 @@ import SolidButton from "./components/SolidButton";
 
 function App() {
   return (
-    <SolidButton size="sm" text="대화 시작하기" backgroundColor="#5C4AE8" />
+    <SolidButton size="sm" backgroundColor="#5C4AE8">
+      다시 추천
+    </SolidButton>
   );
 }
 
