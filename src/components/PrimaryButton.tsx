@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 
-interface SolidButtonProps {
+interface PrimaryButtonProps {
   size: "sm" | "md";
   children: string;
   backgroundColor: "#5C4AE8" | "#F9E622" | "#E6E8ED";
@@ -8,13 +8,13 @@ interface SolidButtonProps {
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
-const SolidButton = ({
+const PrimaryButton = ({
   size = "sm",
   backgroundColor = "#5C4AE8",
   disabled = false,
   children,
   onClick
-}: SolidButtonProps) => {
+}: PrimaryButtonProps) => {
   return (
     <button
       className={
@@ -31,4 +31,4 @@ const SolidButton = ({
   );
 };
 
-export default SolidButton;
+export default PrimaryButton;

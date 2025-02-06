@@ -1,10 +1,10 @@
-import SolidButton from "./components/SolidButton";
+import PrimaryButton from "./components/PrimaryButton";
 
 function App() {
   return (
-    <SolidButton size="sm" backgroundColor="#5C4AE8">
+    <PrimaryButton size="sm" backgroundColor="#5C4AE8">
       다시 추천
-    </SolidButton>
+    </PrimaryButton>
   );
 }
 
