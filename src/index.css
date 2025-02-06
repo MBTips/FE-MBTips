@@ -1,21 +1,47 @@
 @import "tailwindcss";
-@config "../tailwind.config.js";
 
-@font-face {
-  font-family: 'Pretendard';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
+@theme {
+  --color-primary-normal: #5C4AE8;
+  --color-primary-light: #C8CDFF;
+  --color-primary-pale: #EBEDFF;
+  --color-secondary-normal: #ADE700;
+  --color-secondary-light: #D3EF7F;
+  --color-secondary-pale: #DEF599;
+  --color-gray-50: #F0F2F5;
+  --color-gray-100: #E6E8ED;
+  --color-gray-200: #CFD4DB;
+  --color-gray-300: #AEB4BD;
+  --color-gray-400: #929AA4;
+  --color-gray-500: #848C96;
+  --color-gray-600: #585D65;
+  --color-gray-700: #43474E;
+  --color-gray-800: #353940;
+  --color-gray-900: #2B2E33;
+  --color-background: #D0D5DD;
+  --color-foreground: #000000;
+
+  --text-2xl: 20px;
+  --text-2xl--line-height: 30px;
+  --text-xl: 18px;
+  --text-xl--line-height: 27px;
+  --text-2lg: 16px;
+  --text-2lg--line-height: 24px;
+  --text-lg: 14px;
+  --text-lg--line-height: 21px;
+  --text-md: 12px;
+  --text-md--line-height: 18px;
+  --text-sm: 10px;
+  --text-sm--line-height: 15px;
 }
 
 :root {
-  font-family: 'Pretendard', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Pretendard";
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: black;
+  background-color: #D0D5DD;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,7 +54,6 @@ a {
 }
 
 body {
-  background-color: #ffffff;
   margin: 0;
   display: flex;
   place-items: center;
