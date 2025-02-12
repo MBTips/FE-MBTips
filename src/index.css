@@ -19,6 +19,19 @@
   --color-gray-900: #2B2E33;
   --color-background: #D0D5DD;
   --color-foreground: #000000;
+
+  --text-2xl: 20px;
+  --text-2xl--line-height: 30px;
+  --text-xl: 18px;
+  --text-xl--line-height: 27px;
+  --text-2lg: 16px;
+  --text-2lg--line-height: 24px;
+  --text-lg: 14px;
+  --text-lg--line-height: 21px;
+  --text-md: 12px;
+  --text-md--line-height: 18px;
+  --text-sm: 10px;
+  --text-sm--line-height: 15px;
 }
 
 :root {
