@@ -60,3 +60,32 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+@keyframes pulse-custom {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+    /* 크기를 늘리는 효과 */
+  }
+}
+
+.animate-pulse-custom {
+  animation: pulse-custom 1s infinite;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+.delay-600 {
+  animation-delay: 0.6s;
+}
+
+.delay-800 {
+  animation-delay: 0.8s;
+}
