@@ -12,9 +12,7 @@ const Profile = () => {
       <img
         src="/public/image/ENTP.png"
         alt="Profile"
-        className="absolute top-[12px] left-[11px] w-[48px] h-[48px] rounded-full"
-        width={48}
-        height={48}
+        className="absolute top-[12px] left-[11px] w-12 h-12 object-cover rounded-full"
       />
 
       <div className="pt-[69px] px-4">
