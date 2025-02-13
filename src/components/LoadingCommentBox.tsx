@@ -1,8 +1,8 @@
-import LoadingSpinner from "./spinner/LoadingSpinner";
+import LoadingSpinner from "@/components/spinner/LoadingSpinner";
 
 const LoadingCommentBox = () => {
   return (
-    <div className="flex justify-center items-center border-gray-100 bg-white border rounded-xl rounded-tl-none w-[100px] h-[52px]">
+    <div className="flex justify-center items-center bg-white border border-gray-100 rounded-xl rounded-tl-none w-[100px] h-[52px]">
       <LoadingSpinner />
     </div>
   );
