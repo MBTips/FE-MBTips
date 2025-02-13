@@ -1,5 +1,13 @@
+import TipsMenu from "./components/TipsMenu";
+
 function App() {
-  return;
+  return (
+    <div>
+      <TipsMenu mode="topic" />
+      <TipsMenu mode="conversation" />
+      <TipsMenu mode="temporature" />
+    </div>
+  );
 }
 
 export default App;
