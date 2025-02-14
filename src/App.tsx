@@ -1,7 +1,5 @@
-import ChatAction from "@/components/ChatAction";
-
 function App() {
-  return <ChatAction />;
+  return <></>;
 }
 
 export default App;
