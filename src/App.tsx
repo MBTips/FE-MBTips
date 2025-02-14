@@ -1,7 +1,5 @@
-import IntroGuide from "@/components/IntroGuide";
-
 function App() {
-  return <IntroGuide />;
+  return <></>;
 }
 
 export default App;
