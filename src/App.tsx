@@ -1,7 +1,5 @@
-import Alert from "./components/Alert";
-
 function App() {
-  return <Alert />;
+  return <></>;
 }
 
 export default App;
