@@ -1,4 +1,4 @@
-import { Mbti } from "@/types/mbti";
+import { Mbti } from "types/mbti";
 import pickMbtiImage from "@/utils/pickMbtiImage";
 
 const TopicRecommend = ({ mbti = "ESTP" }: { mbti: Mbti }) => {
