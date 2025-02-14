@@ -1,4 +1,4 @@
-import { Mbti } from "@/types/mbti";
+import { Mbti } from "types/mbti";
 
 const pickMbtiImage = (mbti: Mbti) => {
   let mbtiImage = "";
