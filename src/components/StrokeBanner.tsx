@@ -1,8 +1,8 @@
 const StrokeBanner = () => {
   return (
-    <div className="flex flex-col justify-center border-gray-200 px-[38px] py-6 border border-dashed rounded-lg w-[335px] h-[178px] text-center">
+    <div className="flex flex-col justify-center px-[38px] py-6 border border-gray-200 border-dashed rounded-lg w-[335px] h-[178px] text-center">
       <img
-        src="/public/icon/plus_button.svg"
+        src="/icon/plus_button.svg"
         alt="친구 등록 버튼"
         className="mx-auto"
         width={40}
