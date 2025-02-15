@@ -65,6 +65,10 @@ input:focus {
   outline: none;
 }
 
+button {
+  cursor: pointer;
+}
+
 @keyframes pulse-custom {
 
   0%,
@@ -92,4 +96,10 @@ input:focus {
 
 .delay-800 {
   animation-delay: 0.8s;
+}
+
+@layer base {
+  * {
+    @apply transition-transform duration-200 ease-in-out;
+  }
 }

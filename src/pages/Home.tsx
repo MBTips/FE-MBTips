@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Banner from "@/components/Banner";
 import PrimaryButton from "@/components/button/PrimaryButton";
 import NavBar from "@/components/NavBar";
@@ -5,6 +6,12 @@ import StrokeBanner from "@/components/StrokeBanner";
 import SubTitle from "@/components/SubTitle";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/setting-info");
+  };
+
   return (
     <div className="flex flex-col bg-white w-[375px]">
       <header>
@@ -21,7 +28,9 @@ const Home = () => {
             <SubTitle mode="빠른대화" />
           </div>
           <div className="flex justify-center">
-            <PrimaryButton size="md">대화 시작하기</PrimaryButton>
+            <PrimaryButton size="md" onClick={handleNavigate}>
+              대화 시작하기
+            </PrimaryButton>
           </div>
         </section>
 
