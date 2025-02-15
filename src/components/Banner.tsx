@@ -22,8 +22,8 @@ const Banner = () => {
 
   useEffect(function animateThreeSeconds() {
     const intervalEffect = setInterval(() => {
-      setOrder((prevOrder) => (prevOrder + 1) % images.length); // 0 , 1, 2 를 순환
-    }, 2000); // 2초마다 변경
+      setOrder((prevOrder) => (prevOrder + 1) % images.length);
+    }, 2000);
 
     return () => {
       clearInterval(intervalEffect);
