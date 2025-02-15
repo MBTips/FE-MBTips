@@ -8,27 +8,15 @@ type IndicatorProps = {
 const Indicator = ({ order, setOrder }: IndicatorProps) => {
   return (
     <div className="flex gap-3">
-      <button
-        onClick={() => setOrder(0)}
-        className={cls(
-          "bg-white rounded-full w-2 h-2",
-          order === 0 ? "" : "opacity-50"
-        )}
-      />
-      <button
-        onClick={() => setOrder(1)}
-        className={cls(
-          "bg-white rounded-full w-2 h-2",
-          order === 1 ? "" : "opacity-50"
-        )}
-      />
-      <button
-        onClick={() => setOrder(2)}
-        className={cls(
-          "bg-white rounded-full w-2 h-2",
-          order === 2 ? "" : "opacity-50"
-        )}
-      />
+      {[0, 1, 2].map((el) => (
+        <button
+          onClick={() => setOrder(el)}
+          className={cls(
+            "bg-white rounded-full w-2 h-2",
+            order === el ? "" : "opacity-50"
+          )}
+        />
+      ))}
     </div>
   );
 };
