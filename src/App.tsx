@@ -1,11 +1,14 @@
-import Banner from "@/components/Banner";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "pages/Home";
 
-function App() {
+const App = () => {
   return (
-    <div className="w-[375px]">
-      <Banner />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
