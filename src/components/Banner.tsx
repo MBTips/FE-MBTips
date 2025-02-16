@@ -23,7 +23,7 @@ const Banner = () => {
   useEffect(function animateThreeSeconds() {
     const intervalEffect = setInterval(() => {
       setOrder((prevOrder) => (prevOrder + 1) % images.length);
-    }, 2000);
+    }, 3000);
 
     return () => {
       clearInterval(intervalEffect);
