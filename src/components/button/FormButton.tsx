@@ -28,24 +28,13 @@ const FormButton = ({
   const fontWeight =
     size === "md" ? "font-bold" : selected ? "font-bold" : "font-medium";
 
-  const backgroundColor = selected ? "var(--color-primary-pale)" : "#FFFFFF";
-
-  const borderColor = selected
-    ? "var(--color-primary-light)"
-    : "var(--color-gray-200)";
-
-  const fontColor = selected
-    ? "var(--color-primary-normal)"
-    : "var(--color-gray-900)";
+  const backgroundColor = selected ? "bg-primary-pale" : "bg-white";
+  const borderColor = selected ? "border-primary-light" : "border-gray-200";
+  const fontColor = selected ? "text-primary-normal" : "text-gray-900";
 
   return (
     <button
-      className={`${baseStyles} ${sizeStyles} ${fontSize} ${fontWeight}`}
-      style={{
-        backgroundColor,
-        border: `1px solid ${borderColor}`,
-        color: fontColor
-      }}
+      className={`${baseStyles} ${sizeStyles} ${fontSize} ${fontWeight} ${backgroundColor} ${borderColor} ${fontColor} border`}
       onClick={onClick}
     >
       {children}
