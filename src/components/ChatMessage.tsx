@@ -1,9 +1,9 @@
-interface MessageProps {
+interface ChatMessageProps {
   message: string;
   myMessage: boolean;
 }
 
-const ChatMessage = ({ message, myMessage }: MessageProps) => {
+const ChatMessage = ({ message, myMessage }: ChatMessageProps) => {
   const textColor = myMessage ? "text-[#FFFFFF]" : "text-gray-900";
   const backgroundColor = myMessage ? "bg-gray-900" : "bg-[#FFFFFF]";
   const borderStyle = myMessage
