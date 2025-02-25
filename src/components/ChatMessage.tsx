@@ -8,7 +8,7 @@ const ChatMessage = ({ message, myMessage }: MessageProps) => {
   const backgroundColor = myMessage ? "bg-gray-900" : "bg-[#FFFFFF]";
   const borderStyle = myMessage
     ? "rounded-tr-none"
-    : "rounded-tl-none border-gray-100";
+    : "rounded-tl-none border border-gray-100";
 
   return (
     <div className="flex w-full justify-center items-center mb-2">
