@@ -18,7 +18,7 @@ const PrimaryButton = ({
   return (
     <button
       className={
-        "flex justify-center items-center rounded-lg font-bold text-lg " +
+        "flex justify-center items-center rounded-lg font-bold text-lg hover:opacity-90 transition " +
         `${size === "sm" ? "w-[159px] h-[60px]" : "w-[335px] h-[56px]"}` +
         `${backgroundColor === "#5C4AE8" ? " text-white" : " text-[#171503]"}`
       }
