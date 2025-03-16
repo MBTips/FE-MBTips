@@ -32,6 +32,10 @@
   --text-md--line-height: 18px;
   --text-sm: 10px;
   --text-sm--line-height: 15px;
+
+  --breakpoint-sm: 345px;
+  --breakpoint-md: 375px;
+  --breakpoint-lg: 500px;
 }
 
 :root {
