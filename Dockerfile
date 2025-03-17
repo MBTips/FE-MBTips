@@ -10,3 +10,6 @@ RUN npm run build
 FROM alpine:latest
 WORKDIR /app
 COPY --from=build /app/dist /var/www/html
+
+# 🚀 컨테이너를 계속 유지하도록 추가
+CMD ["tail", "-f", "/dev/null"]
