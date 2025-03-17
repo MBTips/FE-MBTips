@@ -45,5 +45,5 @@ jobs:
             sudo docker stop embitips_front || true
             sudo docker rm embitips_front || true
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/embitips_front
-            sudo docker run -d -p 80:80 --name embitips_front ${{ secrets.DOCKER_USERNAME }}/embitips_front
+            sudo docker run -d -p 3000:3000 --name embitips_front ${{ secrets.DOCKER_USERNAME }}/embitips_front
             sudo docker image prune -f
