@@ -20,7 +20,10 @@ jobs:
           node-version: '20'  
 
       - name: Install dependencies
-        run: npm install  
+        run: |
+          npm install
+          npm install --save-dev @types/node
+
 
       - name: Run build
         run: npm run build --verbose # 또는 프로젝트에 맞는 빌드 명령어
