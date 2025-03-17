@@ -23,7 +23,7 @@ jobs:
         run: npm install  
 
       - name: Run build
-        run: npm run build  # 또는 프로젝트에 맞는 빌드 명령어
+        run: npm run build --verbose # 또는 프로젝트에 맞는 빌드 명령어
 
       - name: Docker build & push
         run: |
