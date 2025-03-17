@@ -6,4 +6,7 @@ RUN npm install
 COPY . ./
 RUN npm run build
 
-EXPOSE 3000
+# 빌드된 정적 파일을 호스트 서버의 `/var/www/html`로 복사
+FROM alpine:latest
+WORKDIR /app
+COPY --from=build /app/dist /var/www/html
