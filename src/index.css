@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+@theme.extend {
   --color-primary-normal: #5C4AE8;
   --color-primary-light: #C8CDFF;
   --color-primary-pale: #EBEDFF;

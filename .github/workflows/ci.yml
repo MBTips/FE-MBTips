@@ -22,6 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
+          npm install tailwindcss@latest postcss@latest autoprefixer@latest
           npm install --save-dev @types/node
 
 
