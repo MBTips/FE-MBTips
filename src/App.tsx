@@ -6,6 +6,7 @@ import ChatRecommend from "@/pages/ChatRecommend";
 import ChatTips from "@/pages/ChatTips";
 import ChatTemporature from "@/pages/ChatTemporature";
 import Content from "@/pages/Content";
+import Login from "@/pages/Login";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/chat-tips" element={<ChatTips />} />
         <Route path="/chat-temporature" element={<ChatTemporature />} />
         <Route path="/content/:id" element={<Content />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
