@@ -29,5 +29,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "src/api")
       }
     ]
+  },
+  server: {
+    port: 3000,
+    host: true,   // 외부에서 접속 가능하도록 설정
+    strictPort: true
   }
 });
