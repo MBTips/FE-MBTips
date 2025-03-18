@@ -11,4 +11,4 @@ RUN npm run build
 EXPOSE 3000
 
 # 🚀 컨테이너를 계속 유지하도록 추가
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
