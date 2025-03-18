@@ -31,7 +31,7 @@ const Banner = () => {
   }, []);
 
   return (
-    <div className="relative flex w-full h-[184px]">
+    <div className="relative flex h-[184px] w-full">
       {images.map((image, index) => (
         // a -> Link로 바꿀 예정
         <a href={`/contents/${index}`}>
@@ -46,7 +46,7 @@ const Banner = () => {
           />
         </a>
       ))}
-      <div className="right-[20px] bottom-[12px] absolute">
+      <div className="absolute right-[20px] bottom-[12px]">
         <Indicator order={order} setOrder={setOrder} />
       </div>
     </div>

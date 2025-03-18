@@ -23,12 +23,12 @@ const config = {
         foreground: "#000000"
       },
       fontSize: {
-        "2xl": ["20px", "30px"],
-        xl: ["18px", "27px"],
-        "2lg": ["16px", "24px"],
-        lg: ["14px", "21px"],
-        md: ["12px", "18px"],
-        sm: ["10px", "15px"]
+        "2xl": "20px",
+        xl: "18px",
+        lg: "16px",
+        md: "14px",
+        sm: "12px",
+        xs: "10px"
       },
       screens: {
         sm: "345px",
