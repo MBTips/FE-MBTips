@@ -10,8 +10,5 @@ RUN npm run build
 FROM nginx:1.23-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Nginx 설정 추가 (캐싱 설정 및 gzip 활성화)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # 🚀 컨테이너를 계속 유지하도록 추가
 CMD ["nginx", "-g", "daemon off;"]
