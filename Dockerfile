@@ -6,10 +6,12 @@ RUN npm install
 COPY . ./
 RUN npm run build
 
-# 빌드된 정적 파일을 호스트 서버의 `/var/www/html`로 복사
-FROM alpine:latest
-WORKDIR /app
-COPY --from=build /app/dist /var/www/html
+# 2️⃣ Production 단계 (Nginx를 사용해 정적 파일 서빙)
+FROM nginx:1.23-alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Nginx 설정 추가 (캐싱 설정 및 gzip 활성화)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 🚀 컨테이너를 계속 유지하도록 추가
-CMD ["tail", "-f", "/dev/null"]
+CMD ["nginx", "-g", "daemon off;"]
