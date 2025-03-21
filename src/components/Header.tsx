@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 type HeaderProps = {
   title: string;
   showPreviousIcon?: boolean;
@@ -5,6 +7,12 @@ type HeaderProps = {
 };
 
 const Header = ({ title, showPreviousIcon = true, showShareIcon = true }: HeaderProps) => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1); 
+  };
+
   return (
     <div className="flex flex-row bg-white border border-gray-100 items-center justify-center w-full h-[56px] relative">
       {showPreviousIcon && ( 
@@ -14,6 +22,7 @@ const Header = ({ title, showPreviousIcon = true, showShareIcon = true }: Header
           className="absolute left-[18.77px] cursor-pointer"
           width={9.87}
           height={16}
+          onClick={handleGoBack}
         />
       )}
 
