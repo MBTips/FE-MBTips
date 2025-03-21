@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary-normal: #5C4AE8;
-  --color-primary-light: #C8CDFF;
-  --color-primary-pale: #EBEDFF;
-  --color-secondary-normal: #ADE700;
-  --color-secondary-light: #D3EF7F;
-  --color-secondary-pale: #DEF599;
-  --color-gray-50: #F0F2F5;
-  --color-gray-100: #E6E8ED;
-  --color-gray-200: #CFD4DB;
-  --color-gray-300: #AEB4BD;
-  --color-gray-400: #929AA4;
-  --color-gray-500: #848C96;
-  --color-gray-600: #585D65;
-  --color-gray-700: #43474E;
+:root {
+  --color-primary-normal: #5c4ae8;
+  --color-primary-light: #c8cdff;
+  --color-primary-pale: #ebedff;
+  --color-secondary-normal: #ade700;
+  --color-secondary-light: #d3ef7f;
+  --color-secondary-pale: #def599;
+  --color-gray-50: #f0f2f5;
+  --color-gray-100: #e6e8ed;
+  --color-gray-200: #cfd4db;
+  --color-gray-300: #aeb4bd;
+  --color-gray-400: #929aa4;
+  --color-gray-500: #848c96;
+  --color-gray-600: #585d65;
+  --color-gray-700: #43474e;
   --color-gray-800: #353940;
-  --color-gray-900: #2B2E33;
-  --color-background: #D0D5DD;
+  --color-gray-900: #2b2e33;
+  --color-background: #d0d5dd;
   --color-foreground: #000000;
 
   --text-2xl: 20px;
@@ -45,7 +45,7 @@
 
   color-scheme: light dark;
   color: black;
-  background-color: #D0D5DD;
+  background-color: #d0d5dd;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -74,7 +74,6 @@ button {
 }
 
 @keyframes pulse-custom {
-
   0%,
   100% {
     transform: scale(1);

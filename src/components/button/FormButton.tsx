@@ -16,7 +16,7 @@ const FormButton = ({
   const baseStyles = "flex justify-center items-center rounded-lg transition";
 
   const sizeStyles =
-    size === "sm" ? "min-w-[68px] w-auto h-[40px]" : "w-[72px] h-[72px]";
+    size === "sm" ? "min-w-[68px] w-auto h-[40px]" : "w-[70px] h-[72px]";
 
   const fontSize =
     size === "md"
