@@ -7,6 +7,7 @@ const SelectInfo = () => {
   const location = useLocation();
   const mode = location.state; // mode: fastFriend, virtualFriend 두 종류 존재
   const isNameRequired = mode === "virtualFriend";
+  const headerTitle = mode === 'fastFriend' ? "상대방 정보선택" : "친구 저장하기";
 
   const [selectedMBTI, setSelectedMBTI] = useState<{
     [key: string]: string | null;
@@ -123,7 +124,7 @@ const SelectInfo = () => {
 
   return (
     <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
-      <Header />
+      <Header title={headerTitle} />
 
       <div className="w-[320px] mx-auto">
         {/* MBTI 선택 */}
@@ -255,7 +256,7 @@ const SelectInfo = () => {
 
         {/* 대화 시작 버튼 */}
         <button
-          className="w-full my-[22px] h-[60px] bg-primary-normal text-white rounded-[8px] font-bold bg-[#5c4ae8]" //TODO: Theme 반영 후 bg값 수정
+          className="w-full my-[22px] h-[60px] bg-primary-normal text-white rounded-[8px] font-bold"
           onClick={handleStartChat}
         >
           대화 시작하기
