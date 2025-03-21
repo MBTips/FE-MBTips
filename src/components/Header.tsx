@@ -18,7 +18,7 @@ const Header = ({ title, showPreviousIcon = true, showShareIcon = true }: Header
       {showPreviousIcon && ( 
         <img
           src="/public/icon/arrow_left.svg"
-          alt="Go To Previous"
+          alt="Go To Back"
           className="absolute left-[18.77px] cursor-pointer"
           width={9.87}
           height={16}
