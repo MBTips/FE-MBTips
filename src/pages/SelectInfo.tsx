@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
 import Header from "@/components/Header";
 
 const SelectInfo = () => {
-  const [searchParams] = useSearchParams();
-  const mode = searchParams.get("mode"); // mode: fastFriend, virtualFriend 두 종류 존재
+  const location = useLocation();
+  const mode = location.state; // mode: fastFriend, virtualFriend 두 종류 존재
   const isNameRequired = mode === "virtualFriend";
 
   const [selectedMBTI, setSelectedMBTI] = useState<{
@@ -114,7 +114,7 @@ const SelectInfo = () => {
       return alert("이름을 입력해주세요."); // TODO: Toast popup UI 완료 시 반영 예정
     }
 
-    alert("대화 시작 API 연결하기.");
+    alert("대화 시작 API 연결하기."); // TODO: API 연동 예정
   };
 
   return (

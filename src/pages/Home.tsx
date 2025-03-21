@@ -9,7 +9,8 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/select-info?mode=virtualFriend");
+    const mode = "fastFriend";
+    navigate("/select-info", { state: mode });
   };
 
   return (
