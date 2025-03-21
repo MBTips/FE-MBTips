@@ -93,6 +93,10 @@ const SelectInfo = () => {
     }
   };
 
+  const buttonState = (value: string, setter: (val: string | null) => void, state: string | null) => {
+    setter(state === value ? null : value);
+  };
+
   const handleStartChat = () => {
     const isEGroupSelected = selectedMBTI.E !== null;
     const isNGroupSelected = selectedMBTI.N !== null;
@@ -153,7 +157,7 @@ const SelectInfo = () => {
           </p>
 
           {/* 이름 입력 */}
-          <div className="pt-[32px]">
+          <div className="pt-[32px] flex flex-col gap-2">
             <label
               htmlFor="name"
               className="font-bold text-2lg leading-[24px] tracking-[0em] text-gray-600"
@@ -166,7 +170,7 @@ const SelectInfo = () => {
               type="text"
               value={name}
               onChange={handleNameChange}
-              className="w-full h-[56px] px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-primary-light focus:border-primary-light"
+              className="w-full h-[56px] px-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-primary-light focus:border-primary-light"
               placeholder="이름"
               maxLength={6}
             />
@@ -183,7 +187,7 @@ const SelectInfo = () => {
                   key={option}
                   size="sm"
                   selected={age === option}
-                  onClick={() => setAge(option)}
+                  onClick={() => buttonState(option, setAge, age)}
                 >
                   {option}
                 </FormButton>
@@ -202,7 +206,7 @@ const SelectInfo = () => {
                   key={option}
                   size="sm"
                   selected={gender === option}
-                  onClick={() => setGender(option)}
+                  onClick={() => buttonState(option, setGender, gender)}
                 >
                   {option}
                 </FormButton>
@@ -221,7 +225,7 @@ const SelectInfo = () => {
                   key={option}
                   size="sm"
                   selected={relationship === option}
-                  onClick={() => setRelationship(option)}
+                  onClick={() => buttonState(option, setRelationship, relationship)}
                 >
                   {option}
                 </FormButton>
@@ -234,7 +238,7 @@ const SelectInfo = () => {
             <p className="font-bold text-2lg leading-[24px] tracking-[0em] text-gray-600">
               관심사
             </p>
-            <div className="grid grid-cols-4 gap-[16px]">
+            <div className="pt-[16px] grid grid-cols-4 gap-[16px]">
               {interestOptions.map((option) => (
                 <FormButton
                   key={option}
