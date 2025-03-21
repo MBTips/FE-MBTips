@@ -23,6 +23,7 @@ const config = {
         foreground: "#000000"
       },
       fontSize: {
+        "3xl": "24px",
         "2xl": "20px",
         xl: "18px",
         lg: "16px",
