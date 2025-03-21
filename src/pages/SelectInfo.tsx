@@ -94,7 +94,7 @@ const SelectInfo = () => {
     }
   };
 
-  const buttonState = (value: string, setter: (val: string | null) => void, state: string | null) => {
+  const handleButtonClick = (value: string, setter: (val: string | null) => void, state: string | null) => {
     setter(state === value ? null : value);
   };
 
@@ -188,7 +188,7 @@ const SelectInfo = () => {
                   key={option}
                   size="sm"
                   selected={age === option}
-                  onClick={() => buttonState(option, setAge, age)}
+                  onClick={() => handleButtonClick(option, setAge, age)}
                 >
                   {option}
                 </FormButton>
@@ -207,7 +207,7 @@ const SelectInfo = () => {
                   key={option}
                   size="sm"
                   selected={gender === option}
-                  onClick={() => buttonState(option, setGender, gender)}
+                  onClick={() => handleButtonClick(option, setGender, gender)}
                 >
                   {option}
                 </FormButton>
@@ -226,7 +226,7 @@ const SelectInfo = () => {
                   key={option}
                   size="sm"
                   selected={relationship === option}
-                  onClick={() => buttonState(option, setRelationship, relationship)}
+                  onClick={() => handleButtonClick(option, setRelationship, relationship)}
                 >
                   {option}
                 </FormButton>
