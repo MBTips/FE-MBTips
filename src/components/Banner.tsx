@@ -1,52 +1,65 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { cls } from "@/utils/cls";
 import Indicator from "@/components/Indicator";
 
+interface BannerImage {
+  sm: string;
+  md: string;
+  lg: string;
+  description: string;
+}
+
+const bannerImages: BannerImage[] = [
+  {
+    sm: "/image/home_banner1_sm.png",
+    md: "/image/home_banner1_md.png",
+    lg: "/image/home_banner1_lg.png",
+    description: "내가 궁금한 그 사람의 MBTI는?"
+  },
+  {
+    sm: "/image/home_banner2_sm.png",
+    md: "/image/home_banner2_md.png",
+    lg: "/image/home_banner2_lg.png",
+    description: "썸탈 때 대화주제 추천 MBTI별 대백과"
+  },
+  {
+    sm: "/image/home_banner3_sm.png",
+    md: "/image/home_banner3_md.png",
+    lg: "/image/home_banner3_lg.png",
+    description: "MBTI별 피해야 할 대화스타일 및 주제"
+  },
+];
+
 const Banner = () => {
-  const [order, setOrder] = useState(0);
+  const [order, setOrder] = useState<number>(0);
 
-  const images = [
-    {
-      src: "/image/home_banner_1.png",
-      description: "사춘기 자녀와의 대화에서 중요한건?"
-    },
-    {
-      src: "/image/home_banner_2.png",
-      description: "MBTI별 피해야 할 대화스타일 및 주제"
-    },
-    {
-      src: "/image/home_banner_3.png",
-      description: "썸탈 때 대화주제 추천 MBTI별 대백과"
-    }
-  ];
-
-  useEffect(function animateThreeSeconds() {
-    const intervalEffect = setInterval(() => {
-      setOrder((prevOrder) => (prevOrder + 1) % images.length);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOrder((prev) => (prev + 1) % bannerImages.length);
     }, 3000);
-
-    return () => {
-      clearInterval(intervalEffect);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="relative flex h-[184px] w-full">
-      {images.map((image, index) => (
-        // a -> Link로 바꿀 예정
-        <a href={`/contents/${index}`}>
-          <img
+      <Link to={`/contents/${order+1}`} className="absolute w-full h-full">
+        {bannerImages.map((image, index) => (
+          <picture
             key={index}
             className={cls(
-              "absolute transition-opacity duration-500",
+              "absolute transition-opacity duration-500 w-full h-full",
               order === index ? "opacity-100" : "opacity-0"
             )}
-            src={image.src}
-            alt={image.description}
-          />
-        </a>
-      ))}
-      <div className="absolute right-[20px] bottom-[12px]">
+          >
+            <source media="(min-width: 500px)" srcSet={image.lg} />
+            <source media="(min-width: 375px)" srcSet={image.md} />
+            <img src={image.sm} alt={image.description} className="w-full h-full object-cover" />
+          </picture>
+        ))}
+      </Link>
+
+      <div className="absolute right-5 bottom-5">
         <Indicator order={order} setOrder={setOrder} />
       </div>
     </div>
