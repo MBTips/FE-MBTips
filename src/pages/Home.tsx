@@ -10,7 +10,8 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/setting-info");
+    const mode = "fastFriend";
+    navigate("/select-info", { state: mode });
   };
 
   return (
