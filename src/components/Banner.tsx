@@ -43,7 +43,7 @@ const Banner = () => {
 
   return (
     <div className="relative flex h-[184px] w-full">
-      <Link to={`/contents/${order+1}`} className="absolute w-full h-full">
+      <Link to={`/contents/${order}`} className="absolute w-full h-full">
         {bannerImages.map((image, index) => (
           <picture
             key={index}
