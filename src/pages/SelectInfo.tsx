@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
 import Header from "@/components/Header";
+import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 
 const SelectInfo = () => {
   const location = useLocation();
   const mode = location.state; // mode: fastFriend, virtualFriend 두 종류 존재
   const isNameRequired = mode === "virtualFriend";
-  const headerTitle = mode === 'fastFriend' ? "상대방 정보선택" : "친구 저장하기";
+  const headerTitle =
+    mode === "fastFriend" ? "상대방 정보선택" : "친구 저장하기";
 
   const [selectedMBTI, setSelectedMBTI] = useState<{
     [key: string]: string | null;
@@ -57,14 +59,6 @@ const SelectInfo = () => {
     }));
   };
 
-  const getMBTIgroup = (option: string) => {
-    if (["E", "I"].includes(option)) return "E";
-    if (["N", "S"].includes(option)) return "N";
-    if (["F", "T"].includes(option)) return "F";
-    if (["P", "J"].includes(option)) return "P";
-    return "";
-  };
-
   const isMBTISelected = (option: string) => {
     const group = getMBTIgroup(option);
     return selectedMBTI[group] === option;
@@ -85,56 +79,77 @@ const SelectInfo = () => {
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value.length > 6) {
-      const truncatedValue = value.substring(0, 6);
-      setName(truncatedValue);
-    } else {
-      setName(value);
-    }
+    setName(e.target.value.substring(0, 6));
   };
 
-  const handleButtonClick = (value: string, setter: (val: string | null) => void, state: string | null) => {
+  const handleButtonClick = (
+    value: string,
+    setter: (val: string | null) => void,
+    state: string | null
+  ) => {
     setter(state === value ? null : value);
   };
 
   const handleStartChat = () => {
-    const isEGroupSelected = selectedMBTI.E !== null;
-    const isNGroupSelected = selectedMBTI.N !== null;
-    const isFGroupSelected = selectedMBTI.F !== null;
-    const isPGroupSelected = selectedMBTI.P !== null;
-
+    const isMBTIComplete = Object.values(selectedMBTI).every(
+      (val) => val !== null
+    );
     // 선택한 MBTI값이 하나라도 부재할 경우
-    if (
-      !isEGroupSelected ||
-      !isNGroupSelected ||
-      !isFGroupSelected ||
-      !isPGroupSelected
-    ) {
+    if (!isMBTIComplete) {
       return alert("각 MBTI 그룹에서 하나의 값을 선택해주세요."); // TODO: Toast popup UI 완료 시 반영 예정
     }
-
-    // 이름 필수 && 이름이 입력되지 않았을 경우
+    // 이름 필수 && 이름이 입력되지 않았을 경우 (virtualFriend)
     if (isNameRequired && !name) {
       return alert("이름을 입력해주세요."); // TODO: Toast popup UI 완료 시 반영 예정
     }
 
-    alert("대화 시작 API 연결하기."); // TODO: API 연동 예정
+    const mbti = `${selectedMBTI.E}${selectedMBTI.N}${selectedMBTI.F}${selectedMBTI.P}`;
+
+    const commonData = {
+      mbti
+    };
+
+    const selectedData =
+      mode === "virtualFriend"
+        ? {
+            ...commonData,
+            friendName: name,
+            age: mapAgeToNumber(age),
+            relationship,
+            gender:
+              gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null,
+            interests: interest
+          }
+        : {
+            ...commonData,
+            fastFriendName: name,
+            fastFriendAge: mapAgeToNumber(age),
+            fastFriendRelationship: relationship,
+            fastFriendSex:
+              gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null
+          };
+
+    console.log("API Payload:", selectedData);
+
+    const apiUrl =
+      mode === "virtualFriend" ? "api/virtual-friend" : "api/fast-friend";
+
+    // TOOD: API 호출
   };
 
   return (
     <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
       <Header title={headerTitle} />
 
-      <div className="w-[320px] mx-auto">
+      <div className="mx-auto w-[320px]">
         {/* MBTI 선택 */}
         <div className="mb-[40px] pt-[48px]">
-          <p className="font-bold text-[20px] leading-[30px] tracking-[-0.01em]">
+          <p className="text-[20px] leading-[30px] font-bold tracking-[-0.01em]">
             상대방의 MBTI를 선택하면 <br />
             대화를 시뮬레이션 해볼 수 있어요
           </p>
 
-          <div className="pt-[24px] grid grid-cols-4 gap-[24px_13px]">
+          <div className="grid grid-cols-4 gap-[24px_13px] pt-[24px]">
             {mbtiOptions.map((option) => (
               <FormButton
                 key={option}
@@ -149,19 +164,19 @@ const SelectInfo = () => {
         </div>
       </div>
 
-      <div className="w-full h-[8px] bg-[#EEF0F3]" />
+      <div className="h-[8px] w-full bg-[#EEF0F3]" />
 
-      <div className="w-[320px] mx-auto">
+      <div className="mx-auto w-[320px]">
         <div className="pt-[40px]">
-          <p className="font-bold text-[20px] leading-[30px] tracking-[-0.01em]">
+          <p className="text-[20px] leading-[30px] font-bold tracking-[-0.01em]">
             정보 추가 입력
           </p>
 
           {/* 이름 입력 */}
-          <div className="pt-[32px] flex flex-col gap-2">
+          <div className="flex flex-col gap-2 pt-[32px]">
             <label
               htmlFor="name"
-              className="font-bold text-2lg leading-[24px] tracking-[0em] text-gray-600"
+              className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600"
             >
               이름
               {isNameRequired && <span className="text-red-500">*</span>}
@@ -171,7 +186,7 @@ const SelectInfo = () => {
               type="text"
               value={name}
               onChange={handleNameChange}
-              className="w-full h-[56px] px-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-primary-light focus:border-primary-light"
+              className="h-[56px] w-full rounded-lg border border-gray-200 px-4 focus:border-primary-light focus:ring-primary-light focus:outline-none"
               placeholder="이름"
               maxLength={6}
             />
@@ -179,10 +194,10 @@ const SelectInfo = () => {
 
           {/* 나이 선택 */}
           <div className="pt-[20px] pb-[12px]">
-            <p className="font-bold text-2lg leading-[24px] tracking-[0em] text-gray-600">
+            <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
               나이
             </p>
-            <div className="pt-[16px] flex gap-[16px]">
+            <div className="flex gap-[16px] pt-[16px]">
               {ageOptions.map((option) => (
                 <FormButton
                   key={option}
@@ -198,10 +213,10 @@ const SelectInfo = () => {
 
           {/* 성별 선택 */}
           <div className="pt-[20px] pb-[12px]">
-            <p className="font-bold text-2lg leading-[24px] tracking-[0em] text-gray-600">
+            <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
               성별
             </p>
-            <div className="pt-[16px] flex gap-[16px]">
+            <div className="flex gap-[16px] pt-[16px]">
               {genderOptions.map((option) => (
                 <FormButton
                   key={option}
@@ -217,16 +232,18 @@ const SelectInfo = () => {
 
           {/* 관계 선택 */}
           <div className="pt-[20px] pb-[20px]">
-            <p className="font-bold text-2lg leading-[24px] tracking-[0em] text-gray-600">
+            <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
               상대방과 나의 관계
             </p>
-            <div className="pt-[16px] grid grid-cols-4 gap-[16px]">
+            <div className="grid grid-cols-4 gap-[16px] pt-[16px]">
               {relationshipOptions.map((option) => (
                 <FormButton
                   key={option}
                   size="sm"
                   selected={relationship === option}
-                  onClick={() => handleButtonClick(option, setRelationship, relationship)}
+                  onClick={() =>
+                    handleButtonClick(option, setRelationship, relationship)
+                  }
                 >
                   {option}
                 </FormButton>
@@ -236,10 +253,10 @@ const SelectInfo = () => {
 
           {/* 관심사 선택 */}
           <div className="pt-[20px] pb-[26px]">
-            <p className="font-bold text-2lg leading-[24px] tracking-[0em] text-gray-600">
+            <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
               관심사
             </p>
-            <div className="pt-[16px] grid grid-cols-4 gap-[16px]">
+            <div className="grid grid-cols-4 gap-[16px] pt-[16px]">
               {interestOptions.map((option) => (
                 <FormButton
                   key={option}
@@ -256,7 +273,7 @@ const SelectInfo = () => {
 
         {/* 대화 시작 버튼 */}
         <button
-          className="w-full my-[22px] h-[60px] bg-primary-normal text-white rounded-[8px] font-bold"
+          className="my-[22px] h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white"
           onClick={handleStartChat}
         >
           대화 시작하기
