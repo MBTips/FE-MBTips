@@ -35,6 +35,14 @@ export default defineConfig({
       {
         find: "@/constants",
         replacement: path.resolve(__dirname, "src/constants")
+      },
+      {
+        find: "@/store",
+        replacement: path.resolve(__dirname, "src/store")
+      },
+      {
+        find: "@/api",
+        replacement: path.resolve(__dirname, "src/api")
       }
     ]
   }
