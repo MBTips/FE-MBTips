@@ -4,7 +4,12 @@
     "paths": {
       "@/*": ["*"],
       "@/components/*": ["components/*"],
-      "@/utils/*": ["utils/*"]
+      "@/hooks/*": ["hooks/*"],
+      "@/pages/*": ["pages/*"],
+      "@/store/*": ["store/*"],
+      "@/types/*": ["types/*"],
+      "@/utils/*": ["utils/*"],
+      "@/constants/*": ["constants/*"],
     },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
