@@ -1,6 +1,6 @@
 const NavBar = () => {
   return (
-    <div className="flex flex-row items-center justify-center w-[500px] h-[56px]">
+    <div className="flex h-[56px] w-full justify-between">
       <img
         src="/public/icon/mbtipslogo.svg"
         alt="Logo"

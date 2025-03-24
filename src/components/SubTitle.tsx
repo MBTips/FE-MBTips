@@ -16,18 +16,19 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
 
   return (
     <div className="flex items-center">
-      <h2 className="font-bold text-gray-900 text-xl">
+      <h2 className="text-xl font-bold text-gray-900">
         {titleList[mode].title}
       </h2>
-      <p className="ml-1.5 font-light text-md">{titleList[mode].description}</p>
+      <p className="ml-1.5 flex-1 text-sm font-light text-gray-800">
+        {titleList[mode].description}
+      </p>
       {mode === "친구목록" && (
         <button onClick={() => navigate("/setting-friends")}>
           <img
-            className="ml-[78px]"
             src="/icon/plus.svg"
             alt="친구 추가 버튼"
-            width={14}
-            height={14}
+            width={20}
+            height={20}
           />
         </button>
       )}
