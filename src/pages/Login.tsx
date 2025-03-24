@@ -1,7 +1,19 @@
+import { useEffect, useState } from "react";
 import KakaoLoginButton from "@/components/button/KakaoLoginButton";
 import TermsAndPrivacy from "@/components/TermsAndPrivacy";
+import TermsAndPrivacyModal from "@/components/modal/TermsAndPrivacyModal";
 
 const Login = () => {
+  const [isModalOpen, setIsModalOpen] = useState({
+    isOpen: false,
+    terms: false,
+    privacy: false
+  });
+
+  useEffect(() => {
+    console.log(isModalOpen.isOpen);
+  }, []);
+
   return (
     <div className="flex flex-col items-center">
       <img
@@ -23,8 +35,15 @@ const Login = () => {
         <KakaoLoginButton />
       </div>
       <div className="mt-[72px]">
-        <TermsAndPrivacy />
+        <TermsAndPrivacy setIsOpen={setIsModalOpen} />
       </div>
+      {isModalOpen.isOpen ? (
+        isModalOpen.terms ? (
+          <TermsAndPrivacyModal mode="terms" closeModal={setIsModalOpen} />
+        ) : (
+          <TermsAndPrivacyModal mode="privacy" closeModal={setIsModalOpen} />
+        )
+      ) : null}
     </div>
   );
 };

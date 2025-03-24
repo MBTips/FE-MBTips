@@ -7,6 +7,7 @@ import ChatTips from "@/pages/ChatTips";
 import ChatTemporature from "@/pages/ChatTemporature";
 import Content from "@/pages/Content";
 import Login from "@/pages/Login";
+import KaKaoLogin from "@/pages/KaKaoLogin";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/chat-temporature" element={<ChatTemporature />} />
         <Route path="/content/:id" element={<Content />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/kakao-login" element={<KaKaoLogin />} />{" "}
       </Routes>
     </Router>
   );
