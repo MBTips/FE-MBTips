@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
 import Header from "@/components/Header";
 import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
+import instance from "@/api/axios";
 
 const SelectInfo = () => {
   const location = useLocation();
@@ -90,7 +91,7 @@ const SelectInfo = () => {
     setter(state === value ? null : value);
   };
 
-  const handleStartChat = () => {
+  const handleStartChat = async() => {
     const isMBTIComplete = Object.values(selectedMBTI).every(
       (val) => val !== null
     );
@@ -129,12 +130,17 @@ const SelectInfo = () => {
               gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null
           };
 
-    console.log("API Payload:", selectedData);
-
     const apiUrl =
       mode === "virtualFriend" ? "api/virtual-friend" : "api/fast-friend";
 
-    // TOOD: API 호출
+    try {
+      const response = await instance.post(`/${apiUrl}`,selectedData);
+      console.log("Success!!",response.data)
+    
+    } catch (error) {
+      console.error("Select Info Error", error);
+    }
+  
   };
 
   return (
