@@ -10,6 +10,7 @@ import Login from "@/pages/Login";
 import KaKaoLogin from "@/pages/KaKaoLogin";
 import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
+import MbtiTestResult from "@/pages/MbtiTestResult";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/kakao-login" element={<KaKaoLogin />} />
         <Route path="/mbti-test" element={<MbtiTestIntro />} />
         <Route path="/mbti-test/:n" element={<MbtiTestQuestions />} />
+        <Route path="/mbti-test-result/:mbti" element={<MbtiTestResult/>}/>
       </Routes>
     </Router>
   );
