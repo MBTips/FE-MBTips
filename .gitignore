@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Vite HTTPS 인증서 관련 파일 
+*.pem
