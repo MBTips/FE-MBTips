@@ -10,7 +10,7 @@ interface info {
 }
 
 const MbtiTestQuestions = () => {
-
+  
   const { n } = useParams<{ n: string }>();
 
   if (n) {
