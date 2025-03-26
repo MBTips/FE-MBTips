@@ -1,6 +1,13 @@
-const TermsAndPrivacy = () => {
+const TermsAndPrivacy = ({
+  setIsOpen
+}: {
+  setIsOpen: React.Dispatch<
+    React.SetStateAction<{ isOpen: boolean; terms: boolean; privacy: boolean }>
+  >;
+}) => {
   const togglePopup = (mode: "terms" | "privacy") => {
     // 이용약관 및 개인정보처리방침 메시지 팝업
+    setIsOpen((prev) => ({ ...prev, isOpen: true, [mode]: true }));
   };
 
   return (
