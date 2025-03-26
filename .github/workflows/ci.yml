@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js (또는 다른 언어 환경)
+      - name: Set up Node.js (언어 환경)
         uses: actions/setup-node@v2
         with:
           node-version: '20'  
@@ -27,7 +27,7 @@ jobs:
 
 
       - name: Run build
-        run: npm run build --verbose # 또는 프로젝트에 맞는 빌드 명령어
+        run: npm run build --verbose # 프로젝트에 맞는 빌드 명령어
 
       - name: Docker build & push
         run: |
