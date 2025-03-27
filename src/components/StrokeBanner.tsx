@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 const StrokeBanner = () => {
   const navigate = useNavigate();
 
-  const mode = "virtualFriend";
-
   const handleNavigate = () => {
+    const mode = "virtualFriend";
     navigate("/select-info", { state: mode });
   };
 
