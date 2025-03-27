@@ -14,6 +14,11 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
     }
   };
 
+  const handleNavigate = () => {
+    const mode = "virtualFriend";
+    navigate("/select-info", { state: mode });
+  };
+
   return (
     <div className="flex items-center">
       <h2 className="text-xl font-bold text-gray-900">
@@ -23,7 +28,7 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
         {titleList[mode].description}
       </p>
       {mode === "친구목록" && (
-        <button onClick={() => navigate("/setting-friends")}>
+        <button onClick={handleNavigate}>
           <img
             src="/icon/plus.svg"
             alt="친구 추가 버튼"
