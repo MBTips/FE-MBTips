@@ -2,16 +2,25 @@ import * as path from "path";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-
-// vite에서 @/store/useAuthStore와 같은 절대 경로를 사용하려면, 
-// vite.config.ts 파일에서 alias 설정을 추가해야 합니다.(tsconfig.json을 인식하지 못함)
-
+import fs from "fs";
+// vite에서 @/store/useAuthStore와 같은 절대 경로를 사용하려면,
+// vite.config.ts 파일에서 alias 설정을 추가해야 합니다.
 export default defineConfig({
+  server: {
+    https: {
+      key: fs.readFileSync("./certs/key.pem"),
+      cert: fs.readFileSync("./certs/cert.pem")
+    }
+  },
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: [
       { find: "@/", replacement: path.resolve(__dirname, "src") },
       { find: "@/api", replacement: path.resolve(__dirname, "src/api") },
+      {
+        find: "@/api",
+        replacement: path.resolve(__dirname, "src/api")
+      },
       {
         find: "@/components",
         replacement: path.resolve(__dirname, "src/components")
@@ -27,7 +36,7 @@ export default defineConfig({
       {
         find: "@/constants",
         replacement: path.resolve(__dirname, "src/constants")
-      },
+      }
     ]
   }
 });
