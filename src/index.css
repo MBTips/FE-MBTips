@@ -41,6 +41,7 @@ button:hover {
 }
 
 @keyframes pulse-custom {
+
   0%,
   100% {
     transform: scale(1);
