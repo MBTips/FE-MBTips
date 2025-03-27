@@ -23,8 +23,8 @@ const App = () => {
           <Route path="/chat-temporature" element={<ChatTemporature />} />
           <Route path="/contents/:id" element={<Content />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/kakao-login" element={<KaKaoLogin />} />{" "}
-      </Routes>
+          <Route path="/kakao-login" element={<KaKaoLogin />} />
+        </Routes>
       </CenteredLayout>
     </Router>
   );
