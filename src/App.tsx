@@ -8,6 +8,9 @@ import ChatTemporature from "@/pages/ChatTemporature";
 import Content from "@/pages/Content";
 import Login from "@/pages/Login";
 import KaKaoLogin from "@/pages/KaKaoLogin";
+import MbtiTestIntro from "@/pages/MbtiTestIntro";
+import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
+import MbtiTestResult from "@/pages/MbtiTestResult";
 import CenteredLayout from "./components/CenteredLayout";
 
 const App = () => {
@@ -23,8 +26,11 @@ const App = () => {
           <Route path="/chat-temporature" element={<ChatTemporature />} />
           <Route path="/contents/:id" element={<Content />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/kakao-login" element={<KaKaoLogin />} />{" "}
-      </Routes>
+          <Route path="/kakao-login" element={<KaKaoLogin />} />
+          <Route path="/mbti-test" element={<MbtiTestIntro />} />
+          <Route path="/mbti-test/:n" element={<MbtiTestQuestions />} />
+          <Route path="/mbti-test-result/:mbti" element={<MbtiTestResult />} />
+        </Routes>
       </CenteredLayout>
     </Router>
   );
