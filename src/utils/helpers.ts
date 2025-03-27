@@ -10,7 +10,7 @@ export const mapAgeToNumber = (age: string | null): number | null => {
   const ageMap: Record<string, number> = {
     "10대": 10,
     "20대": 20,
-    "30대": 30
+    "30대 이상": 30
   };
   return age ? (ageMap[age] ?? null) : null;
 };
