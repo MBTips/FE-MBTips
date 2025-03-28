@@ -10,6 +10,7 @@ const Indicator = ({ order, setOrder }: IndicatorProps) => {
     <div className="flex gap-3">
       {[0, 1, 2].map((el) => (
         <button
+        key={el}
           onClick={() => setOrder(el)}
           className={cls(
             "bg-white rounded-full w-2 h-2",

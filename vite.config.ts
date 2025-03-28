@@ -12,6 +12,14 @@ export default defineConfig(({ mode }: { mode: string }) => {
 
   return {
     server: {
+      port: 3000,
+      host: true, // 외부에서 접속 가능하도록 설정
+      strictPort: true,
+      allowedHosts: ["mbtips.kr"],
+      hmr: {
+        host: "mbtips.kr",
+        protocol: "wss"
+      },
       https: isProduction
         ? undefined // 배포 환경에서는 HTTPS를 비활성화 (Nginx가 처리)
         : {

@@ -3,7 +3,8 @@ name: 빌드 자동화
 on:
   push:
     branches:
-      - dev
+      - main
+      - feat/cicd
 
 jobs:
   build:
@@ -13,13 +14,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js (또는 다른 언어 환경)
+      - name: Set up Node.js (언어 환경)
         uses: actions/setup-node@v2
         with:
           node-version: '20'  
 
       - name: Install dependencies
-        run: npm install  
+        run: |
+          npm install
+          npm install tailwindcss@latest postcss@latest autoprefixer@latest
+          npm install --save-dev @types/node
+
 
       - name: Run build
-        run: npm run build  # 또는 프로젝트에 맞는 빌드 명령어
+        run: npm run build --verbose # 프로젝트에 맞는 빌드 명령어
+
+      - name: Docker build & push
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/embitips_front .
+          docker push ${{ secrets.DOCKER_USERNAME }}/embitips_front
+      
+      - name: Deploy to GCP
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_PROD }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            sudo docker stop embitips_front || true
+            sudo docker rm embitips_front || true
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/embitips_front
+            sudo docker run -d -p 3000:3000 --name embitips_front ${{ secrets.DOCKER_USERNAME }}/embitips_front
+            sudo docker image prune -f
