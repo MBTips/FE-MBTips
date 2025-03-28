@@ -5,8 +5,8 @@ interface CenteredLayoutProps {
 }
 
 const CenteredLayout = ({ children }: CenteredLayoutProps) => (
-  <div className="flex w-screen justify-center bg-gray-50">
-    <div className="flex w-full justify-center">{children}</div>
+  <div className="flex min-h-screen w-screen justify-center bg-gray-50">
+    <div className="flex w-full justify-center bg-gray-50">{children}</div>
   </div>
 );
 
