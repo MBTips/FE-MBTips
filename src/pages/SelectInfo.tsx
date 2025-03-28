@@ -11,6 +11,10 @@ const SelectInfo = () => {
   const isNameRequired = mode === "virtualFriend";
   const headerTitle =
     mode === "fastFriend" ? "상대방 정보선택" : "친구 저장하기";
+  const selectInfoTitle =
+    mode === "fastFriend"
+      ? `상대방의 MBTI를 선택하면\n대화를 시뮬레이션 해볼 수 있어요`
+      : `친구의 MBTI를\n선택해주세요`;
 
   const [selectedMBTI, setSelectedMBTI] = useState<{
     [key: string]: string | null;
@@ -91,7 +95,7 @@ const SelectInfo = () => {
     setter(state === value ? null : value);
   };
 
-  const handleStartChat = async() => {
+  const handleStartChat = async () => {
     const isMBTIComplete = Object.values(selectedMBTI).every(
       (val) => val !== null
     );
@@ -134,13 +138,11 @@ const SelectInfo = () => {
       mode === "virtualFriend" ? "api/virtual-friend" : "api/fast-friend";
 
     try {
-      const response = await instance.post(`/${apiUrl}`,selectedData);
-      console.log("Success!!",response.data)
-    
+      const response = await instance.post(`/${apiUrl}`, selectedData);
+      console.log("Success!!", response.data);
     } catch (error) {
       console.error("Select Info Error", error);
     }
-  
   };
 
   return (
@@ -150,9 +152,8 @@ const SelectInfo = () => {
       <div className="mx-auto w-[320px]">
         {/* MBTI 선택 */}
         <div className="mb-[40px] pt-[48px]">
-          <p className="text-[20px] leading-[30px] font-bold tracking-[-0.01em]">
-            상대방의 MBTI를 선택하면 <br />
-            대화를 시뮬레이션 해볼 수 있어요
+          <p className="text-[20px] leading-[30px] font-bold tracking-[-0.01em] whitespace-pre-line">
+            {selectInfoTitle}
           </p>
 
           <div className="grid grid-cols-4 gap-[24px_13px] pt-[24px]">
