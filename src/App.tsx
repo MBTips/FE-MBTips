@@ -28,7 +28,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/kakao-login" element={<KaKaoLogin />} />
           <Route path="/mbti-test" element={<MbtiTestIntro />} />
-          <Route path="/mbti-test/:n" element={<MbtiTestQuestions />} />
+          <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
           <Route path="/mbti-test-result/:mbti" element={<MbtiTestResult />} />
         </Routes>
       </CenteredLayout>

@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
 import { TEST_QNA } from "@/constants/TEST_QNA";
 import MbtiAnswerButtons from "@/components/button/MbtiAnswerButtons";
+import useMbtiTestState from "@/store/useMbtiTestState";
 
 
 interface info {
@@ -10,11 +10,10 @@ interface info {
 }
 
 const MbtiTestQuestions = () => {
-  
-  const { n } = useParams<{ n: string }>();
+  const { currentPage, setNextStep, setMbtiLog } = useMbtiTestState();
 
-  if (n) {
-    const info: info = TEST_QNA[Number(n) - 1];
+  if (currentPage) {
+    const info: info = TEST_QNA[Number(currentPage) - 1];
 
     return (
         <main className="flex flex-col justify-center items-center">
@@ -23,7 +22,7 @@ const MbtiTestQuestions = () => {
           {/* 디자인팀에서 이미지 주면 고칠 예정 -> 3.24 정준영 */}
           <img src="/image/mbti_test.png" alt="mbti 테스트 과정 이미지" width={110} height={129} className="mt-10" />
           <div className="mt-[93px]">
-            <MbtiAnswerButtons content={info.answers} />
+            <MbtiAnswerButtons onClick={setNextStep} content={info.answers} />
           </div>
         </main>
     )
