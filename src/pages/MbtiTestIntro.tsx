@@ -12,6 +12,13 @@ const MbtiTestIntro = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // 유효성 검사
+    if (name.length < 1 || name.length > 10) {
+      alert("이름은 최소 1글자, 최대 10글자여야 합니다.");
+      return;
+    }
+
     localStorage.setItem("name", name);
     navigate("/mbti-test/1");
   }

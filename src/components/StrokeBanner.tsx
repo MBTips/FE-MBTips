@@ -1,8 +1,16 @@
+import { useNavigate } from "react-router-dom";
+
 const StrokeBanner = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    const mode = "virtualFriend";
+    navigate("/select-info", { state: mode });
+  };
+
   return (
     <div className="flex h-[178px] w-[320px] flex-col justify-center rounded-lg border border-dashed border-gray-200 px-[38px] py-6 text-center md:w-[335px] lg:w-[460px]">
-      {/* "상대방 정보 선택" 페이지 생성되면되면 Link로 쓸 예정*/}
-      <a href="/setting-friends">
+      <button onClick={handleNavigate}>
         <img
           src="/icon/plus_button.svg"
           alt="친구 등록 버튼"
@@ -10,7 +18,7 @@ const StrokeBanner = () => {
           width={40}
           height={40}
         />
-      </a>
+      </button>
       <strong className="text-4 mt-4 font-bold text-gray-900">
         친구 정보를 저장하고 대화할 수 있어요
       </strong>
