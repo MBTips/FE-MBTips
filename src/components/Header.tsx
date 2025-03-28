@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 type HeaderProps = {
   title: string;
@@ -6,16 +6,20 @@ type HeaderProps = {
   showShareIcon?: boolean;
 };
 
-const Header = ({ title, showPreviousIcon = true, showShareIcon = true }: HeaderProps) => {
+const Header = ({
+  title,
+  showPreviousIcon = true,
+  showShareIcon = true
+}: HeaderProps) => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (
-    <div className="flex flex-row bg-white border border-gray-100 items-center justify-center w-full h-[56px] relative">
-      {showPreviousIcon && ( 
+    <div className="relative flex h-[56px] w-full flex-row items-center justify-center border-b border-gray-100 bg-white">
+      {showPreviousIcon && (
         <img
           src="/public/icon/arrow_left.svg"
           alt="Go To Back"
@@ -26,7 +30,7 @@ const Header = ({ title, showPreviousIcon = true, showShareIcon = true }: Header
         />
       )}
 
-      <h1 className="text-[18px] font-bold text-gray-900 absolute left-1/2 transform -translate-x-1/2">
+      <h1 className="absolute left-1/2 -translate-x-1/2 transform text-[18px] font-bold text-gray-900">
         {title}
       </h1>
 
