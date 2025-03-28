@@ -11,7 +11,7 @@ import KaKaoLogin from "@/pages/KaKaoLogin";
 import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
-import CenteredLayout from "./components/CenteredLayout";
+import CenteredLayout from "@/components/CenteredLayout";
 
 const App = () => {
   return (
