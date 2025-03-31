@@ -4,6 +4,7 @@ import FormButton from "@/components/button/FormButton";
 import Header from "@/components/Header";
 import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 import instance from "@/api/axios";
+import ToastMessage from "@/components/ToastMessage";
 
 const SelectInfo = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const SelectInfo = () => {
   const [gender, setGender] = useState<string | null>(null);
   const [relationship, setRelationship] = useState<string | null>(null);
   const [interest, setInterest] = useState<string[]>([]);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const mbtiOptions = ["E", "N", "F", "P", "I", "S", "T", "J"];
   const ageOptions = ["10대", "20대", "30대 이상"];
@@ -95,17 +97,22 @@ const SelectInfo = () => {
     setter(state === value ? null : value);
   };
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
   const handleStartChat = async () => {
     const isMBTIComplete = Object.values(selectedMBTI).every(
       (val) => val !== null
     );
     // 선택한 MBTI값이 하나라도 부재할 경우
     if (!isMBTIComplete) {
-      return alert("각 MBTI 그룹에서 하나의 값을 선택해주세요."); // TODO: Toast popup UI 완료 시 반영 예정
+      return showToast("MBTI를 선택해주세요");
     }
     // 이름 필수 && 이름이 입력되지 않았을 경우 (virtualFriend)
     if (isNameRequired && !name) {
-      return alert("이름을 입력해주세요."); // TODO: Toast popup UI 완료 시 반영 예정
+      return showToast("이름을 입력해주세요");
     }
 
     const mbti = `${selectedMBTI.E}${selectedMBTI.N}${selectedMBTI.F}${selectedMBTI.P}`;
@@ -277,6 +284,13 @@ const SelectInfo = () => {
             </div>
           </div>
         </div>
+
+        {toastMessage && (
+          <ToastMessage
+            message={toastMessage}
+            onClose={() => setToastMessage(null)}
+          />
+        )}
 
         {/* 대화 시작 버튼 */}
         <button
