@@ -1,14 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { create } from "zustand";
 
 type PageNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-type Mbti = "E" | "I" | "N" | "S" | "F" | "T" | "P" | "J";
 
 interface MbtiTestState {
     currentPage: PageNumber;
+    currentMbti: string;
     pageIsCompleted: Record<PageNumber, boolean>;
-    mbtiLog: Record<Mbti, number>;
+    mbtiLog: Record<string, number>;
     setNextStep: () => void;
-    setMbtiLog: (mbti: Mbti) => void;
+    setMbtiLog: (mbti: string) => void;
+    getMbtiByLog: () => void;
     validatePrevStepisComplete: (order: PageNumber) => boolean;
     setPageComplete: (step: PageNumber) => void;
     retry: () => void;
@@ -16,6 +18,7 @@ interface MbtiTestState {
 
 const useMbtiTestState = create<MbtiTestState>((set, get) => ({
     currentPage: 1,
+    currentMbti : "",
     pageIsCompleted: {
         1: false,
         2: false,
@@ -46,9 +49,11 @@ const useMbtiTestState = create<MbtiTestState>((set, get) => ({
 
         setPageComplete(currentPage); // 현재 페이지를 완료로 설정
         
+        // 마지막 페이지라면 결과 페이지로 이동
         if (currentPage === 12) {
-            // 마지막 페이지라면 결과 페이지로 이동
-            window.location.href = "/mbti-test-result";
+            get().getMbtiByLog();
+            if (get().currentMbti !== "") window.location.href="/mbti-test-result";
+            else console.error("mbti가 비어있습니다.");
         } else {
             // 그렇지 않다면 페이지를 증가시킴
             set((state) => ({
@@ -57,13 +62,25 @@ const useMbtiTestState = create<MbtiTestState>((set, get) => ({
         }
         
     },
-    setMbtiLog : (mbti : Mbti) => {
+    setMbtiLog : (mbti : string) => {
       set((state) => ({
         mbtiLog: {
           ...state.mbtiLog,
           [mbti]: state.mbtiLog[mbti] + 1,
         },
       }));
+    },
+    getMbtiByLog:()=>{
+        let mbti ="";
+        const mbtiLog = get().mbtiLog;
+        if(mbtiLog.E>mbtiLog.I) mbti += "E"; else mbti += "I";
+        if(mbtiLog.N>mbtiLog.S) mbti += "N"; else mbti += "S";
+        if(mbtiLog.F>mbtiLog.T) mbti += "F"; else mbti += "T";
+        if(mbtiLog.J>mbtiLog.P) mbti += "J"; else mbti += "P";
+        set(() => ({
+            currentMbti: mbti,
+        }));
+        localStorage.setItem("mbti-test-mbti", mbti);
     },
     validatePrevStepisComplete: (order: PageNumber) => {
         if (order <= 1) {

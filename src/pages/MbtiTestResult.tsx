@@ -1,13 +1,14 @@
 import { MouseEvent } from "react";
-import { useParams } from "react-router-dom";
 import { MBTI_RESULT_INFO } from "@/constants/MBTI_RESULT_INFO";
 import ChatStartButton from "@/components/button/ChatStartButton";
 import ShareButton from "@/components/button/ShareButton";
 import RestartButton from "@/components/button/RestartButton";
 
 const MbtiTestResult = () => {
-    const { mbti } = useParams<{ mbti: string }>();
-    const result = MBTI_RESULT_INFO[mbti?.toUpperCase() as keyof typeof MBTI_RESULT_INFO];
+
+    const mbti = localStorage.getItem("mbti-test-mbti");
+
+    const result = MBTI_RESULT_INFO[mbti as keyof typeof MBTI_RESULT_INFO];
     
     const handleClick = (e: MouseEvent) => {
         e.preventDefault();

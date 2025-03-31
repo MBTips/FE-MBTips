@@ -1,20 +1,29 @@
+import useMbtiTestState from "@/store/useMbtiTestState";
+
 interface MbtiAnswerButtonsProps {
-    onClick: () => void;
-    content: string[];
+    content : {
+        mbti: string;
+        message: string;
+    }[];
 }
-
-
-const MbtiAnswerButtons = ({ onClick, content }: MbtiAnswerButtonsProps) => {
+const MbtiAnswerButtons = ({content}: MbtiAnswerButtonsProps) => {
     
+    const { setNextStep, setMbtiLog} = useMbtiTestState();
+
     const commonStyle = "flex justify-center items-center bg-primary-pale border-1 border-primary-light rounded-lg w-[335px] h-[80px] font-medium text-primary-normal text-lg";
+
+    const handleClick =(mbti : string ) => {
+        setNextStep();
+        setMbtiLog(mbti)
+    }
 
     return (
         <div className="flex flex-col gap-9">
-            <button onClick={onClick} className={commonStyle}>
-            {content[0]}
+            <button onClick={()=>handleClick(content[0].mbti)} className={commonStyle}>
+            {content[0].message}
             </button>
-            <button onClick={onClick} className={commonStyle}>
-            {content[1]}
+            <button onClick={()=>handleClick(content[1].mbti)} className={commonStyle}>
+            {content[1].message}
             </button>
         </div>
   )

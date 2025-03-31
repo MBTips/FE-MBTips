@@ -19,8 +19,8 @@ const MbtiTestIntro = () => {
       return;
     }
 
-    localStorage.setItem("name", name);
-    navigate("/mbti-test/1");
+    localStorage.setItem("mbti-test-name", name);
+    navigate("/mbti-test-progress");
   }
 
   return (
