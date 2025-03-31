@@ -9,6 +9,8 @@ import fs from "fs";
 
 export default defineConfig(({ mode }: { mode: string }) => {
   const isProduction = mode === "production";
+  const keyPath = "./certs/key.pem";
+  const certPath = "./certs/cert.pem";
 
   return {
     server: {
@@ -20,22 +22,19 @@ export default defineConfig(({ mode }: { mode: string }) => {
         host: "mbtips.kr",
         protocol: "wss"
       },
-      https: isProduction
-        ? undefined // 배포 환경에서는 HTTPS를 비활성화 (Nginx가 처리)
-        : {
-            key: fs.readFileSync("./certs/key.pem"),
-            cert: fs.readFileSync("./certs/cert.pem")
-          }
+      https:
+        !isProduction && fs.existsSync(keyPath) && fs.existsSync(certPath)
+          ? undefined // 배포 환경에서는 HTTPS를 비활성화 (Nginx가 처리)
+          : {
+              key: fs.readFileSync(keyPath),
+              cert: fs.readFileSync(certPath)
+            }
     },
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: [
         { find: "@/", replacement: path.resolve(__dirname, "src") },
         { find: "@/api", replacement: path.resolve(__dirname, "src/api") },
-        {
-          find: "@/api",
-          replacement: path.resolve(__dirname, "src/api")
-        },
         {
           find: "@/components",
           replacement: path.resolve(__dirname, "src/components")
@@ -55,10 +54,6 @@ export default defineConfig(({ mode }: { mode: string }) => {
         {
           find: "@/store",
           replacement: path.resolve(__dirname, "src/store")
-        },
-        {
-          find: "@/api",
-          replacement: path.resolve(__dirname, "src/api")
         }
       ]
     }
