@@ -111,7 +111,8 @@ const SelectInfo = () => {
     const mbti = `${selectedMBTI.E}${selectedMBTI.N}${selectedMBTI.F}${selectedMBTI.P}`;
 
     const commonData = {
-      mbti
+      mbti,
+      interests: interest
     };
 
     const selectedData =
@@ -122,8 +123,7 @@ const SelectInfo = () => {
             age: mapAgeToNumber(age),
             relationship,
             gender:
-              gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null,
-            interests: interest
+              gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null
           }
         : {
             ...commonData,
