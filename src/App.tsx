@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "@/pages/Home";
 import SelectInfo from "@/pages/SelectInfo";
@@ -12,8 +13,13 @@ import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
 import CenteredLayout from "@/components/CenteredLayout";
+import { initGA } from "@/GA";
 
 const App = () => {
+  useEffect(() => {
+    initGA(); // GA4 초기화
+  }, []);
+
   return (
     <Router>
       <CenteredLayout>

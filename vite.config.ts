@@ -56,6 +56,11 @@ export default defineConfig(({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, "src/store")
         }
       ]
+    },
+    define: {
+      "process.env.VITE_GA_MEASUREMENT_ID": JSON.stringify(
+        process.env.VITE_GA_MEASUREMENT_ID
+      )
     }
   };
 });
