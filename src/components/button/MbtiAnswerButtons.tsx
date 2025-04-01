@@ -10,7 +10,7 @@ const MbtiAnswerButtons = ({content}: MbtiAnswerButtonsProps) => {
     
     const { setNextStep, setMbtiLog} = useMbtiTestState();
 
-    const commonStyle = "flex justify-center items-center bg-primary-pale border-1 border-primary-light rounded-lg w-[335px] h-[80px] font-medium text-primary-normal text-lg";
+    const commonStyle = "flex justify-center items-center bg-primary-pale border-1 border-primary-light rounded-lg w-[335px] h-[80px] font-medium text-primary-normal text-md py-4 px-2.5 ";
 
     const handleClick =(mbti : string ) => {
         setNextStep();

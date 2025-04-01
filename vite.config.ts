@@ -20,12 +20,13 @@ export default defineConfig(({ mode }: { mode: string }) => {
         host: "mbtips.kr",
         protocol: "wss"
       },
-      https: isProduction
-        ? undefined // 배포 환경에서는 HTTPS를 비활성화 (Nginx가 처리)
-        : {
-            key: fs.readFileSync("./certs/key.pem"),
-            cert: fs.readFileSync("./certs/cert.pem")
-          }
+      
+      // https: isProduction
+      //   ? undefined // 배포 환경에서는 HTTPS를 비활성화 (Nginx가 처리)
+      //   : {
+      //       key: fs.readFileSync("./certs/key.pem"),
+      //       cert: fs.readFileSync("./certs/cert.pem")
+      //     }
     },
     plugins: [react(), tailwindcss()],
     resolve: {
