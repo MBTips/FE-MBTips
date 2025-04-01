@@ -1,5 +1,10 @@
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation
+} from "react-router-dom";
 import Home from "@/pages/Home";
 import SelectInfo from "@/pages/SelectInfo";
 import Chat from "@/pages/Chat";
@@ -13,15 +18,40 @@ import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
 import CenteredLayout from "@/components/CenteredLayout";
-import { initGA } from "@/GA";
+import { initGA, trackPageView } from "@/libs/analytics";
+
+const PageTracker = () => {
+  const location = useLocation();
+
+  const trackedPaths = [
+    { path: "/", label: "home" },
+    { path: "/login", label: "login" },
+    { path: "/contents" }
+  ];
+
+  useEffect(() => {
+    const { pathname } = location;
+
+    trackedPaths.forEach(({ path, label }) => {
+      if (path === "/contents" && pathname.startsWith(path)) {
+        trackPageView(label || pathname);
+      } else if (pathname === path) {
+        trackPageView(label || pathname);
+      }
+    });
+  }, [location.pathname]);
+
+  return null;
+};
 
 const App = () => {
   useEffect(() => {
-    initGA(); // GA4 초기화
+    initGA();
   }, []);
 
   return (
     <Router>
+      <PageTracker />
       <CenteredLayout>
         <Routes>
           <Route path="/" element={<Home />} />

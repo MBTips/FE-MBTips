@@ -1,5 +1,6 @@
 import instance from "@/api/axios";
 import Header from "@/components/Header";
+import { trackEvent } from "@/libs/analytics";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -177,6 +178,8 @@ const Content = () => {
 
   const handleStartChat = async () => {
     try {
+      trackEvent("User", "Clicked Start Chat Button", "Start Chat");
+
       const response = await instance.post("api/fast-friend");
       console.log("Success!!", response.data);
     } catch (error) {
