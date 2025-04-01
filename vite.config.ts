@@ -18,10 +18,12 @@ export default defineConfig(({ mode }: { mode: string }) => {
       host: true, // 외부에서 접속 가능하도록 설정
       strictPort: true,
       allowedHosts: ["mbtips.kr"],
-      hmr: {
-        host: "mbtips.kr",
-        protocol: "wss"
-      },
+      hmr: isProduction
+        ? false // 배포 환경에서는 HMR 비활성화 (WebSocket 사용 안 함)
+        : {
+            host: "localhost",
+            protocol: "wss"
+          },
       https: isProduction
         ? undefined // 배포 환경에서는 HTTPS를 비활성화 (Nginx가 처리)
         : fs.existsSync(keyPath) && fs.existsSync(certPath)
@@ -52,8 +54,17 @@ export default defineConfig(({ mode }: { mode: string }) => {
         {
           find: "@/store",
           replacement: path.resolve(__dirname, "src/store")
+        },
+        {
+          find: "@/libs",
+          replacement: path.resolve(__dirname, "src/libs")
         }
       ]
+    },
+    define: {
+      "process.env.VITE_GA_MEASUREMENT_ID": JSON.stringify(
+        process.env.VITE_GA_MEASUREMENT_ID
+      )
     }
   };
 });
