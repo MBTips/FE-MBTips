@@ -28,7 +28,6 @@ const MbtiTestQuestions = () => {
         <h1 className="mt-[20px] text-center text-3xl font-medium whitespace-pre-wrap">
           {content.question}
         </h1>
-        {/* 디자인팀에서 이미지 주면 고칠 예정 -> 3.24 정준영 */}
         <img
           src={`/icon/mbti_test_${currentPage}.svg`}
           alt="mbti 테스트 과정 이미지"

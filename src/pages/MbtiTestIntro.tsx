@@ -15,6 +15,7 @@ const MbtiTestIntro = () => {
 
     // 유효성 검사
     if (name.length < 1 || name.length > 10) {
+      // toast PR 반영되면 바꿀 예정입니다. -> 04.01 정준영
       alert("이름은 최소 1글자, 최대 10글자여야 합니다.");
       return;
     }
