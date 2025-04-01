@@ -2,24 +2,22 @@ import ReactGA from "react-ga4";
 
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || "";
 
-export const initGA = () => {
-  if (GA_MEASUREMENT_ID && process.env.NODE_ENV === "production") {
+const isProduction = process.env.NODE_ENV === "production";
+
+const initGA = () => {
+  if (isProduction && GA_MEASUREMENT_ID) {
     ReactGA.initialize(GA_MEASUREMENT_ID);
   }
 };
 
-export const trackPageView = (path: string) => {
-  if (GA_MEASUREMENT_ID && process.env.NODE_ENV === "production") {
+const trackPageView = (path: string) => {
+  if (isProduction && GA_MEASUREMENT_ID) {
     ReactGA.send({ hitType: "pageview", page: path });
   }
 };
 
-export const trackEvent = (
-  category: string,
-  action: string,
-  label?: string
-) => {
-  if (GA_MEASUREMENT_ID && process.env.NODE_ENV === "production") {
+const trackEvent = (category: string, action: string, label?: string) => {
+  if (isProduction && GA_MEASUREMENT_ID) {
     ReactGA.event({
       category,
       action,
@@ -27,3 +25,5 @@ export const trackEvent = (
     });
   }
 };
+
+export { initGA, trackPageView, trackEvent };
