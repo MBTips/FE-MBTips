@@ -19,7 +19,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
       strictPort: true,
       allowedHosts: ["mbtips.kr"],
       hmr: isProduction
-        ? false // 배포 환경에서는 HMR 비활성화 (WebSocket 사용 안 함)
+        ? {
+            host: "mbtips.kr",
+            protocol: "wss"
+          }
         : {
             host: "localhost",
             protocol: "wss"
