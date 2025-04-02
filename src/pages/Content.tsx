@@ -1,4 +1,6 @@
+import instance from "@/api/axios";
 import Header from "@/components/Header";
+import { trackEvent } from "@/libs/analytics";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -9,10 +11,10 @@ const contentData = [
     image: {
       sm: "/image/home_banner1_sm.png",
       md: "/image/home_banner1_md.png",
-      lg: "/image/home_banner1_lg.png",
+      lg: "/image/home_banner1_lg.png"
     },
     subTitle: "",
-    content: "",
+    content: ""
   },
   {
     id: 1,
@@ -20,7 +22,7 @@ const contentData = [
     image: {
       sm: "/image/home_banner2_sm.png",
       md: "/image/home_banner2_md.png",
-      lg: "/image/home_banner2_lg.png",
+      lg: "/image/home_banner2_lg.png"
     },
     subTitle: "썸탈 때 대화주제 추천(MBTI별)",
     content: `썸 탈 때 이런 주제를 활용해보세요! MBTI 별로 추천드려요. 조금 더 자세한 대화주제 추천을 원한다면? 대화를 시작해보세요~
@@ -87,7 +89,7 @@ const contentData = [
 
       ENTJ (결단력 있는 지휘관):
       -  "회사에서 좋은 리더란 어떤 리더일까?"
-      - 설명: 전략적 사고나 리더십에 대한 이야기를 나누는 것을 좋아해요!`,
+      - 설명: 전략적 사고나 리더십에 대한 이야기를 나누는 것을 좋아해요!`
   },
   {
     id: 2,
@@ -95,7 +97,7 @@ const contentData = [
     image: {
       sm: "/image/home_banner3_sm.png",
       md: "/image/home_banner3_md.png",
-      lg: "/image/home_banner3_lg.png",
+      lg: "/image/home_banner3_lg.png"
     },
     subTitle: "MBTI 별 피해야할 대화스타일 & 주제",
     content: `MBTI 별로 피해야 하는 대화 스타일, 주제를 알아보아요! 
@@ -162,8 +164,8 @@ const contentData = [
 
       ENTJ (결단력 있는 지휘관):
       - 비효율적이거나 비논리적인 대화.
-      - 예시 : 목표 달성을 방해하는 비효율적인 논의나, 감정적인 요소를 과도하게 강조하는 것.`,
-  },
+      - 예시 : 목표 달성을 방해하는 비효율적인 논의나, 감정적인 요소를 과도하게 강조하는 것.`
+  }
 ];
 
 const Content = () => {
@@ -171,57 +173,66 @@ const Content = () => {
   const content = contentData[Number(id)];
 
   if (!content) {
-    return <div className="text-center mt-10">Content not found</div>;
+    return <div className="mt-10 text-center">Content not found</div>;
   }
 
+  const handleStartChat = async () => {
+    try {
+      trackEvent("User", "Clicked Start Chat Button", "Start Chat");
 
-  const handleStartChat = () => {
-    alert("API 호출");
-  }
+      const response = await instance.post("api/fast-friend");
+      console.log("Success!!", response.data);
+    } catch (error) {
+      console.error("Select Info Error", error);
+    }
+  };
 
   const renderContentWithLineBreaks = (text: string) => {
-    return text.split("\n").map((line, index) => (
-      <React.Fragment key={index}>
-        {line.trim() ? <p>{line}</p> : <br />}
-      </React.Fragment>
-    ));
+    return text
+      .split("\n")
+      .map((line, index) => (
+        <React.Fragment key={index}>
+          {line.trim() ? <p>{line}</p> : <br />}
+        </React.Fragment>
+      ));
   };
 
   return (
     <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
       <Header title="상대방 정보선택" />
 
-      <div className="px-5 py-5 flex flex-col gap-[36px]">
-
+      <div className="flex flex-col gap-[36px] px-5 py-5">
         {/* 상단 배너 */}
-        <div className="relative bg-gray-100 rounded-[16px] overflow-hidden">
+        <div className="relative overflow-hidden rounded-[16px] bg-gray-100">
           <picture>
             <source media="(min-width: 500px)" srcSet={content.image.lg} />
             <source media="(min-width: 375px)" srcSet={content.image.md} />
             <img
               src={content.image.sm}
               alt={content.title}
-              className="w-full h-[156px] object-cover"
+              className="h-[156px] w-full object-cover"
             />
           </picture>
         </div>
 
         {/* 서브 제목 */}
         {content.subTitle && (
-          <h2 className="font-bold text-[18px] leading-[27px] tracking[-0.01em] text-gray-900">{content.subTitle}</h2>
+          <h2 className="tracking[-0.01em] text-[18px] leading-[27px] font-bold text-gray-900">
+            {content.subTitle}
+          </h2>
         )}
 
         {/* 본문 내용 */}
-        <div className="font-medium text-lg leading-6 tracking-norma text-gray-900 mb-[1px]">
+        <div className="tracking-norma mb-[1px] text-lg leading-6 font-medium text-gray-900">
           {content.content && renderContentWithLineBreaks(content.content)}
         </div>
 
         {/* 하단 버튼 */}
         <button
-            className="w-full my-[22px] h-[60px] bg-primary-normal text-white rounded-[8px] font-bold"
-            onClick={handleStartChat}
+          className="my-[22px] h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white"
+          onClick={handleStartChat}
         >
-            대화 시작하기
+          대화 시작하기
         </button>
       </div>
     </div>

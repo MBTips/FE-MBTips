@@ -1,4 +1,4 @@
-name: 빌드 자동화 
+name: 빌드 자동화
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js (언어 환경)
         uses: actions/setup-node@v2
         with:
-          node-version: '20'  
+          node-version: "20"
 
       - name: Install dependencies
         run: |
@@ -25,16 +25,17 @@ jobs:
           npm install tailwindcss@latest postcss@latest autoprefixer@latest
           npm install --save-dev @types/node
 
-
       - name: Run build
         run: npm run build --verbose # 프로젝트에 맞는 빌드 명령어
+        env:
+          VITE_GA_MEASUREMENT_ID: ${{ secrets.VITE_GA_MEASUREMENT_ID }} # Google Analytics 환경 변수 사용
 
       - name: Docker build & push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t ${{ secrets.DOCKER_USERNAME }}/embitips_front .
           docker push ${{ secrets.DOCKER_USERNAME }}/embitips_front
-      
+
       - name: Deploy to GCP
         uses: appleboy/ssh-action@master
         with:

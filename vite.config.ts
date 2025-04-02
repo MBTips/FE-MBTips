@@ -9,6 +9,8 @@ import fs from "fs";
 
 export default defineConfig(({ mode }: { mode: string }) => {
   const isProduction = mode === "production";
+  const keyPath = "./certs/key.pem";
+  const certPath = "./certs/cert.pem";
 
   return {
     server: {
@@ -16,26 +18,23 @@ export default defineConfig(({ mode }: { mode: string }) => {
       host: true, // 외부에서 접속 가능하도록 설정
       strictPort: true,
       allowedHosts: ["mbtips.kr"],
-      hmr: {
-        host: "mbtips.kr",
-        protocol: "wss"
-      },
+      hmr: isProduction
+        ? false // 배포 환경에서는 HMR 비활성화 (WebSocket 사용 안 함)
+        : {
+            host: "localhost",
+            protocol: "wss"
+          },
       https: isProduction
         ? undefined // 배포 환경에서는 HTTPS를 비활성화 (Nginx가 처리)
-        : {
-            key: fs.readFileSync("./certs/key.pem"),
-            cert: fs.readFileSync("./certs/cert.pem")
-          }
+        : fs.existsSync(keyPath) && fs.existsSync(certPath)
+          ? { key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) }
+          : undefined
     },
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: [
         { find: "@/", replacement: path.resolve(__dirname, "src") },
         { find: "@/api", replacement: path.resolve(__dirname, "src/api") },
-        {
-          find: "@/api",
-          replacement: path.resolve(__dirname, "src/api")
-        },
         {
           find: "@/components",
           replacement: path.resolve(__dirname, "src/components")
@@ -57,10 +56,15 @@ export default defineConfig(({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, "src/store")
         },
         {
-          find: "@/api",
-          replacement: path.resolve(__dirname, "src/api")
+          find: "@/libs",
+          replacement: path.resolve(__dirname, "src/libs")
         }
       ]
+    },
+    define: {
+      "process.env.VITE_GA_MEASUREMENT_ID": JSON.stringify(
+        process.env.VITE_GA_MEASUREMENT_ID
+      )
     }
   };
 });
