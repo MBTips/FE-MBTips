@@ -50,7 +50,6 @@ const App = () => {
   }, []);
 
   return (
-    <Router> 
     <Router>
       <PageTracker />
       <CenteredLayout>

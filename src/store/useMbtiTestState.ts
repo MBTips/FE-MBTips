@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { create } from "zustand";
 
 type PageNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
@@ -9,6 +8,7 @@ interface MbtiTestState {
     pageIsCompleted: Record<PageNumber, boolean>;
     mbtiLog: Record<string, number>;
     setNextStep: () => void;
+    setPreviousStep: () => void;
     setMbtiLog: (mbti: string) => void;
     getMbtiByLog: () => void;
     validatePrevStepisComplete: (order: PageNumber) => boolean;
@@ -61,6 +61,14 @@ const useMbtiTestState = create<MbtiTestState>((set, get) => ({
             }));
         }
         
+    },
+    setPreviousStep: () => {
+        const currentPage = get().currentPage; 
+        if (currentPage > 1) { // 페이지가 1보다 클 때만 감소
+            set((state) => ({
+                currentPage: (state.currentPage - 1) as PageNumber,
+            }));
+        }
     },
     setMbtiLog : (mbti : string) => {
       set((state) => ({
