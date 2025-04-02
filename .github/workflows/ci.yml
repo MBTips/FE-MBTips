@@ -25,10 +25,12 @@ jobs:
           npm install tailwindcss@latest postcss@latest autoprefixer@latest
           npm install --save-dev @types/node
 
+      - name: Create .env file # env 파일 생성 단계 추가
+        run: |
+          echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" > .env
+
       - name: Run build
         run: npm run build --verbose # 프로젝트에 맞는 빌드 명령어
-        env:
-          VITE_GA_MEASUREMENT_ID: ${{ secrets.VITE_GA_MEASUREMENT_ID }} # Google Analytics 환경 변수 사용
 
       - name: Docker build & push
         run: |

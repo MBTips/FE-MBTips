@@ -19,7 +19,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
       strictPort: true,
       allowedHosts: ["mbtips.kr"],
       hmr: isProduction
-        ? false // 배포 환경에서는 HMR 비활성화 (WebSocket 사용 안 함)
+        ? {
+            host: "mbtips.kr",
+            protocol: "wss"
+          }
         : {
             host: "localhost",
             protocol: "wss"
@@ -60,11 +63,6 @@ export default defineConfig(({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, "src/libs")
         }
       ]
-    },
-    define: {
-      "process.env.VITE_GA_MEASUREMENT_ID": JSON.stringify(
-        process.env.VITE_GA_MEASUREMENT_ID
-      )
     }
   };
 });
