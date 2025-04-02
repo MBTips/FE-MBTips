@@ -13,7 +13,9 @@ const initGA = () => {
 };
 
 const trackPageView = (path: string) => {
+  console.log("trackPageView 1");
   if (isProduction && GA_MEASUREMENT_ID) {
+    console.log("trackPageView 2");
     ReactGA.send({ hitType: "pageview", page: path });
   }
 };
