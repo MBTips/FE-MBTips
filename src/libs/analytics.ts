@@ -2,7 +2,7 @@ import ReactGA from "react-ga4";
 
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || "";
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = import.meta.env.MODE === "production";
 
 const initGA = () => {
   if (isProduction && GA_MEASUREMENT_ID) {
