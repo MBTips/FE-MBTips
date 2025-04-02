@@ -1,9 +1,7 @@
-import LoginButton from "./button/LoginButton";
+import LoginButton from "@/components/button/LoginButton";
 
 const NavBar = () => {
-  // const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-  const isLoggedIn = "true";
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   return (
     <div className="flex h-[62px] w-full justify-between items-center px-5">
