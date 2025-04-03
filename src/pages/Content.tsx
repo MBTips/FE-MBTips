@@ -180,7 +180,7 @@ const Content = () => {
     try {
       trackEvent("User", "Clicked Start Chat Button", "Start Chat");
 
-      const response = await instance.post("api/fast-friend");
+      const response = await instance.post("/api/fast-friend");
       console.log("Success!!", response.data);
     } catch (error) {
       console.error("Select Info Error", error);
