@@ -21,6 +21,7 @@ jobs:
 
       - name: Create .env.production file
         run: |
+          echo "NODE_ENV=production" > .env.production 
           echo "MODE=production" > .env.production  
           echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" >> .env.production
 
@@ -28,6 +29,8 @@ jobs:
         run: npm ci
 
       - name: Run build
+        env:
+          NODE_ENV: production
         run: npm run build -- --mode production
 
       - name: Verify Build Mode
@@ -36,6 +39,9 @@ jobs:
 
       - name: Debug .env.production file
         run: cat .env.production || echo ".env.production not found"
+
+      - name: Verify Build Mode in Output Files
+        run: grep -r "import.meta.env" dist/ || echo "No env variables found in built files"
 
       - name: Docker build & push
         run: |
