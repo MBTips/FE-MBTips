@@ -30,7 +30,8 @@ jobs:
           echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" > .env.production
 
       - name: Run build
-        run: npm run build --verbose # 프로젝트에 맞는 빌드 명령어
+        run: |
+          VITE_MODE=production npm run build --verbose
 
       - name: Docker build & push
         run: |
