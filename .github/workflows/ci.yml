@@ -31,7 +31,7 @@ jobs:
         env:
           NODE_ENV: production
           VITE_MODE: production
-        run: npm run build -- --mode production --verbose
+        run: npm run build -- --mode production
 
       - name: Check built files (Debugging)
         run: grep -r "import.meta.env.MODE" dist/ || echo "No env mode found in built files"
