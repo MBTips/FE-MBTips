@@ -5,6 +5,7 @@ const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || "";
 const isProduction = import.meta.env.MODE === "production";
 
 const initGA = () => {
+  console.log("import.meta.env.MODE", import.meta.env.MODE);
   console.log("isProduction", isProduction);
   console.log("ID", GA_MEASUREMENT_ID);
   if (isProduction && GA_MEASUREMENT_ID) {
