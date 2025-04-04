@@ -20,7 +20,7 @@ const MbtiTestResult = () => {
     return (
         <div className="flex flex-col sm:w-[360px] md:w-[375px] lg:w-[500px] h-[1008px]">
             <Header title="결과" showShareIcon={false}/>
-            <main className="flex-grow items-center w-full px-5 bg-white h-screen py-5">
+            <main className="flex flex-col flex-grow items-center w-full px-5 bg-white h-screen py-5">
                 {/* 디자인팀에서 이미지 작업 완료되면 수정할 예정 -> 04.01 정준영 */}
                 <img src="/image/mbti_test_result_image.png" alt="mbti 테스트 결과 이미지" className="sm:w-[320px] md:w-[335px] lg:w-[460px] h-[292px]"/>
                 <h2 className="mt-6 font-bold text-2xl">{mbti?.toUpperCase()}는 이런 성향이에요!</h2>
