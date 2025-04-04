@@ -64,9 +64,9 @@ const App = () => {
           <Route path="/contents/:id" element={<Content />} />
           <Route path="/login" element={<Login />} />
           <Route path="/kakao-login" element={<KaKaoLogin />} />
-          <Route path="/mbti-test" element={<MbtiTestIntro />} />
-          <Route path="/mbti-test/:n" element={<MbtiTestQuestions />} />
-          <Route path="/mbti-test-result/:mbti" element={<MbtiTestResult />} />
+          <Route path="/mbti-test" element={<MbtiTestIntro />} />     
+          <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
+          <Route path="/mbti-test-result" element={<MbtiTestResult />} />
         </Routes>
       </CenteredLayout>
     </Router>

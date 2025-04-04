@@ -1,0 +1,29 @@
+<svg width="360" height="208" viewBox="0 0 360 208" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="179" y="63" width="107" height="97" rx="8" fill="#E6E8ED"/>
+<path d="M179 71C179 66.5817 182.582 63 187 63H278C282.418 63 286 66.5817 286 71V84H179V71Z" fill="#FF6F6F"/>
+<rect x="193" y="94" width="12" height="12" rx="2" fill="white"/>
+<rect x="215" y="94" width="12" height="12" rx="2" fill="white"/>
+<rect x="237" y="94" width="12" height="12" rx="2" fill="white"/>
+<rect x="259" y="94" width="12" height="12" rx="2" fill="white"/>
+<rect x="193" y="116" width="12" height="12" rx="2" fill="white"/>
+<rect x="215" y="116" width="12" height="12" rx="2" fill="#FF7575"/>
+<rect x="237" y="116" width="12" height="12" rx="2" fill="#FF7575"/>
+<rect x="259" y="116" width="12" height="12" rx="2" fill="#FF7575"/>
+<rect x="193" y="138" width="12" height="12" rx="2" fill="white"/>
+<rect x="215" y="138" width="12" height="12" rx="2" fill="white"/>
+<rect x="237" y="138" width="12" height="12" rx="2" fill="white"/>
+<rect x="259" y="138" width="12" height="12" rx="2" fill="white"/>
+<circle cx="199" cy="73" r="6" fill="white"/>
+<circle cx="221" cy="73" r="6" fill="white"/>
+<circle cx="243" cy="73" r="6" fill="white"/>
+<circle cx="265" cy="73" r="6" fill="white"/>
+<rect x="195" y="57" width="8" height="20" rx="4" fill="black"/>
+<rect x="217" y="57" width="8" height="20" rx="4" fill="black"/>
+<rect x="239" y="57" width="8" height="20" rx="4" fill="black"/>
+<rect x="261" y="57" width="8" height="20" rx="4" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M145.931 62.308C169.793 68.9778 187.296 90.8802 187.296 116.871C187.296 148.157 161.934 173.519 130.648 173.519H83.8519C78.4108 173.519 74 169.108 74 163.667V116.871C74 92.8988 88.89 72.4046 109.926 64.1325L109.039 63.1813C106.256 60.1967 106.42 55.5212 109.404 52.7382C112.389 49.9553 117.064 50.1189 119.847 53.1035L120.93 54.265C119.783 48.5724 123.251 42.8964 128.939 41.3778C134.853 39.7988 140.927 43.3131 142.506 49.2271L145.683 61.1251C145.788 61.5192 145.87 61.9139 145.931 62.308Z" fill="#AD7AEE"/>
+<circle cx="143.926" cy="102.093" r="4.92593" fill="black"/>
+<circle cx="163.631" cy="102.093" r="4.92593" fill="black"/>
+<ellipse cx="143.462" cy="99.2781" rx="0.868365" ry="1.4959" transform="rotate(-57.8978 143.462 99.2781)" fill="black"/>
+<path d="M149 114.519H160.345V116.788C160.345 119.921 157.806 122.46 154.673 122.46C151.54 122.46 149 119.921 149 116.788V114.519Z" fill="black"/>
+</svg>

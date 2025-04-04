@@ -15,3 +15,5 @@ export type Mbti =
   | "ESFJ"
   | "ENFJ"
   | "ENTJ";
+
+  export type MbtiElements ="E" | "I" | "S" | "N" | "T" | "F" | "J" | "P";

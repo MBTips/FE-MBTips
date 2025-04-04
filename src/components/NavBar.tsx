@@ -1,17 +1,19 @@
+import { Link } from "react-router-dom";
 import LoginButton from "@/components/button/LoginButton";
 
 const NavBar = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   return (
-    <div className="flex h-[62px] w-full justify-between items-center px-5">
+    <div className="bg-white flex h-[56px] w-full justify-between">
+      <Link to="/" className="flex items-center">
       <img
         src="/public/icon/mbtipslogo.svg"
         alt="Logo"
         width={110}
         height={31}
       />
-
+      </Link>
       {isLoggedIn === "true" ? <LoginButton/> : <img
         src="/public/icon/people.svg"
         alt="Login Done"
