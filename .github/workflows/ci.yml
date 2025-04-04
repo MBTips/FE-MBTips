@@ -22,9 +22,10 @@ jobs:
       - name: Install dependencies
         run: npm ci # npm install보다 빠르고, package-lock.json을 신뢰
 
-      - name: Create .env.production file # env 파일 생성 단계 추가
+      - name: Create .env.production file
         run: |
-          echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" > .env.production
+          echo "MODE=production" > .env.production  
+          echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" >> .env.production
           echo "VITE_MODE=production" >> .env.production
 
       - name: Run build
@@ -33,8 +34,9 @@ jobs:
           VITE_MODE: production
         run: npm run build
 
-      - name: Check built files (Debugging)
-        run: grep -r "import.meta.env.MODE" dist/ || echo "No env mode found in built files"
+      - name: Verify Build Mode
+        run: |
+          grep -r "production" dist/assets/*.js | grep "import.meta.env.MODE"
 
       - name: Docker build & push
         run: |
@@ -52,8 +54,5 @@ jobs:
             sudo docker stop embitips_front || true
             sudo docker rm embitips_front || true
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/embitips_front
-            sudo docker run -d -p 3000:3000 --name embitips_front \
-               -e NODE_ENV=production \
-               -e VITE_MODE=production \
-               ${{ secrets.DOCKER_USERNAME }}/embitips_front
+            sudo docker run -d -p 3000:3000 --name embitips_front ${{ secrets.DOCKER_USERNAME }}/embitips_front
             sudo docker image prune -f
