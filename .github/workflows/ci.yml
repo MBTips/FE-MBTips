@@ -21,8 +21,8 @@ jobs:
 
       - name: Create .env.production file
         run: |
-          echo "NODE_ENV=production" > .env.production 
-          echo "MODE=production" >> .env.production  
+          echo "NODE_ENV=production" > .env.production
+          echo "MODE=production" >> .env.production
           echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" >> .env.production
 
       - name: Install dependencies
