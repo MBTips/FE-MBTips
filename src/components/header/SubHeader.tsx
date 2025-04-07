@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom"
+import useMbtiTestState from "@/store/useMbtiTestState";
+import { useLocation, useNavigate } from "react-router-dom"
 
 
 type SubHeaderProps = {
@@ -13,10 +14,14 @@ const SubHeader = ({
   showShareIcon = true
 }: SubHeaderProps) => {
 
-  
   const navigate = useNavigate();
+  const isProgressPage = useLocation().pathname === "/mbti-test-progress";
+  const { currentPage, setPreviousStep } = useMbtiTestState();
+  const firstQuestionPage = currentPage === 1;
+  
   const handleGoBack = () => {
-    navigate(-1);
+    if(isProgressPage && !firstQuestionPage) setPreviousStep();
+    else navigate(-1);
   };
   
   return (

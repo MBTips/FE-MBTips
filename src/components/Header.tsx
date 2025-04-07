@@ -15,8 +15,8 @@ const Header = ({
 }: HeaderProps) => {
   const pathname = useLocation().pathname;
   const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const isProgressPage = pathname === "/mbti-test-progress";
   
-
   return pathname === "/" ? <MainHeader isLoggedIn={isLoggedIn}/> : <SubHeader title={title} showPreviousIcon={showPreviousIcon} showShareIcon={showShareIcon} />;
 };
 

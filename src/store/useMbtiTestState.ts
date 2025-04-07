@@ -5,7 +5,6 @@ type PageNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 interface MbtiTestState {
     currentPage: PageNumber;
     currentMbti: string;
-    pageIsCompleted: Record<PageNumber, boolean>;
     mbtiLog: Record<string, number>;
     setNextStep: () => void;
     setPreviousStep: () => void;
@@ -19,20 +18,6 @@ interface MbtiTestState {
 const useMbtiTestState = create<MbtiTestState>((set, get) => ({
     currentPage: 1,
     currentMbti : "",
-    pageIsCompleted: {
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
-        6: false,
-        7: false,
-        8: false,
-        9: false,
-        10: false,
-        11: false,
-        12: false,
-    },
     mbtiLog: {
         E: 0,
         I: 0,
@@ -68,6 +53,9 @@ const useMbtiTestState = create<MbtiTestState>((set, get) => ({
             set((state) => ({
                 currentPage: (state.currentPage - 1) as PageNumber,
             }));
+        }
+        if(currentPage === 1) {
+            window.location.href("/mbti-test");
         }
     },
     setMbtiLog : (mbti : string) => {
