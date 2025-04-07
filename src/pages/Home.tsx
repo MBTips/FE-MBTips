@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import Header from "@/components/Header";
 import Banner from "@/components/Banner";
-import NavBar from "@/components/NavBar";
 import StrokeBanner from "@/components/StrokeBanner";
 import SubTitle from "@/components/SubTitle";
 import ChatStartButton from "@/components/button/ChatStartButton";
@@ -16,7 +16,7 @@ const Home = () => {
   return (
     <div className="flex flex-col bg-white w-[360px] md:w-[375px] lg:w-[500px]">
       <header>
-        <NavBar />
+        <Header/>
       </header>
 
       <main>
