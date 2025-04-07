@@ -13,6 +13,7 @@ import ChatTips from "@/pages/ChatTips";
 import ChatTemporature from "@/pages/ChatTemporature";
 import Content from "@/pages/Content";
 import Login from "@/pages/Login";
+import MyInfo from "@/pages/MyInfo";
 import KaKaoLogin from "@/pages/KaKaoLogin";
 import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
@@ -63,6 +64,7 @@ const App = () => {
           <Route path="/chat-temporature" element={<ChatTemporature />} />
           <Route path="/contents/:id" element={<Content />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/my-info" element={<MyInfo />} />
           <Route path="/kakao-login" element={<KaKaoLogin />} />
           <Route path="/mbti-test" element={<MbtiTestIntro />} />
           <Route path="/mbti-test/:n" element={<MbtiTestQuestions />} />
