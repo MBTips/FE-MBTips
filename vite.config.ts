@@ -21,10 +21,7 @@ export default defineConfig(({ mode }: { mode: string }) => {
       strictPort: true,
       allowedHosts: ["mbtips.kr"],
       hmr: isProduction
-        ? {
-            host: "mbtips.kr",
-            protocol: "wss"
-          }
+        ? false
         : {
             host: "localhost",
             protocol: "wss"
