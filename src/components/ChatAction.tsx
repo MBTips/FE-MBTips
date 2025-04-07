@@ -1,21 +1,31 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent } from "react";
 import ToggleChatTipsButton from "@/components/button/ToggleChatTipsButton";
 import MessageInput from "@/components/input/MessageInput";
 
-const ChatAction = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState("");
+interface ChatActionProps {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyUp: (e: KeyboardEvent<HTMLInputElement>) => void;
+  onSend: () => void;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
+const ChatAction = ({
+  isOpen,
+  setIsOpen,
+  value,
+  onChange,
+  onKeyUp,
+  onSend
+}: ChatActionProps) => {
   return (
-    <div className="flex justify-around items-center bg-white px-5 py-3.5 border-[1px] border-gray-100 w-full h-[68px]">
+    <div className="flex h-[68px] w-full items-center justify-center border-t border-gray-100 bg-white">
       <ToggleChatTipsButton isOpen={isOpen} setIsOpen={setIsOpen} />
-      <MessageInput value={value} onChange={handleChange} />
+      <MessageInput value={value} onChange={onChange} onKeyUp={onKeyUp} />
       <img
-        className="ml-4"
+        className={`ml-4 ${value ? "cursor-pointer" : "cursor-not-allowed"}`}
+        onClick={onSend}
         src={value ? "/icon/submit_action.svg" : "/icon/submit_disabled.svg"}
         alt="메시지 제출"
         width={40}
