@@ -11,7 +11,7 @@ type SubHeaderProps = {
 const SubHeader = ({
   title = "",
   showPreviousIcon = true,
-  showShareIcon = true
+  showShareIcon = false
 }: SubHeaderProps) => {
 
   const navigate = useNavigate();

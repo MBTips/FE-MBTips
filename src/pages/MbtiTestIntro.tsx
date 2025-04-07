@@ -24,22 +24,23 @@ const MbtiTestIntro = () => {
   }
 
   return (
-    <main className="h-[1080px] flex flex-col">
+    <main className="sm:h-[812px] h-[1080px] flex flex-col">
       <Header title="상대방 MBTI 유추 테스트"/>
-      <div className="relative flex-1 flex flex-col items-center w-full h-[756px] bg-[url('/image/mbti_test_intro.png')] bg-cover bg-no-repeat">
+      <div className="relative flex-1 flex flex-col items-center w-full h-[756px]">
+        <img src="/image/mbti-test/500px/intro_500.png" alt="intro image" className="inset-0 w-full h-full"/>
         <span className="absolute top-[38px] font-medium text-lg">그 사람의 mbti는 뭘까?</span>
         <h2 className="absolute top-[74px] font-extrabold text-[32px] text-center">
           <span className="text-[#2714FF]">상대방</span> MBTI
           <br />
           유추 테스트
         </h2>
-        <form className="absolute bottom-[110px] flex flex-col items-center" onSubmit={handleSubmit}>
+        <form className="absolute top-[472px] flex flex-col items-center" onSubmit={handleSubmit}>
           <label htmlFor="name" className="font-medium text-lg ">MBTI를 알고 싶은 상대의 이름</label>
           <input
             type="text"
             id="name"
             onChange={handleChange}
-            className="mt-[30px] w-[320px] h-[68px] text-center"
+            className="bg-white border-gray-50 w-full rounded-lg mt-[30px]  h-[68px] text-center"
           />
           <button
             type="submit"

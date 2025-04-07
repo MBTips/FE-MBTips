@@ -20,7 +20,7 @@ const MbtiTestQuestions = () => {
 
     return (
       <div className="sm:w-[360px] md:w-[375px] lg:w-[500px] flex flex-col">
-        <Header title="상대방 MBTI 유추 테스트" showShareIcon={false} />
+        <Header title="상대방 MBTI 유추 테스트"/>
         <main className="flex flex-col items-center justify-center bg-white whitespace-pre-wrap h-full ">
         <span className="text-lg font-medium text-gray-500">
           {content.number}/12
