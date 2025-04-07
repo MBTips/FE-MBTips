@@ -4,12 +4,15 @@ import ChatStartButton from "@/components/button/ChatStartButton";
 import ShareButton from "@/components/button/ShareButton";
 import RestartButton from "@/components/button/RestartButton";
 import Header from "@/components/Header";
+import useLayoutSize from "@/hooks/useLayoutSize";
 
 const MbtiTestResult = () => {
 
     const mbti = localStorage.getItem("mbti-test-mbti");
-
     const result = MBTI_RESULT_INFO[mbti as keyof typeof MBTI_RESULT_INFO];
+    const size = useLayoutSize();
+    const imageURL = size === "sm" ? `/image/mbti-test/360px/image_${mbti?.toLocaleLowerCase()}_360.png` : (size === "md" ? `/image/mbti-test/375px/image_${mbti?.toLocaleLowerCase()}_375.png` : `/image/mbti-test/500px/image_${mbti?.toLocaleLowerCase()}_500.png`);
+    console.log(imageURL);
     
     const handleClick = (e: MouseEvent) => {
         e.preventDefault();
@@ -21,8 +24,7 @@ const MbtiTestResult = () => {
         <div className="flex flex-col sm:w-[360px] md:w-[375px] lg:w-[500px] h-[1008px]">
             <Header title="결과" showShareIcon={false}/>
             <main className="flex flex-col flex-grow items-center w-full px-5 bg-white h-screen py-5">
-                {/* 디자인팀에서 이미지 작업 완료되면 수정할 예정 -> 04.01 정준영 */}
-                <img src="/image/mbti_test_result_image.png" alt="mbti 테스트 결과 이미지" className="sm:w-[320px] md:w-[335px] lg:w-[460px] h-[292px]"/>
+                <img src={imageURL} alt="mbti 테스트 결과 이미지" className="sm:w-[320px] md:w-[335px] lg:w-[460px] h-[292px]"/>
                 <h2 className="mt-6 font-bold text-2xl">{mbti?.toUpperCase()}는 이런 성향이에요!</h2>
                 <ul className="flex gap-3 mt-4">
                     <li style={{ backgroundColor: result.bgColor, color: result.textColor }} className="px-4 py-1 rounded-[40px] font-bold">{result.tag[0]}</li>
