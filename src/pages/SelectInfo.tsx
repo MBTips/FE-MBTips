@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useLocation } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
 import Header from "@/components/Header";
@@ -85,7 +85,7 @@ const SelectInfo = () => {
     return interest.includes(option);
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value.substring(0, 6));
   };
 
