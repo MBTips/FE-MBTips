@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code?
         uses: actions/checkout@v2
 
       - name: Set up Node.js (또는 다른 언어 환경)
