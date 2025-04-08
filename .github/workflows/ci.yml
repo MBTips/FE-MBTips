@@ -19,18 +19,18 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
+      - name: Create .env.production file
         run: |
-          npm install
-          npm install tailwindcss@latest postcss@latest autoprefixer@latest
-          npm install --save-dev @types/node
+          echo "MODE=production" > .env.production
+          echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" >> .env.production
 
-      - name: Create .env file # env 파일 생성 단계 추가
-        run: |
-          echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" > .env
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run build
-        run: npm run build --mode production --verbose # 프로젝트에 맞는 빌드 명령어
+        env:
+          NODE_ENV: production
+        run: npm run build -- --mode production
 
       - name: Docker build & push
         run: |
