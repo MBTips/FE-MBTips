@@ -1,5 +1,5 @@
-name: 빌드 자동화 
- 
+name: 빌드 자동화
+
 on:
   push:
     branches:
@@ -16,10 +16,10 @@ jobs:
       - name: Set up Node.js (또는 다른 언어 환경)
         uses: actions/setup-node@v2
         with:
-          node-version: '20'  
+          node-version: "20"
 
       - name: Install dependencies
-        run: npm install  
+        run: npm install
 
       - name: Run build
-        run: npm run build 
+        run: npm run build
