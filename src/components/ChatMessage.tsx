@@ -11,9 +11,9 @@ const ChatMessage = ({ message, myMessage }: ChatMessageProps) => {
     : "rounded-tl-none border border-gray-100";
 
   return (
-    <div className="flex w-full justify-center items-center mb-2">
+    <div className="mb-[6px]">
       <div
-        className={`max-w-xs px-2.5 py-3 rounded-[12px] ${borderStyle} ${backgroundColor} ${textColor}`}
+        className={`max-w-xs rounded-[12px] px-2.5 py-3 ${borderStyle} ${backgroundColor} ${textColor}`}
         style={{
           fontWeight: 500,
           fontSize: "16px",
