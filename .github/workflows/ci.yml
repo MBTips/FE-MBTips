@@ -32,16 +32,6 @@ jobs:
           NODE_ENV: production
         run: npm run build -- --mode production
 
-      - name: Verify Build Mode
-        run: |
-          grep -r "production" dist/assets/*.js | grep "import.meta.env.MODE"
-
-      - name: Debug .env.production file
-        run: cat .env.production || echo ".env.production not found"
-
-      - name: Verify Build Mode in Output Files
-        run: grep -r "import.meta.env" dist/ || echo "No env variables found in built files"
-
       - name: Docker build & push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
