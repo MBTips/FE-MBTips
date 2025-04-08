@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useLocation } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
 import Header from "@/components/Header";
@@ -85,7 +85,7 @@ const SelectInfo = () => {
     return interest.includes(option);
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value.substring(0, 6));
   };
 
@@ -118,6 +118,7 @@ const SelectInfo = () => {
     const mbti = `${selectedMBTI.E}${selectedMBTI.N}${selectedMBTI.F}${selectedMBTI.P}`;
 
     const commonData = {
+      gender: gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null,
       mbti,
       interests: interest
     };
@@ -128,17 +129,13 @@ const SelectInfo = () => {
             ...commonData,
             friendName: name,
             age: mapAgeToNumber(age),
-            relationship,
-            gender:
-              gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null
+            relationship
           }
         : {
             ...commonData,
             fastFriendName: name,
             fastFriendAge: mapAgeToNumber(age),
-            fastFriendRelationship: relationship,
-            fastFriendSex:
-              gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null
+            fastFriendRelationship: relationship
           };
 
     const apiUrl =

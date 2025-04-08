@@ -178,8 +178,10 @@ const Content = () => {
 
   const handleStartChat = async () => {
     try {
-      trackEvent("User", "Clicked Start Chat Button", "Start Chat");
-
+      trackEvent("Click", {
+        page: "일반 콘텐츠",
+        element: "대화 시작하기"
+      });
       const response = await instance.post("/api/fast-friend");
       console.log("Success!!", response.data);
     } catch (error) {
