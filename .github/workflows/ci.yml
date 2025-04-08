@@ -1,10 +1,9 @@
-name: 빌드 자동화
-
+name: 빌드 자동화 
+ 
 on:
   push:
     branches:
-      - main
-      - feat/cicd
+      - dev
 
 jobs:
   build:
@@ -14,39 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js (언어 환경)
+      - name: Set up Node.js (또는 다른 언어 환경)
         uses: actions/setup-node@v2
         with:
-          node-version: "20"
-
-      - name: Create .env.production file
-        run: |
-          echo "MODE=production" > .env.production
-          echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" >> .env.production
+          node-version: '20'  
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install  
 
       - name: Run build
-        env:
-          NODE_ENV: production
-        run: npm run build -- --mode production
-
-      - name: Docker build & push
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/embitips_front .
-          docker push ${{ secrets.DOCKER_USERNAME }}/embitips_front
-
-      - name: Deploy to GCP
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_PROD }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          script: |
-            sudo docker stop embitips_front || true
-            sudo docker rm embitips_front || true
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/embitips_front
-            sudo docker run -d -p 3000:3000 --name embitips_front ${{ secrets.DOCKER_USERNAME }}/embitips_front
-            sudo docker image prune -f
+        run: npm run build 
