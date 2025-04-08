@@ -11,7 +11,7 @@ interface ChatActionProps {
   onSend: () => void;
 }
 
-const ChatAction = ({
+const ChatActionBar = ({
   isOpen,
   setIsOpen,
   value,
@@ -35,4 +35,4 @@ const ChatAction = ({
   );
 };
 
-export default ChatAction;
+export default ChatActionBar;

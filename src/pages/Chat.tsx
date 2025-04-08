@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from "react";
 import IntroGuide from "@/components/IntroGuide";
 import Header from "@/components/Header";
 import ChatMessage from "@/components/ChatMessage";
-import ChatAction from "@/components/ChatAction";
+import ChatActionBar from "@/components/ChatActionBar";
 import pickMbtiImage from "@/utils/pickMbtiImage";
 import instance from "@/api/axios";
 
@@ -106,7 +106,7 @@ const Chat = () => {
         <div ref={bottomRef} />
       </div>
 
-      <ChatAction
+      <ChatActionBar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         value={input}
