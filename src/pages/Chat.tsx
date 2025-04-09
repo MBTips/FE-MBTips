@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from "react";
 import IntroGuide from "@/components/IntroGuide";
-import Header from "@/components/Header";
+import Header from "@/components/header/Header";
 import ChatMessage from "@/components/ChatMessage";
 import ChatActionBar from "@/components/ChatActionBar";
 import pickMbtiImage from "@/utils/pickMbtiImage";
