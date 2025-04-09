@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/header/Header";
-
 const MbtiTestIntro = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
@@ -25,11 +24,12 @@ const MbtiTestIntro = () => {
   }
 
   return (
-    <main className="md:w-[360px] md:h-[812px]">
-      <Header title={"상대방 MBTI 유추 테스트"} showPreviousIcon={true}/>
-      <div className="flex flex-col items-center bg-primary-light w-full h-full">
-        <span className="mt-[38px] font-medium text-lg">그 사람의 mbti는 뭘까?</span>
-        <h2 className="mt-[12px] font-extrabold text-[32px] text-center">
+    <main className="sm:h-[812px] h-[1080px] flex flex-col">
+      <Header title="상대방 MBTI 유추 테스트"/>
+      <div className="relative flex-1 flex flex-col items-center w-full h-[756px]">
+        <img src="/image/mbti-test/500px/intro_500.png" alt="intro image" className="inset-0 w-full h-full"/>
+        <span className="absolute top-[38px] font-medium text-lg">그 사람의 mbti는 뭘까?</span>
+        <h2 className="absolute top-[74px] font-extrabold text-[32px] text-center">
           <span className="text-[#2714FF]">상대방</span> MBTI
           <br />
           유추 테스트

@@ -11,13 +11,14 @@ type HeaderProps = {
 
 const Header = ({
   title = "",
-  showPreviousIcon = false,
+  showPreviousIcon = true,
   showShareIcon = false
 }: HeaderProps) => {
   const { pathname } = useLocation();
   const { isLoggedIn } = useAuthStore();
-  
-  return pathname === "/" ? <MainHeader isLoggedIn={isLoggedIn}/> : <SubHeader title={title} showPreviousIcon={showPreviousIcon} showShareIcon={showShareIcon} />;
+  const isHomepage = pathname === "/";
+
+  return isHomepage ? <MainHeader isLoggedIn={isLoggedIn}/> : <SubHeader title={title} showPreviousIcon={showPreviousIcon} showShareIcon={showShareIcon} />;
 };
 
 export default Header;

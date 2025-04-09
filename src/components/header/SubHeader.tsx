@@ -23,10 +23,10 @@ const SubHeader = ({
   
   const handleGoBack = () => {
     if(isProgressPage && !isFirstQuestionPage) setPreviousStep();
-    if(isChatPage) {
+    else if(isChatPage) {
       // 채팅 취소 모달 오픈 로직 추가 부탁드려요 헤헤 -> 4.9 정준영
     }
-    else navigate(-1);
+    else if(isFirstQuestionPage) navigate(-1);
   };
   
   return (

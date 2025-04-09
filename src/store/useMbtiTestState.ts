@@ -54,9 +54,6 @@ const useMbtiTestState = create<MbtiTestState>((set, get) => ({
                 currentPage: (state.currentPage - 1) as PageNumber,
             }));
         }
-        if(currentPage === 1) {
-            window.location.href("/mbti-test");
-        }
     },
     setMbtiLog : (mbti : string) => {
       set((state) => ({
