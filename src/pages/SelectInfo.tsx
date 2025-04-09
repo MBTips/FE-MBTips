@@ -1,12 +1,45 @@
 import { ChangeEvent, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
 import Header from "@/components/Header";
 import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 import instance from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";
 
+type FastFriendResponse = {
+  header: {
+    code: number;
+    message: string;
+  };
+  data: number;
+};
+
+type VirtualFriendResponse = {
+  header: {
+    code: number;
+    message: string;
+  };
+  data: {
+    conversationId: number;
+    virtualFriendId: number;
+    mbti: string;
+    virtualFriendName: string;
+    virtualFriendAge: number;
+    virtualFriendSex: "MALE" | "FEMALE";
+    virtualFriendRelationship: string;
+  };
+};
+
+type FriendResponse = FastFriendResponse | VirtualFriendResponse;
+
+function isVirtualFriendResponse(
+  data: number | VirtualFriendResponse["data"]
+): data is VirtualFriendResponse["data"] {
+  return typeof data === "object" && data !== null && "conversationId" in data;
+}
+
 const SelectInfo = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const mode = location.state; // mode: fastFriend, virtualFriend 두 종류 존재
   const isNameRequired = mode === "virtualFriend";
@@ -142,10 +175,31 @@ const SelectInfo = () => {
       mode === "virtualFriend" ? "api/virtual-friend" : "api/fast-friend";
 
     try {
-      const response = await instance.post(`/${apiUrl}`, selectedData);
-      console.log("Success!!", response.data);
+      const response = await instance.post<FriendResponse>(
+        `/${apiUrl}`,
+        selectedData
+      );
+      const responseData = response.data.data;
+
+      if (mode === "virtualFriend" && isVirtualFriendResponse(responseData)) {
+        navigate("/chat", {
+          state: {
+            mbti,
+            mode,
+            id: responseData.conversationId
+          }
+        });
+      } else if (mode === "fastFriend" && typeof responseData === "number") {
+        navigate("/chat", {
+          state: {
+            mbti,
+            mode,
+            id: responseData
+          }
+        });
+      }
     } catch (error) {
-      console.error("Select Info Error", error);
+      console.error(error);
     }
   };
 
