@@ -1,18 +1,12 @@
-import { MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ChatStartButton = ({ onClick }: { onClick: (e: MouseEvent) => void }) => {
-
+const ChatStartButton = () => {
   const navigate = useNavigate();
-
-  const goChatStart = (e:MouseEvent) => {
-    navigate("/select-info")
-  }
 
   return (
     <button
-      className="flex h-[56px] w-full items-center justify-center rounded-lg bg-primary-normal font-bold text-white "
-      onClick={goChatStart}
+      className="flex h-[56px] w-[320px] items-center justify-center rounded-lg bg-primary-normal font-bold text-white md:w-[335px] lg:w-[460px]"
+      onClick={(()=> navigate("/select-info"))}
     >
       대화 시작하기
     </button>
