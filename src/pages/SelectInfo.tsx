@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
-import Header from "@/components/Header";
+import Header from "@/components/header/Header";
 import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 import instance from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";

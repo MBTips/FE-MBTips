@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
 
-const MainHeader = ({isLoggedIn}: {isLoggedIn : string | null})=> {
+const MainHeader = ({isLoggedIn}: {isLoggedIn : boolean})=> {
   return (
-    <div className="bg-white flex h-[56px] w-full justify-between px-5">
+    <header className="bg-white flex h-[56px] w-full justify-between px-5">
       <Link to="/" className="flex items-center">
       <img
         src="/public/icon/mbtipslogo.svg"
@@ -12,14 +12,14 @@ const MainHeader = ({isLoggedIn}: {isLoggedIn : string | null})=> {
         height={31}
       />
       </Link>
-      {isLoggedIn === "true" ? <LoginButton/> : <img
+      {isLoggedIn ? <LoginButton/> : <img
         src="/public/icon/people.svg"
         alt="Login Done"
         className="mx-auto mr-[20px]"
         width={24}
         height={24}
       />}
-    </div>)
+    </header>)
 }
 
 export default MainHeader;

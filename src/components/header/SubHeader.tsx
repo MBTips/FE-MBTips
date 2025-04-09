@@ -1,5 +1,5 @@
-import useMbtiTestState from "@/store/useMbtiTestState";
 import { useLocation, useNavigate } from "react-router-dom"
+import useMbtiTestState from "@/store/useMbtiTestState";
 
 
 type SubHeaderProps = {
@@ -11,21 +11,26 @@ type SubHeaderProps = {
 const SubHeader = ({
   title = "",
   showPreviousIcon = true,
-  showShareIcon = false
+  showShareIcon = false,
 }: SubHeaderProps) => {
 
   const navigate = useNavigate();
-  const isProgressPage = useLocation().pathname === "/mbti-test-progress";
+  const {pathname} = useLocation();
   const { currentPage, setPreviousStep } = useMbtiTestState();
-  const firstQuestionPage = currentPage === 1;
+  const isProgressPage = pathname === "/mbti-test-progress";
+  const isChatPage = pathname === "/chat";
+  const isFirstQuestionPage = currentPage === 1;
   
   const handleGoBack = () => {
-    if(isProgressPage && !firstQuestionPage) setPreviousStep();
-    else navigate(-1);
+    if(isProgressPage && !isFirstQuestionPage) setPreviousStep();
+    else if(isChatPage) {
+      // 채팅 취소 모달 오픈 로직 추가 부탁드려요 헤헤 -> 4.9 정준영
+    }
+    else if(isFirstQuestionPage) navigate(-1);
   };
   
   return (
-    <div className="relative flex h-[56px] w-full flex-row items-center justify-center border-b border-gray-100 bg-white">
+    <header className="relative flex h-[56px] w-full flex-row items-center justify-center border-b border-gray-100 bg-white">
     {showPreviousIcon && (
       <img
       src="/public/icon/arrow_left.svg"
@@ -50,7 +55,7 @@ const SubHeader = ({
       height={16}
       />
     )}
-  </div>
+  </header>
     );
   }
   

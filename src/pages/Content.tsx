@@ -1,5 +1,5 @@
 import instance from "@/api/axios";
-import Header from "@/components/Header";
+import Header from "@/components/header/Header";
 import { trackEvent } from "@/libs/analytics";
 import React from "react";
 import { useParams } from "react-router-dom";

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
+import Header from "@/components/header/Header";
 const MbtiTestIntro = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();

@@ -2,9 +2,9 @@ import { MouseEvent } from "react";
 import { MBTI_RESULT_INFO } from "@/constants/MBTI_RESULT_INFO";
 import ShareButton from "@/components/button/ShareButton";
 import RestartButton from "@/components/button/RestartButton";
-import Header from "@/components/Header";
 import ChatStartButton from "@/components/button/ChatStartButton";
 import useLayoutSize from "@/hooks/useLayoutSize";
+import Header from "@/components/header/Header";
 
 const MbtiTestResult = () => {
 

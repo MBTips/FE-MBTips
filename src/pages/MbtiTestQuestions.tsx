@@ -1,7 +1,7 @@
 import { TEST_QNA } from "@/constants/TEST_QNA";
 import MbtiAnswerButtons from "@/components/button/MbtiAnswerButtons";
 import useMbtiTestState from "@/store/useMbtiTestState";
-import Header from "@/components/Header";
+import Header from "@/components/header/Header";
 
 interface content {
   number: number;
