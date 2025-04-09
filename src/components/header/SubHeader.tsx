@@ -10,16 +10,21 @@ type SubHeaderProps = {
 const SubHeader = ({
   title = "",
   showPreviousIcon = true,
-  showShareIcon = false
+  showShareIcon = false,
 }: SubHeaderProps) => {
 
   const navigate = useNavigate();
-  const isProgressPage = useLocation().pathname === "/mbti-test-progress";
+  const {pathname} = useLocation();
   const { currentPage, setPreviousStep } = useMbtiTestState();
-  const firstQuestionPage = currentPage === 1;
+  const isProgressPage = pathname === "/mbti-test-progress";
+  const isChatPage = pathname === "/chat";
+  const isFirstQuestionPage = currentPage === 1;
   
   const handleGoBack = () => {
-    if(isProgressPage && !firstQuestionPage) setPreviousStep();
+    if(isProgressPage && !isFirstQuestionPage) setPreviousStep();
+    if(isChatPage) {
+      // 채팅 취소 모달 오픈 로직 추가 부탁드려요 헤헤 -> 4.9 정준영
+    }
     else navigate(-1);
   };
   

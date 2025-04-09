@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
 
-const MainHeader = ({isLoggedIn}: {isLoggedIn : string | null})=> {
+const MainHeader = ({isLoggedIn}: {isLoggedIn : boolean})=> {
   return (
     <header className="bg-white flex h-[56px] w-full justify-between px-5">
       <Link to="/" className="flex items-center">
@@ -12,7 +12,7 @@ const MainHeader = ({isLoggedIn}: {isLoggedIn : string | null})=> {
         height={31}
       />
       </Link>
-      {isLoggedIn === "true" ? <LoginButton/> : <img
+      {isLoggedIn ? <LoginButton/> : <img
         src="/public/icon/people.svg"
         alt="Login Done"
         className="mx-auto mr-[20px]"
