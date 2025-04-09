@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Banner from "@/components/Banner";
 import StrokeBanner from "@/components/StrokeBanner";
 import SubTitle from "@/components/SubTitle";
-import ChatStartButton from "@/components/button/ChatStartButton";
+import FastChatStartButton from "@/components/button/ChatStartButton";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Home = () => {
             <SubTitle mode="빠른대화" />
           </div>
           <div className="px-5 py-3">
-            <ChatStartButton onClick={handleNavigate} />
+            <FastChatStartButton/>
           </div>
         </section>
 

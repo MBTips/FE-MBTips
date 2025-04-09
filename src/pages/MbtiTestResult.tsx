@@ -1,9 +1,9 @@
 import { MouseEvent } from "react";
 import { MBTI_RESULT_INFO } from "@/constants/MBTI_RESULT_INFO";
-import ChatStartButton from "@/components/button/ChatStartButton";
 import ShareButton from "@/components/button/ShareButton";
 import RestartButton from "@/components/button/RestartButton";
 import Header from "@/components/Header";
+import FastChatStartButton from "@/components/button/ChatStartButton";
 import useLayoutSize from "@/hooks/useLayoutSize";
 
 const MbtiTestResult = () => {
@@ -43,7 +43,7 @@ const MbtiTestResult = () => {
                     </ul>
                 </div>
                 <div className="mt-[22px] w-full">
-                    <ChatStartButton onClick={handleClick} />
+                    <FastChatStartButton/>
                 </div>
                 <div className="flex gap-4 mt-5 w-full">
                     <RestartButton/>
