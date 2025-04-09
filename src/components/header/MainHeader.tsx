@@ -1,17 +1,17 @@
-import LoginButton from "@/components/button/LoginButton";
+import { Link } from "react-router-dom";
+import LoginButton from "../button/LoginButton";
 
-const NavBar = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-
+const MainHeader = ({isLoggedIn}: {isLoggedIn : string | null})=> {
   return (
-    <div className="flex h-[62px] w-full justify-between items-center px-5">
+    <div className="bg-white flex h-[56px] w-full justify-between px-5">
+      <Link to="/" className="flex items-center">
       <img
         src="/public/icon/mbtipslogo.svg"
         alt="Logo"
         width={110}
         height={31}
       />
-
+      </Link>
       {isLoggedIn === "true" ? <LoginButton/> : <img
         src="/public/icon/people.svg"
         alt="Login Done"
@@ -19,8 +19,7 @@ const NavBar = () => {
         width={24}
         height={24}
       />}
-    </div>
-  );
-};
+    </div>)
+}
 
-export default NavBar;
+export default MainHeader;
