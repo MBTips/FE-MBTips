@@ -5,13 +5,21 @@ import ChatMessage from "@/components/ChatMessage";
 import ChatActionBar from "@/components/ChatActionBar";
 import pickMbtiImage from "@/utils/pickMbtiImage";
 import instance from "@/api/axios";
+import { useLocation } from "react-router-dom";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
 
+interface ChatResponse {
+  data: string;
+}
+
 const Chat = () => {
+  const { state } = useLocation();
+  const { mbti, mode, id } = state;
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -21,8 +29,8 @@ const Chat = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const chatTitle = "ENFP와 대화"; //TODO: API 연동 후 수정 필요
-  const assistantInfo = "ENFP"; //TODO: API 연동 후 수정 필요
+  const chatTitle = `${mbti}와 대화`;
+  const assistantInfo = mbti;
   const assistantImgUrl = pickMbtiImage(assistantInfo);
 
   const handleSend = async (messageToSend: string) => {
@@ -36,17 +44,27 @@ const Chat = () => {
     setInput("");
 
     try {
-      //TODO: API 분기처리 필요
-      const response = await instance.post(
-        "/api/fast-friend/message",
-        JSON.stringify({ content: messageToSend })
-      );
+      let url = "";
+      let payload = {};
+
+      if (mode === "fastFriend") {
+        url = "/api/fast-friend/message";
+        payload = { fastFriendId: id, content: messageToSend };
+      } else {
+        url = "/api/message";
+        payload = {
+          conversationId: id,
+          messageContent: messageToSend
+        };
+      }
+
+      const response = await instance.post<ChatResponse>(url, payload);
 
       setMessages([
         ...newMessages,
         {
           role: "assistant",
-          content: JSON.stringify(response.data) || "응답이 없어요"
+          content: response.data.data || "응답이 없어요"
         }
       ]);
     } catch (e) {
