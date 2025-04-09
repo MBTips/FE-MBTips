@@ -3,15 +3,9 @@ import Header from "@/components/Header";
 import Banner from "@/components/Banner";
 import StrokeBanner from "@/components/StrokeBanner";
 import SubTitle from "@/components/SubTitle";
-import FastChatStartButton from "@/components/button/ChatStartButton";
+import ChatStartButton from "@/components/button/ChatStartButton";
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  const handleNavigate = () => {
-    const mode = "fastFriend";
-    navigate("/select-info", { state: mode });
-  };
 
   return (
     <div className="flex flex-col bg-white w-[360px] md:w-[375px] lg:w-[500px]">
@@ -29,7 +23,7 @@ const Home = () => {
             <SubTitle mode="빠른대화" />
           </div>
           <div className="px-5 py-3">
-            <FastChatStartButton/>
+            <ChatStartButton mode={"go-fast"}/>
           </div>
         </section>
 
