@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from "@/components/NavBar";
+import Header from "@/components/header/Header";
 
 const MbtiTestIntro = () => {
   const [name, setName] = useState("");
@@ -25,7 +25,7 @@ const MbtiTestIntro = () => {
 
   return (
     <main className="md:w-[360px] md:h-[812px]">
-      <NavBar />
+      <Header title={"상대방 MBTI 유추 테스트"} showPreviousIcon={true}/>
       <div className="flex flex-col items-center bg-primary-light w-full h-full">
         <span className="mt-[38px] font-medium text-lg">그 사람의 mbti는 뭘까?</span>
         <h2 className="mt-[12px] font-extrabold text-[32px] text-center">
