@@ -7,9 +7,7 @@ const TermsAndPrivacyModal = ({
   closeModal
 }: {
   mode: "terms" | "privacy";
-  closeModal: React.Dispatch<
-    React.SetStateAction<{ isOpen: boolean; terms: boolean; privacy: boolean }>
-  >;
+  closeModal: ()=>void;
 }) => {
   const title = mode === "terms" ? "이용약관" : "개인정보처리방침";
   const description =
@@ -18,7 +16,7 @@ const TermsAndPrivacyModal = ({
       : PRIVACY;
 
       const handleOuterClick = () => {
-        closeModal({ isOpen: false, terms: false, privacy: false })
+        closeModal()
       }
 
       const handleInnerClick = (e:MouseEvent) => {
@@ -31,9 +29,7 @@ const TermsAndPrivacyModal = ({
       <h1 className="font-bold text-2xl ">{title}</h1>
       <p className="mt-[30px] whitespace-pre-wrap">{description}</p>
       <button
-        onClick={() =>
-          closeModal({ isOpen: false, terms: false, privacy: false })
-        }
+        onClick={closeModal}
         className="absolute top-6 right-4"
       >
         <img src="/icon/close.svg" alt="닫기 버튼" width={22} height={22} />
