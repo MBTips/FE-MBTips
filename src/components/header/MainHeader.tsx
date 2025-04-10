@@ -12,7 +12,7 @@ const MainHeader = ({isLoggedIn}: {isLoggedIn : boolean})=> {
         height={31}
       />
       </Link>
-      {isLoggedIn ? <LoginButton/> : <img
+      {!isLoggedIn ? <LoginButton/> : <img
         src="/public/icon/people.svg"
         alt="Login Done"
         className="mx-auto mr-[20px]"
