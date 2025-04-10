@@ -18,7 +18,15 @@ const Header = ({
   const { isLoggedIn } = useAuthStore();
   const isHomepage = pathname === "/";
 
-  return isHomepage ? <MainHeader isLoggedIn={isLoggedIn}/> : <SubHeader title={title} showPreviousIcon={showPreviousIcon} showShareIcon={showShareIcon} />;
+  return isHomepage ? (
+    <MainHeader isLoggedIn={isLoggedIn} />
+  ) : (
+    <SubHeader
+      title={title}
+      showPreviousIcon={showPreviousIcon}
+      showShareIcon={showShareIcon}
+    />
+  );
 };
 
 export default Header;
