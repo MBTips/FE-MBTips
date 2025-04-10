@@ -1,5 +1,5 @@
 import { PRIVACY } from "@/constants/PRIVACY";
-import { TERMS } from "@/constants/TEMRS";
+import { TERMS } from "@/constants/TERMRS";
 import { MouseEvent } from "react";
 
 const TermsAndPrivacyModal = ({
