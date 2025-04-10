@@ -42,7 +42,7 @@ const Login = () => {
       <div className="mt-[47px]">
         <KakaoLoginButton />
       </div>
-      <div className="mt-[72px]">
+      <div className="w-full mt-auto mb-1">
         <TermsAndPrivacy openModal={openModal} />
       </div>
       {isOpen ? (
