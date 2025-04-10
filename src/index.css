@@ -28,6 +28,20 @@ body {
   min-height: 100vh;
 }
 
+main {
+  @media screen and (min-width: 360px) {
+    width: 360px;
+    
+  }
+  @media screen and (min-width: 375px) {
+    width: 375px;
+    
+  }
+  @media screen and (min-width: 500px) {
+    width: 500px;
+  }
+}
+
 input:focus {
   outline: none;
 }

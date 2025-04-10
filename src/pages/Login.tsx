@@ -1,27 +1,35 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import KakaoLoginButton from "@/components/button/KakaoLoginButton";
 import TermsAndPrivacy from "@/components/TermsAndPrivacy";
 import TermsAndPrivacyModal from "@/components/modal/TermsAndPrivacyModal";
+import useLayoutSize from "@/hooks/useLayoutSize";
 
 const Login = () => {
-  const [isModalOpen, setIsModalOpen] = useState({
+  const layoutSize = useLayoutSize();
+  const isPC = layoutSize === "lg";
+  const [isModalOpen, setIsModalOpen] = useState<{isOpen : boolean, mode : "terms" | "privacy"}>({
     isOpen: false,
-    terms: false,
-    privacy: false
+    mode: "terms",
   });
 
-  useEffect(() => {
-    console.log(isModalOpen.isOpen);
-  }, []);
+  const openModal =(mode : "terms" | "privacy")=> {
+    setIsModalOpen({mode:mode, isOpen : true});
+  }
+  const closeModal = () => {
+    setIsModalOpen((state) => ({mode:state.mode, isOpen : false}));
+  }
+
+  const isOpen = isModalOpen.isOpen;
+  const isTerms = isModalOpen.mode === "terms";
 
   return (
-    <div className="flex flex-col items-center">
+    <main className="bg-white flex flex-col items-center h-[812px]">
       <img
-        src="/image/banner_login.png"
+        src={isPC ? "/image/login/banner_lg.png" : "/image/login/banner.png"}
         alt="로그인 페이지 이미지"
         className="w-full h-[391px]"
       />
-      <h1 className="mt-8 font-bold text-3xl text-center whitespace-pre-wrap">
+      <h1 className="mt-12 font-bold text-3xl text-center whitespace-pre-wrap">
         MBTI 성향 기반
         <br />
         AI 채팅 시뮬레이션으로
@@ -34,17 +42,17 @@ const Login = () => {
       <div className="mt-[47px]">
         <KakaoLoginButton />
       </div>
-      <div className="mt-[72px]">
-        <TermsAndPrivacy setIsOpen={setIsModalOpen} />
+      <div className="w-full mt-auto mb-1">
+        <TermsAndPrivacy openModal={openModal} />
       </div>
-      {isModalOpen.isOpen ? (
-        isModalOpen.terms ? (
-          <TermsAndPrivacyModal mode="terms" closeModal={setIsModalOpen} />
+      {isOpen ? (
+        isTerms ? (
+          <TermsAndPrivacyModal mode="terms" closeModal={closeModal} />
         ) : (
-          <TermsAndPrivacyModal mode="privacy" closeModal={setIsModalOpen} />
+          <TermsAndPrivacyModal mode="privacy" closeModal={closeModal} />
         )
       ) : null}
-    </div>
+    </main>
   );
 };
 
