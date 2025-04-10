@@ -1,3 +1,7 @@
+import { PRIVACY } from "@/constants/PRIVACY";
+import { TERMS } from "@/constants/TEMRS";
+import { MouseEvent } from "react";
+
 const TermsAndPrivacyModal = ({
   mode,
   closeModal
@@ -10,21 +14,29 @@ const TermsAndPrivacyModal = ({
   const title = mode === "terms" ? "이용약관" : "개인정보처리방침";
   const description =
     mode === "terms"
-      ? "나 이용약관 블라블라블라...."
-      : " 나 개인정보처리방침 블라블라블라";
+      ? TERMS
+      : PRIVACY;
+
+      const handleOuterClick = () => {
+        closeModal({ isOpen: false, terms: false, privacy: false })
+      }
+
+      const handleInnerClick = (e:MouseEvent) => {
+        e.stopPropagation();
+      }
 
   return (
-    <div className="inset-0 fixed flex items-center justify-center  z-50 bg-black/50">
-    <div className="relative rounded-lg flex flex-col items-center w-[331px] h-[476px] bg-white px-[45px] py-[25px] overflow-scroll">
-      <h1 className="font-bold text-2xl">{title}</h1>
-      <p className="mt-[30px]">{description}</p>
+    <div className="inset-0 fixed flex items-center justify-center z-50 bg-black/50" onClick={handleOuterClick}>
+    <div className="relative rounded-lg flex flex-col items-center w-[360px] h-[476px] bg-white px-[45px] py-[25px] overflow-scroll " onClick={handleInnerClick}>
+      <h1 className="font-bold text-2xl ">{title}</h1>
+      <p className="mt-[30px] whitespace-pre-wrap">{description}</p>
       <button
         onClick={() =>
           closeModal({ isOpen: false, terms: false, privacy: false })
         }
-        className="absolute top-4 right-4"
+        className="absolute top-6 right-4"
       >
-        <img src="/icon/close.svg" alt="닫기 버튼" width={18} height={18} />
+        <img src="/icon/close.svg" alt="닫기 버튼" width={22} height={22} />
       </button>
     </div>
     </div>
