@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import LoginButton from "../button/LoginButton";
+import LoginButton from "@/components/button/LoginButton";
 
 const MainHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const navigate = useNavigate();
