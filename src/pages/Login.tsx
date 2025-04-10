@@ -2,8 +2,11 @@ import { useState } from "react";
 import KakaoLoginButton from "@/components/button/KakaoLoginButton";
 import TermsAndPrivacy from "@/components/TermsAndPrivacy";
 import TermsAndPrivacyModal from "@/components/modal/TermsAndPrivacyModal";
+import useLayoutSize from "@/hooks/useLayoutSize";
 
 const Login = () => {
+  const layoutSize = useLayoutSize();
+  const isPC = layoutSize === "lg";
   const [isModalOpen, setIsModalOpen] = useState<{isOpen : boolean, mode : "terms" | "privacy"}>({
     isOpen: false,
     mode: "terms",
@@ -16,17 +19,17 @@ const Login = () => {
     setIsModalOpen((state) => ({mode:state.mode, isOpen : false}));
   }
 
-  const isOpen = isModalOpen.isOpen
+  const isOpen = isModalOpen.isOpen;
   const isTerms = isModalOpen.mode === "terms";
 
   return (
-    <div className="flex flex-col items-center">
+    <main className="bg-white flex flex-col items-center h-[812px]">
       <img
-        src="/image/banner_login.png"
+        src={isPC ? "/image/login/banner_lg.png" : "/image/login/banner.png"}
         alt="로그인 페이지 이미지"
         className="w-full h-[391px]"
       />
-      <h1 className="mt-8 font-bold text-3xl text-center whitespace-pre-wrap">
+      <h1 className="mt-12 font-bold text-3xl text-center whitespace-pre-wrap">
         MBTI 성향 기반
         <br />
         AI 채팅 시뮬레이션으로
@@ -39,7 +42,7 @@ const Login = () => {
       <div className="mt-[47px]">
         <KakaoLoginButton />
       </div>
-      <div className="mt-[72px]">
+      <div className="w-full mt-auto mb-1">
         <TermsAndPrivacy openModal={openModal} />
       </div>
       {isOpen ? (
@@ -49,7 +52,7 @@ const Login = () => {
           <TermsAndPrivacyModal mode="privacy" closeModal={closeModal} />
         )
       ) : null}
-    </div>
+    </main>
   );
 };
 
