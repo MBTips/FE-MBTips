@@ -5,12 +5,22 @@ import TermsAndPrivacyModal from "@/components/modal/TermsAndPrivacyModal";
 import useLayoutSize from "@/hooks/useLayoutSize";
 
 const Login = () => {
-  const [isModalOpen, setIsModalOpen] = useState<{isOpen : boolean, mode: "terms" | "privacy"}>({
-    isOpen: false,
-    mode : "terms",
-  });
   const layoutSize = useLayoutSize();
   const isPC = layoutSize === "lg";
+  const [isModalOpen, setIsModalOpen] = useState<{isOpen : boolean, mode : "terms" | "privacy"}>({
+    isOpen: false,
+    mode: "terms",
+  });
+
+  const openModal =(mode : "terms" | "privacy")=> {
+    setIsModalOpen({mode:mode, isOpen : true});
+  }
+  const closeModal = () => {
+    setIsModalOpen((state) => ({mode:state.mode, isOpen : false}));
+  }
+
+  const isOpen = isModalOpen.isOpen;
+  const isTerms = isModalOpen.mode === "terms";
 
   return (
     <main className="bg-white flex flex-col items-center h-[812px]">
@@ -32,14 +42,14 @@ const Login = () => {
       <div className="mt-[47px]">
         <KakaoLoginButton />
       </div>
-      <div className="w-full mt-auto mb-2">
-        <TermsAndPrivacy setIsOpen={setIsModalOpen} />
+      <div className="mt-[72px]">
+        <TermsAndPrivacy openModal={openModal} />
       </div>
-      {isModalOpen.isOpen ? (
-        isModalOpen.terms ? (
-          <TermsAndPrivacyModal mode="terms" closeModal={setIsModalOpen} />
+      {isOpen ? (
+        isTerms ? (
+          <TermsAndPrivacyModal mode="terms" closeModal={closeModal} />
         ) : (
-          <TermsAndPrivacyModal mode="privacy" closeModal={setIsModalOpen} />
+          <TermsAndPrivacyModal mode="privacy" closeModal={closeModal} />
         )
       ) : null}
     </main>
