@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import KakaoLoginButton from "@/components/button/KakaoLoginButton";
 import TermsAndPrivacy from "@/components/TermsAndPrivacy";
 import TermsAndPrivacyModal from "@/components/modal/TermsAndPrivacyModal";
 
 const Login = () => {
-  const [isModalOpen, setIsModalOpen] = useState({
+  const [isModalOpen, setIsModalOpen] = useState<{isOpen : boolean, mode : "terms" | "privacy"}>({
     isOpen: false,
-    terms: false,
-    privacy: false
+    mode: "terms",
   });
 
-  useEffect(() => {
-    console.log(isModalOpen.isOpen);
-  }, []);
+  const openModal =(mode : "terms" | "privacy")=> {
+    setIsModalOpen({mode:mode, isOpen : true});
+  }
+  const closeModal = () => {
+    setIsModalOpen((state) => ({mode:state.mode, isOpen : false}));
+  }
+
+  const isOpen = isModalOpen.isOpen
+  const isTerms = isModalOpen.mode === "terms";
 
   return (
     <div className="flex flex-col items-center">
@@ -35,13 +40,13 @@ const Login = () => {
         <KakaoLoginButton />
       </div>
       <div className="mt-[72px]">
-        <TermsAndPrivacy setIsOpen={setIsModalOpen} />
+        <TermsAndPrivacy openModal={openModal} />
       </div>
-      {isModalOpen.isOpen ? (
-        isModalOpen.terms ? (
-          <TermsAndPrivacyModal mode="terms" closeModal={setIsModalOpen} />
+      {isOpen ? (
+        isTerms ? (
+          <TermsAndPrivacyModal mode="terms" closeModal={closeModal} />
         ) : (
-          <TermsAndPrivacyModal mode="privacy" closeModal={setIsModalOpen} />
+          <TermsAndPrivacyModal mode="privacy" closeModal={closeModal} />
         )
       ) : null}
     </div>
