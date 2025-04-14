@@ -1,12 +1,11 @@
 import UrlCopyBar from "@/components/button/UrlCopyBar";
-import { MouseEvent } from "react";
 import KakaoShareButton from "../button/KakaoShareButton";
 
 interface ShareModalProps {
   title: string;
   description: string;
   imageUrl: string;
-  closeModal: (e: MouseEvent) => void;
+  closeModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ShareModal = ({
@@ -31,7 +30,7 @@ const ShareModal = ({
             <img src="/icon/Instagram.svg" alt="인스타그램 공유하기 버튼" />
           </button>
         </div>
-        <button onClick={closeModal}>
+        <button onClick={() => closeModal(false)}>
           <img
             src="/icon/close.svg"
             alt="닫기 버튼"

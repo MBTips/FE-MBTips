@@ -4,9 +4,9 @@ const UrlCopyBar = () => {
   const currentUrl = window.location.href;
 
   return (
-    <div className="rounded-lg border-gray-100 border flex justify-between items-center py-[15px] px-4 w-full max-w-[420px] h-[54px]">
+    <div className="flex h-[54px] w-full max-w-[420px] items-center justify-between rounded-lg border border-gray-100 px-4 py-[15px]">
       <span className="text-lg ">{currentUrl}</span>
-      <UrlCopyButton currentUrl={currentUrl}/>
+      <UrlCopyButton currentUrl={currentUrl} />
     </div>
   );
 };
