@@ -1,19 +1,49 @@
 import UrlCopyBar from "@/components/button/UrlCopyBar";
+import { MouseEvent } from "react";
+import KakaoShareButton from "../button/KakaoShareButton";
 
-const ShareModal = () => {
+interface ShareModalProps {
+  title: string;
+  description: string;
+  imageUrl: string;
+  closeModal: (e: MouseEvent) => void;
+}
+
+const ShareModal = ({
+  title,
+  description,
+  imageUrl,
+  closeModal
+}: ShareModalProps) => {
   return (
-    <div className="inset-0 fixed flex justify-center items-center bg-black/50">
-        <main className="bg-white relative rounded-[20px] h-[310px] flex flex-col justify-center">
-            <h2 className="w-full text-center border-b-gray-100 text-xl font-bold ">게시글 공유</h2>
-            <div className="mt-10 flex justify-center gap-10">
-                <img src="/icon/kakaotalk.svg" alt="카카오통 공유하기 버튼" />
-                <img src="/icon/Instagram.svg" alt="인스타그램 공유하기 버튼" />
-            </div>
-            <img src="/icon/close.svg" alt="닫기 버튼" width={24} height={24} className="absolute top-[14px] right-[14px]" />
-            <div className="flex justify-center w-full mt-10">
-                <UrlCopyBar/>
-            </div>
-        </main>
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+      <main className="relative flex h-[310px] flex-col justify-center rounded-[20px] bg-white">
+        <h2 className="w-full border-b-gray-100 text-center text-xl font-bold ">
+          게시글 공유
+        </h2>
+        <div className="mt-10 flex justify-center gap-10">
+          <KakaoShareButton
+            title={title}
+            description={description}
+            imageUrl={imageUrl}
+          />
+          <button>
+            <img src="/icon/Instagram.svg" alt="인스타그램 공유하기 버튼" />
+          </button>
+        </div>
+        <button onClick={closeModal}>
+          <img
+            src="/icon/close.svg"
+            alt="닫기 버튼"
+            width={24}
+            height={24}
+            className="absolute top-[14px] right-[14px]"
+          />
+        </button>
+        <div className="mt-10 flex w-full justify-center">
+          <UrlCopyBar />
+        </div>
+      </main>
     </div>
   );
 };
