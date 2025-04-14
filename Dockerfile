@@ -8,7 +8,7 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 5173
 
 # 🚀 컨테이너를 계속 유지하도록 추가
 CMD ["npm", "run", "start"]
