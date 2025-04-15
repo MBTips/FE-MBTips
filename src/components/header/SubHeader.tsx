@@ -56,13 +56,13 @@ const SubHeader = ({
             src="/public/icon/arrow_left.svg"
             alt="Go To Back"
             className="absolute left-[18.77px] cursor-pointer"
-            width={9.87}
+            width={9}
             height={16}
             onClick={handleGoBack}
           />
         )}
 
-        <h1 className="absolute left-1/2 -translate-x-1/2 transform text-[18px] font-bold text-gray-900">
+        <h1 className="absolute left-1/2 -translate-x-1/2 transform font-bold text-gray-900">
           {title}
         </h1>
 
