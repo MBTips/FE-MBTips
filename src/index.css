@@ -31,11 +31,9 @@ body {
 main {
   @media screen and (min-width: 360px) {
     width: 360px;
-    
   }
   @media screen and (min-width: 375px) {
     width: 375px;
-    
   }
   @media screen and (min-width: 500px) {
     width: 500px;
@@ -55,7 +53,6 @@ button:hover {
 }
 
 @keyframes pulse-custom {
-
   0%,
   100% {
     transform: scale(1);
