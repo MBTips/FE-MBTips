@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
   const navigate = useNavigate();
 
   const titleList = {
@@ -15,8 +16,13 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
   };
 
   const handleNavigate = () => {
-    const mode = "virtualFriend";
-    navigate("/select-info", { state: mode });
+    if (isLoggedIn) {
+      const mode = "virtualFriend";
+      navigate("/select-info", { state: mode });
+    } else {
+      alert("로그인 시 이용 가능합니다.");
+      navigate("/login");
+    }
   };
 
   return (
