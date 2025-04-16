@@ -23,8 +23,9 @@ const StrokeBanner = () => {
         친구 정보를 저장하고 대화할 수 있어요
       </strong>
       <p className="mt-2 text-sm font-light text-gray-900">
-        로그인 시 기억하고 싶은 친구의 MBTI와 특징을 입력해서 빠르게 대화할 수
-        있어요
+        로그인 시 기억하고 싶은 친구의 MBTI와 특징을
+        <br />
+        입력해서 빠르게 대화할 수 있어요
       </p>
     </div>
   );

@@ -14,7 +14,7 @@ export default defineConfig(({ mode }: { mode: string }) => {
 
   return {
     server: {
-      port: 3000,
+      port: 5173,
       host: true, // 외부에서 접속 가능하도록 설정
       strictPort: true,
       allowedHosts: ["mbtips.kr"],
@@ -51,7 +51,6 @@ export default defineConfig(({ mode }: { mode: string }) => {
           find: "@/constants",
           replacement: path.resolve(__dirname, "src/constants")
         },
-
         {
           find: "@/libs",
           replacement: path.resolve(__dirname, "src/libs")

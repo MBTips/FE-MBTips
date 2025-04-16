@@ -1,6 +1,7 @@
 import { ChangeEvent, KeyboardEvent } from "react";
 import ToggleChatTipsButton from "@/components/button/ToggleChatTipsButton";
 import MessageInput from "@/components/input/MessageInput";
+import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
 
 interface ChatActionProps {
   isOpen: boolean;
