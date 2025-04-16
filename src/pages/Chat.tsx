@@ -6,6 +6,8 @@ import ChatActionBar from "@/components/ChatActionBar";
 import pickMbtiImage from "@/utils/pickMbtiImage";
 import instance from "@/api/axios";
 import { useLocation } from "react-router-dom";
+import { cls } from "@/utils/cls";
+import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
 
 interface Message {
   role: "user" | "assistant";
@@ -27,7 +29,7 @@ const Chat = () => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isOpen]);
 
   const chatTitle = `${mbti}와 대화`;
   const assistantInfo = mbti;
@@ -123,7 +125,6 @@ const Chat = () => {
 
         <div ref={bottomRef} />
       </div>
-
       <ChatActionBar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -132,6 +133,7 @@ const Chat = () => {
         onKeyUp={handleKeyup}
         onSend={() => handleSend(input)}
       />
+      {isOpen && <TipsMenuContainer />}
     </div>
   );
 };

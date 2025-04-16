@@ -1,13 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/header/Header";
+import useLayoutSize from "@/hooks/useLayoutSize";
 const MbtiTestIntro = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
-
-  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+  const viewport = useLayoutSize();
+  const bannerSize =
+    viewport === "sm" ? "360" : viewport === "md" ? "375" : "500";
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-  }
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,37 +24,48 @@ const MbtiTestIntro = () => {
 
     localStorage.setItem("mbti-test-name", name);
     navigate("/mbti-test-progress");
-  }
+  };
 
   return (
-    <main className="sm:h-[812px] h-[1080px] flex flex-col">
-      <Header title="상대방 MBTI 유추 테스트"/>
-      <div className="relative flex-1 flex flex-col items-center w-full h-[756px]">
-        <img src="/image/mbti-test/500px/intro_500.png" alt="intro image" className="inset-0 w-full h-full"/>
-        <span className="absolute top-[38px] font-medium text-lg">그 사람의 mbti는 뭘까?</span>
-        <h2 className="absolute top-[74px] font-extrabold text-[32px] text-center">
+    <main className="flex h-[1080px] flex-col sm:h-[812px]">
+      <Header title="상대방 MBTI 유추 테스트" />
+      <div className="relative flex h-[756px] w-full flex-1 flex-col items-center">
+        <img
+          src={`/image/mbti-test/${bannerSize}px/intro_${bannerSize}.png`}
+          alt="intro image"
+          className="inset-0 h-full w-full"
+        />
+        <span className="absolute top-[38px] text-lg font-medium">
+          그 사람의 mbti는 뭘까?
+        </span>
+        <h2 className="absolute top-[74px] text-center text-[32px] leading-10 font-extrabold">
           <span className="text-[#2714FF]">상대방</span> MBTI
           <br />
           유추 테스트
         </h2>
-        <form className="absolute top-[472px] flex flex-col items-center" onSubmit={handleSubmit}>
-          <label htmlFor="name" className="font-medium text-lg ">MBTI를 알고 싶은 상대의 이름</label>
+        <form
+          className="absolute top-[472px] flex flex-col items-center"
+          onSubmit={handleSubmit}
+        >
+          <label htmlFor="name" className="text-lg font-medium ">
+            MBTI를 알고 싶은 상대의 이름
+          </label>
           <input
             type="text"
             id="name"
             onChange={handleChange}
-            className="bg-white border-gray-50 w-full rounded-lg mt-[30px]  h-[68px] text-center"
+            className="mt-[30px] h-[68px] w-full rounded-lg border-gray-50  bg-white text-center"
           />
           <button
             type="submit"
-            className="bg-primary-normal hover:opacity-80 mt-[60px] rounded-lg w-[320px] lg:w-[460px] h-[60px] font-bold text-white"
+            className="mt-[60px] h-[60px] w-[320px] rounded-lg bg-primary-normal font-bold text-white hover:opacity-80 lg:w-[460px]"
           >
             시작하기
           </button>
-        </form> 
+        </form>
       </div>
     </main>
-  )
-}
+  );
+};
 
 export default MbtiTestIntro;
