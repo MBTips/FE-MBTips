@@ -7,42 +7,45 @@ import useLayoutSize from "@/hooks/useLayoutSize";
 const Login = () => {
   const layoutSize = useLayoutSize();
   const isPC = layoutSize === "lg";
-  const [isModalOpen, setIsModalOpen] = useState<{isOpen : boolean, mode : "terms" | "privacy"}>({
+  const [isModalOpen, setIsModalOpen] = useState<{
+    isOpen: boolean;
+    mode: "terms" | "privacy";
+  }>({
     isOpen: false,
-    mode: "terms",
+    mode: "terms"
   });
 
-  const openModal =(mode : "terms" | "privacy")=> {
-    setIsModalOpen({mode:mode, isOpen : true});
-  }
+  const openModal = (mode: "terms" | "privacy") => {
+    setIsModalOpen({ mode: mode, isOpen: true });
+  };
   const closeModal = () => {
-    setIsModalOpen((state) => ({mode:state.mode, isOpen : false}));
-  }
+    setIsModalOpen((state) => ({ mode: state.mode, isOpen: false }));
+  };
 
   const isOpen = isModalOpen.isOpen;
   const isTerms = isModalOpen.mode === "terms";
 
   return (
-    <main className="bg-white flex flex-col items-center h-[812px]">
+    <main className="flex h-[812px] flex-col items-center bg-white">
       <img
         src={isPC ? "/image/login/banner_lg.png" : "/image/login/banner.png"}
         alt="로그인 페이지 이미지"
-        className="w-full h-[391px]"
+        className="h-[391px] w-full"
       />
-      <h1 className="mt-12 font-bold text-3xl text-center whitespace-pre-wrap">
+      <h1 className="mt-12 text-center text-3xl font-bold whitespace-pre-wrap">
         MBTI 성향 기반
         <br />
         AI 채팅 시뮬레이션으로
         <br />
         대화 연습과 꿀팁 얻어가세요
       </h1>
-      <div className="mt-[39px] text-gray-900 text-xl">
+      <div className="mt-[39px] text-xl text-gray-900">
         대화 연습부터, 피드백까지 드려요
       </div>
       <div className="mt-[47px]">
         <KakaoLoginButton />
       </div>
-      <div className="w-full mt-auto mb-1">
+      <div className="mt-auto w-full pb-4">
         <TermsAndPrivacy openModal={openModal} />
       </div>
       {isOpen ? (
