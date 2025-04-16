@@ -8,13 +8,15 @@ const ToggleChatTipsButton = ({
   setIsOpen
 }: ToggleChatTipsButtonProps) => {
   return (
-    <img
-      src={isOpen ? "/icon/close.svg" : "/icon/plus.svg"}
-      onClick={() => setIsOpen(!isOpen)}
-      alt="토글 메뉴 버튼"
-      width={14}
-      height={14}
-    />
+    <button>
+      <img
+        src={isOpen ? "/icon/close.svg" : "/icon/plus.svg"}
+        onClick={() => setIsOpen(!isOpen)}
+        alt="토글 메뉴 버튼"
+        width={14}
+        height={14}
+      />
+    </button>
   );
 };
 
