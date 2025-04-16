@@ -16,6 +16,7 @@ export default defineConfig(({ mode }: { mode: string }) => {
 
   return {
     server: {
+      port: 5173,
       host: true, // 외부에서 접속 가능하도록 설정
       strictPort: true,
       allowedHosts: ["mbtips.kr"],
