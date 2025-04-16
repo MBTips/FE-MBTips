@@ -8,8 +8,6 @@ import fs from "fs";
 // vite.config.ts 파일에서 alias 설정을 추가해야 합니다.
 
 export default defineConfig(({ mode }: { mode: string }) => {
-  console.log("mode", mode);
-
   const isProduction = mode === "production";
   const keyPath = "./certs/key.pem";
   const certPath = "./certs/cert.pem";
@@ -21,10 +19,7 @@ export default defineConfig(({ mode }: { mode: string }) => {
       strictPort: true,
       allowedHosts: ["mbtips.kr"],
       hmr: isProduction
-        ? {
-            host: "mbtips.kr",
-            protocol: "wss"
-          }
+        ? false
         : {
             host: "localhost",
             protocol: "wss"
@@ -55,10 +50,6 @@ export default defineConfig(({ mode }: { mode: string }) => {
         {
           find: "@/constants",
           replacement: path.resolve(__dirname, "src/constants")
-        },
-        {
-          find: "@/store",
-          replacement: path.resolve(__dirname, "src/store")
         },
         {
           find: "@/libs",
