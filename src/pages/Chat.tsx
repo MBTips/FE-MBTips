@@ -109,7 +109,7 @@ const Chat = () => {
               <img
                 src={assistantImgUrl}
                 alt="MBTI ICON"
-                className="mr-[9px] h-[36px] w-[36px] shrink-0 rounded-full border border-gray-200"
+                className="mr-[9px] h-[36px] w-[36px] shrink-0 rounded-full border border-gray-200 object-cover"
               />
             )}
 
