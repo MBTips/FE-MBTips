@@ -51,7 +51,6 @@ export default defineConfig(({ mode }: { mode: string }) => {
           find: "@/constants",
           replacement: path.resolve(__dirname, "src/constants")
         },
-
         {
           find: "@/libs",
           replacement: path.resolve(__dirname, "src/libs")
