@@ -1,9 +1,9 @@
-
 import Header from "@/components/header/Header";
 import { useState } from "react";
 import ActionConfirmModal from "@/components/modal/ActionConfirmModal";
 import useAuthStore from "@/store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import TermsAndPrivacyModal from "@/components/modal/TermsAndPrivacyModal";
 
 type ModalType = "logout" | "withdraw" | "terms" | "privacy" | null;
 
@@ -80,6 +80,10 @@ const MyInfo = () => {
           onCancel={handleCancel}
           onConfirm={handleConfirm}
         />
+      )}
+
+      {modalType && (modalType === "terms" || modalType === "privacy") && (
+        <TermsAndPrivacyModal mode={modalType} closeModal={handleCancel} />
       )}
     </div>
   );

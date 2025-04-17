@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useMbtiTestState from "@/store/useMbtiTestState";
 import ActionConfirmModal from "@/components/modal/ActionConfirmModal";
+import ShareModal from "@/components/modal/ShareModal";
 
 type SubHeaderProps = {
   title: string;
@@ -18,7 +19,7 @@ const SubHeader = ({
   const { pathname, state } = useLocation();
   const { currentPage, setPreviousStep } = useMbtiTestState();
   const [isLeaveChatModalOpen, setIsLeaveChatModalOpen] = useState(false);
-
+  const [shareModalIsOpen, setShareModalIsOpen] = useState(false);
   const isProgressPage = pathname === "/mbti-test-progress";
   const isChatPage = pathname === "/chat";
   const isFirstQuestionPage = currentPage === 1;
@@ -48,6 +49,10 @@ const SubHeader = ({
     navigate("/");
   };
 
+  const openShareModal = () => {
+    setShareModalIsOpen(true);
+  };
+
   return (
     <>
       <header className="relative flex h-[56px] w-full flex-row items-center justify-center border-b border-gray-100 bg-white">
@@ -56,24 +61,29 @@ const SubHeader = ({
             src="/public/icon/arrow_left.svg"
             alt="Go To Back"
             className="absolute left-[18.77px] cursor-pointer"
-            width={9.87}
+            width={9}
             height={16}
             onClick={handleGoBack}
           />
         )}
 
-        <h1 className="absolute left-1/2 -translate-x-1/2 transform text-[18px] font-bold text-gray-900">
+        <h1 className="absolute left-1/2 -translate-x-1/2 transform font-bold text-gray-900">
           {title}
         </h1>
 
         {showShareIcon && (
-          <img
-            src="/public/icon/share.svg"
-            alt="Share"
-            className="absolute right-[20px] cursor-pointer"
-            width={16}
-            height={16}
-          />
+          <button onClick={openShareModal}>
+            <img
+              src="/public/icon/share.svg"
+              alt="Share"
+              className="absolute right-[20px] cursor-pointer"
+              width={16}
+              height={16}
+            />
+            {shareModalIsOpen && (
+              <ShareModal closeModal={() => setShareModalIsOpen(false)} />
+            )}
+          </button>
         )}
       </header>
 

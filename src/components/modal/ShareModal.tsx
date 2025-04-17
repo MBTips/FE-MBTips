@@ -1,34 +1,50 @@
+import { useEffect, useState } from "react";
 import UrlCopyBar from "@/components/button/UrlCopyBar";
 import KakaoShareButton from "../button/KakaoShareButton";
+import TwitterShareButton from "@/components/button/TwitterShareButton";
 
 interface ShareModalProps {
-  title: string;
-  description: string;
-  imageUrl: string;
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ShareModal = ({
-  title,
-  description,
-  imageUrl,
-  closeModal
-}: ShareModalProps) => {
+const ShareModal = ({ closeModal }: ShareModalProps) => {
+  const [metaData, setMetaData] = useState({
+    title: "",
+    description: "",
+    imageUrl: ""
+  });
+
+  useEffect(() => {
+    // 메타 데이터를 가져오는 로직
+    const title =
+      document
+        .querySelector("meta[property='og:title']")
+        ?.getAttribute("content") || document.title;
+    const description =
+      document
+        .querySelector("meta[property='og:description']")
+        ?.getAttribute("content") || "";
+    const imageUrl =
+      document
+        .querySelector("meta[property='og:image']")
+        ?.getAttribute("content") || "";
+
+    setMetaData({ title, description, imageUrl });
+  }, []);
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <main className="relative flex h-[310px] flex-col justify-center rounded-[20px] bg-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <main className="relative z-51 flex h-[310px] flex-col justify-center rounded-[20px] bg-white">
         <h2 className="w-full border-b-gray-100 text-center text-xl font-bold ">
           게시글 공유
         </h2>
         <div className="mt-10 flex justify-center gap-10">
           <KakaoShareButton
-            title={title}
-            description={description}
-            imageUrl={imageUrl}
+            title={metaData.title}
+            description={metaData.description}
+            imageUrl={metaData.imageUrl}
           />
-          <button>
-            <img src="/icon/Instagram.svg" alt="인스타그램 공유하기 버튼" />
-          </button>
+          <TwitterShareButton title={metaData.title} />
         </div>
         <button onClick={() => closeModal(false)}>
           <img
