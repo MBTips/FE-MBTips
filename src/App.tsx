@@ -77,8 +77,11 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/select-info" element={<SelectInfo />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/chat-recommend" element={<ChatRecommend />} />
-          <Route path="/chat-tips/:id" element={<ChatTips />} />
+          <Route
+            path="/chat-recommend/:virtualFriendId"
+            element={<ChatRecommend />}
+          />
+          <Route path="/chat-tips/:virtualFriendId" element={<ChatTips />} />
           <Route path="/chat-temporature" element={<ChatTemporature />} />
           <Route path="/contents/:id" element={<Content />} />
           <Route path="/login" element={<Login />} />
