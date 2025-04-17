@@ -20,6 +20,7 @@ import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
 import CenteredLayout from "@/components/CenteredLayout";
 import { initGA, trackPageView } from "@/libs/analytics";
+import NotFound from "@/pages/NotFound";
 
 const PageTracker = () => {
   const location = useLocation();
@@ -77,16 +78,23 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/select-info" element={<SelectInfo />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/chat-recommend" element={<ChatRecommend />} />
-          <Route path="/chat-tips" element={<ChatTips />} />
-          <Route path="/chat-temporature" element={<ChatTemporature />} />
+          <Route
+            path="/chat-recommend/:virtualFriendId"
+            element={<ChatRecommend />}
+          />
+          <Route path="/chat-tips/:virtualFriendId" element={<ChatTips />} />
+          <Route
+            path="/chat-temporature/:conversationId"
+            element={<ChatTemporature />}
+          />
           <Route path="/contents/:id" element={<Content />} />
           <Route path="/login" element={<Login />} />
           <Route path="/my-info" element={<MyInfo />} />
           <Route path="/kakao-login" element={<KaKaoLogin />} />
-          <Route path="/mbti-test" element={<MbtiTestIntro />} />     
+          <Route path="/mbti-test" element={<MbtiTestIntro />} />
           <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
           <Route path="/mbti-test-result" element={<MbtiTestResult />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </CenteredLayout>
     </Router>
