@@ -20,7 +20,7 @@ import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
 import CenteredLayout from "@/components/CenteredLayout";
 import { initGA, trackPageView } from "@/libs/analytics";
-import NotFound from "@/pages/NotFound";
+import Error from "@/pages/Error";
 
 const PageTracker = () => {
   const location = useLocation();
@@ -94,7 +94,7 @@ const App = () => {
           <Route path="/mbti-test" element={<MbtiTestIntro />} />
           <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
           <Route path="/mbti-test-result" element={<MbtiTestResult />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Error mode="500" />} />
         </Routes>
       </CenteredLayout>
     </Router>
