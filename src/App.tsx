@@ -78,13 +78,13 @@ const App = () => {
           <Route path="/select-info" element={<SelectInfo />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/chat-recommend" element={<ChatRecommend />} />
-          <Route path="/chat-tips" element={<ChatTips />} />
+          <Route path="/chat-tips/:id" element={<ChatTips />} />
           <Route path="/chat-temporature" element={<ChatTemporature />} />
           <Route path="/contents/:id" element={<Content />} />
           <Route path="/login" element={<Login />} />
           <Route path="/my-info" element={<MyInfo />} />
           <Route path="/kakao-login" element={<KaKaoLogin />} />
-          <Route path="/mbti-test" element={<MbtiTestIntro />} />     
+          <Route path="/mbti-test" element={<MbtiTestIntro />} />
           <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
           <Route path="/mbti-test-result" element={<MbtiTestResult />} />
         </Routes>
