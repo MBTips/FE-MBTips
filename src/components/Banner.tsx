@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { cls } from "@/utils/cls";
 import Indicator from "@/components/Indicator";
+import { trackEvent } from "@/libs/analytics";
 
 interface BannerImage {
   sm: string;
@@ -28,11 +29,13 @@ const bannerImages: BannerImage[] = [
     md: "/image/home_banner3_md.png",
     lg: "/image/home_banner3_lg.png",
     description: "MBTI별 피해야 할 대화스타일 및 주제"
-  },
+  }
 ];
 
 const Banner = () => {
   const [order, setOrder] = useState<number>(0);
+
+  const bannerEventElements = ["배너 1", "배너 2", "배너 3"];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,18 +46,33 @@ const Banner = () => {
 
   return (
     <div className="relative flex h-[184px] w-full">
-      <Link to={order === 0 ? "/mbti-test" : `/contents/${order}`} className="absolute w-full h-full">
+      <Link
+        to={order === 0 ? "/mbti-test" : `/contents/${order}`}
+        className="absolute h-full w-full"
+        onClick={() => {
+          if (bannerEventElements[order]) {
+            trackEvent("Click", {
+              page: "홈",
+              element: bannerEventElements[order]
+            });
+          }
+        }}
+      >
         {bannerImages.map((image, index) => (
           <picture
             key={index}
             className={cls(
-              "absolute transition-opacity duration-500 w-full h-full",
+              "absolute h-full w-full transition-opacity duration-500",
               order === index ? "opacity-100" : "opacity-0"
             )}
           >
             <source media="(min-width: 500px)" srcSet={image.lg} />
             <source media="(min-width: 375px)" srcSet={image.md} />
-            <img src={image.sm} alt={image.description} className="w-full h-full object-cover" />
+            <img
+              src={image.sm}
+              alt={image.description}
+              className="h-full w-full object-cover"
+            />
           </picture>
         ))}
       </Link>
