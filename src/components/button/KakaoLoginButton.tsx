@@ -1,5 +1,5 @@
 const KakaoLoginButton = () => {
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=3e5cfa29037d1bd11eb5448f9b298bfe&redirect_uri=https://mbtips.kr/kakao-login&response_type=code`;
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=3e5cfa29037d1bd11eb5448f9b298bfe&redirect_uri=https://localhost:5173/kakao-login&response_type=code`;
 
   const handleClick = () => {
     window.location.href = kakaoURL;

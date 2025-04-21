@@ -25,10 +25,7 @@ const useAuthStore = create(
             ok: true
           };
         } catch (error) {
-          console.error("Error during login:", error);
-          return {
-            ok: false
-          };
+          throw error;
         }
       },
       logout: () => {
