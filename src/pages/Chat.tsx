@@ -99,14 +99,11 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+    <div className="flex h-screen w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
       <Header title={chatTitle} />
 
-      <div className="mt-6 flex-1 space-y-4 overflow-y-auto px-[20px]">
-        <div>
-          <IntroGuide />
-        </div>
-
+      <div className="flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
+        <IntroGuide />
         {/* 메시지 리스트 */}
         {messages.map((msg, index) => (
           <div
@@ -123,7 +120,6 @@ const Chat = () => {
                 className="mr-[9px] h-[36px] w-[36px] shrink-0 rounded-full border border-gray-200 object-cover"
               />
             )}
-
             {/* 채팅 메시지 */}
             <div className="mt-3.5">
               <ChatMessage
@@ -136,6 +132,7 @@ const Chat = () => {
 
         <div ref={bottomRef} />
       </div>
+
       <ChatActionBar
         isOpen={isOpen}
         setIsOpen={handleToggleTips}
@@ -144,6 +141,7 @@ const Chat = () => {
         onKeyUp={handleKeyup}
         onSend={() => handleSend(input)}
       />
+
       {isOpen && <TipsMenuContainer />}
     </div>
   );
