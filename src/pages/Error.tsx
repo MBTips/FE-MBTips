@@ -1,7 +1,7 @@
 import PrimaryButton from "@/components/button/PrimaryButton";
 import { useNavigate } from "react-router-dom";
 
-const Error = ({ mode }: { mode: "401" | "404" | "500" }) => {
+const Error = ({ statusCode }: { statusCode: "401" | "404" | "500" }) => {
   const navigate = useNavigate();
 
   const content = {
@@ -34,14 +34,14 @@ const Error = ({ mode }: { mode: "401" | "404" | "500" }) => {
     <main className="relative flex flex-col items-center  bg-white">
       <div className="absolute bottom-[372px] flex h-[196px] flex-col items-center justify-between">
         <img src="/icon/error.svg" alt="에러 아이콘" width={63} height={63} />
-        <h1 className="text-2xl font-bold ">{content[mode].title}</h1>
+        <h1 className="text-2xl font-bold ">{content[statusCode].title}</h1>
         <p className="text-center whitespace-pre-wrap text-gray-600">
-          {content[mode].description}
+          {content[statusCode].description}
         </p>
       </div>
       <div className="absolute bottom-[60px]">
-        <PrimaryButton size="md" onClick={content[mode].onClick}>
-          {content[mode].buttonTitle}
+        <PrimaryButton size="md" onClick={content[statusCode].onClick}>
+          {content[statusCode].buttonTitle}
         </PrimaryButton>
       </div>
     </main>

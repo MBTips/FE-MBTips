@@ -94,7 +94,7 @@ const App = () => {
           <Route path="/mbti-test" element={<MbtiTestIntro />} />
           <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
           <Route path="/mbti-test-result" element={<MbtiTestResult />} />
-          <Route path="*" element={<Error mode="500" />} />
+          <Route path="*" element={<Error statusCode="500" />} />
         </Routes>
       </CenteredLayout>
     </Router>
