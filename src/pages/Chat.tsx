@@ -6,8 +6,8 @@ import ChatActionBar from "@/components/ChatActionBar";
 import pickMbtiImage from "@/utils/pickMbtiImage";
 import instance from "@/api/axios";
 import { useLocation } from "react-router-dom";
-import { cls } from "@/utils/cls";
 import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
+import { trackEvent } from "@/libs/analytics";
 
 interface Message {
   role: "user" | "assistant";
@@ -27,13 +27,24 @@ const Chat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
+  const chatTitle = `${mbti}와 대화`;
+  const assistantInfo = mbti;
+  const assistantImgUrl = pickMbtiImage(assistantInfo);
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
 
-  const chatTitle = `${mbti}와 대화`;
-  const assistantInfo = mbti;
-  const assistantImgUrl = pickMbtiImage(assistantInfo);
+  const handleToggleTips = () => {
+    const nextAction = !isOpen;
+
+    trackEvent("Click", {
+      page: "채팅방",
+      element: nextAction ? "콘텐츠 열기" : "콘텐츠 닫기"
+    });
+
+    setIsOpen(nextAction);
+  };
 
   const handleSend = async (messageToSend: string) => {
     if (!messageToSend.trim()) return;
@@ -127,7 +138,7 @@ const Chat = () => {
       </div>
       <ChatActionBar
         isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        setIsOpen={handleToggleTips}
         value={input}
         onChange={handleChange}
         onKeyUp={handleKeyup}
