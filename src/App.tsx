@@ -27,36 +27,36 @@ const PageTracker = () => {
   const { pathname, state } = location;
 
   const trackedPaths = [
-    { path: "/", page: "홈", element: "" },
-    { path: "/login", page: "로그인/회원가입", element: "로그인" },
-    { path: "/contents", page: "일반콘텐츠", element: "" },
-    { path: "/my-info", page: "내 정보", element: "" },
-    { path: "/chat", page: "채팅방", element: "" },
-    { path: "/select-info", page: "빠른 대화 설정", element: "" },
-    { path: "/select-info", page: "친구 저장", element: "대화 시작하기" }
+    { path: "/", page: "홈" },
+    { path: "/login", page: "로그인/회원가입" },
+    { path: "/contents", page: "일반콘텐츠" },
+    { path: "/my-info", page: "내 정보" },
+    { path: "/chat", page: "채팅방" },
+    { path: "/select-info", page: "빠른 대화 설정" },
+    { path: "/select-info", page: "친구 저장" }
   ];
 
   useEffect(() => {
     const trackedContentPaths = ["/contents/1", "/contents/2"];
 
-    trackedPaths.forEach(({ path, page, element }) => {
+    trackedPaths.forEach(({ path, page }) => {
       // 콘텐츠 상세 페이지 (일반 콘텐츠만 추적)
       if (trackedContentPaths.includes(pathname)) {
         if (path === "/contents") {
-          trackPageView(path, { page, element });
+          trackPageView(path, page);
         }
       }
       // select-info 페이지에서 state로 분기
       else if (pathname === "/select-info" && path === pathname) {
         if (state === "fastFriend" && page === "빠른 대화 설정") {
-          trackPageView(path, { page, element });
+          trackPageView(path, page);
         } else if (state === "virtualFriend" && page === "친구 저장") {
-          trackPageView(path, { page, element });
+          trackPageView(path, page);
         }
       }
       // 나머지 일반 path
       else if (pathname === path && path !== "/select-info") {
-        trackPageView(path, { page, element });
+        trackPageView(path, page);
       }
     });
   }, [location.pathname, location.state]);
