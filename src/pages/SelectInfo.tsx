@@ -5,6 +5,7 @@ import Header from "@/components/header/Header";
 import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 import instance from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";
+import { trackEvent } from "@/libs/analytics";
 
 type FastFriendResponse = {
   header: {
@@ -182,6 +183,10 @@ const SelectInfo = () => {
       const responseData = response.data.data;
 
       if (mode === "virtualFriend" && isVirtualFriendResponse(responseData)) {
+        trackEvent("Click", {
+          page: "친구 저장",
+          element: "대화 시작하기"
+        });
         navigate("/chat", {
           state: {
             mbti,
@@ -190,6 +195,10 @@ const SelectInfo = () => {
           }
         });
       } else if (mode === "fastFriend" && typeof responseData === "number") {
+        trackEvent("Click", {
+          page: "빠른 대화 설정",
+          element: "대화 시작하기"
+        });
         navigate("/chat", {
           state: {
             mbti,
