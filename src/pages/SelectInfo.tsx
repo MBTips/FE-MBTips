@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
 import Header from "@/components/header/Header";
@@ -41,14 +41,19 @@ function isVirtualFriendResponse(
 const SelectInfo = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const mode = location.state; // mode: fastFriend, virtualFriend 두 종류 존재
-  const isNameRequired = mode === "virtualFriend";
+  const { type, mbti: testResultMBTI } = location.state; // type: fastFriend, virtualFriend 두 종류 존재
+  const isNameRequired = type === "virtualFriend";
   const headerTitle =
-    mode === "fastFriend" ? "상대방 정보선택" : "친구 저장하기";
+    type === "fastFriend" ? "상대방 정보선택" : "친구 저장하기";
   const selectInfoTitle =
-    mode === "fastFriend"
+    type === "fastFriend"
       ? `상대방의 MBTI를 선택하면\n대화를 시뮬레이션 해볼 수 있어요`
       : `친구의 MBTI를\n선택해주세요`;
+
+  const mbtiTestResult =
+    typeof location.state === "object" && testResultMBTI !== null
+      ? testResultMBTI
+      : undefined;
 
   const [selectedMBTI, setSelectedMBTI] = useState<{
     [key: string]: string | null;
@@ -64,6 +69,17 @@ const SelectInfo = () => {
   const [relationship, setRelationship] = useState<string | null>(null);
   const [interest, setInterest] = useState<string[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (mbtiTestResult && mbtiTestResult.length === 4) {
+      setSelectedMBTI({
+        E: mbtiTestResult[0],
+        N: mbtiTestResult[1],
+        F: mbtiTestResult[2],
+        P: mbtiTestResult[3]
+      });
+    }
+  }, [mbtiTestResult]);
 
   const mbtiOptions = ["E", "N", "F", "P", "I", "S", "T", "J"];
   const ageOptions = ["10대", "20대", "30대 이상"];
@@ -157,7 +173,7 @@ const SelectInfo = () => {
     };
 
     const selectedData =
-      mode === "virtualFriend"
+      type === "virtualFriend"
         ? {
             ...commonData,
             friendName: name,
@@ -172,7 +188,7 @@ const SelectInfo = () => {
           };
 
     const apiUrl =
-      mode === "virtualFriend" ? "api/virtual-friend" : "api/fast-friend";
+      type === "virtualFriend" ? "api/virtual-friend" : "api/fast-friend";
 
     try {
       const response = await instance.post<FriendResponse>(
@@ -181,19 +197,19 @@ const SelectInfo = () => {
       );
       const responseData = response.data.data;
 
-      if (mode === "virtualFriend" && isVirtualFriendResponse(responseData)) {
+      if (type === "virtualFriend" && isVirtualFriendResponse(responseData)) {
         navigate("/chat", {
           state: {
             mbti,
-            mode,
+            mode: type,
             id: responseData.conversationId
           }
         });
-      } else if (mode === "fastFriend" && typeof responseData === "number") {
+      } else if (type === "fastFriend" && typeof responseData === "number") {
         navigate("/chat", {
           state: {
             mbti,
-            mode,
+            mode: type,
             id: responseData
           }
         });
