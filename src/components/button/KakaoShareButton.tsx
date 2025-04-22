@@ -14,8 +14,7 @@ const KakaoShareButton = ({
   useEffect(() => {
     // 카카오톡 SDK 초기화
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.cleanup();
-      window.Kakao.init(import.meta.env.VITE_KAKAO_REST_API_KEY);
+      window.Kakao.init("3e5cfa29037d1bd11eb5448f9b298bfe");
     }
   }, []);
 
@@ -39,7 +38,12 @@ const KakaoShareButton = ({
   return (
     <div>
       <button onClick={handleShare}>
-        <img src="/icon/kakaotalk.svg" alt="카카오통 공유하기 버튼" />
+        <img
+          src="/icon/kakaotalk.svg"
+          alt="카카오통 공유하기 버튼"
+          width={72}
+          height={72}
+        />
       </button>
     </div>
   );

@@ -46,7 +46,7 @@ const ShareModal = ({ closeModal }: ShareModalProps) => {
           />
           <TwitterShareButton title={metaData.title} />
         </div>
-        <button onClick={() => closeModal(false)}>
+        <button onClick={() => closeModal((isOpen) => !isOpen)}>
           <img
             src="/icon/close.svg"
             alt="닫기 버튼"
