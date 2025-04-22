@@ -19,9 +19,9 @@ const ChatRecommend = () => {
     mbti: "",
     tips: ""
   });
-  const mbtiImage = pickMbtiImage(virtualFrinedInfo.mbti as Mbti);
   const mbti = virtualFrinedInfo.mbti;
   const tips = virtualFrinedInfo.tips;
+  const mbtiImage = pickMbtiImage(mbti as Mbti);
 
   useEffect(() => {
     const fetchData = async () => {

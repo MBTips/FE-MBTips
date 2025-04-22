@@ -19,9 +19,9 @@ const ChatTips = () => {
     mbti: "",
     tips: ""
   });
-  const mbtiImage = pickMbtiImage(virtualFrinedInfo.mbti as Mbti);
   const mbti = virtualFrinedInfo.mbti;
   const tips = virtualFrinedInfo.tips;
+  const mbtiImage = pickMbtiImage(mbti as Mbti);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +34,6 @@ const ChatTips = () => {
             `/api/addition/tips/${virtualFriendId}`
           )
         ]);
-
         setVirtualFrinedInfo({
           mbti: friendInfoRes.data.mbti,
           tips: tipsRes.data.data

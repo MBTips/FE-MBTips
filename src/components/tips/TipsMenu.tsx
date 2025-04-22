@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 
 const TipsMenu = ({
-  mode
+  mode,
+  conversationId
 }: {
   mode: "topic" | "conversation" | "temporature";
+  conversationId: string;
 }) => {
   let text = "";
   let imageUrl = "";
@@ -12,18 +14,18 @@ const TipsMenu = ({
   switch (mode) {
     case "topic":
       text = "대화 주제 추천";
-      imageUrl = "/icon/starbubble.svg";
-      href = "/chat-recommend";
+      imageUrl = "/icon/starbubb₩le.svg";
+      href = `/chat-recommend/${conversationId}`;
       break;
     case "conversation":
       text = "대화 꿀팁";
       imageUrl = "/icon/lightbulb.svg";
-      href = "/chat-tips";
+      href = `/chat-tips/${conversationId}`;
       break;
     case "temporature":
       text = "현재 대화의 온도 측정하기";
       imageUrl = "/icon/thermometer.svg";
-      href = "/chat-temporature";
+      href = `/chat-temporature/${conversationId}`;
       break;
     default:
       return;
