@@ -1,31 +1,51 @@
-const Profile = () => {
+import { SetStateAction } from "react";
+import { authInstance } from "@/api/axios";
+import { VirtualFriend } from "@/types/virtualFreind";
+
+interface ProfileProps {
+  info: VirtualFriend;
+  deleteIndex: number;
+  setVirtualFriendList: React.Dispatch<SetStateAction<VirtualFriend[]>>;
+}
+const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
+  const handleDelete = async () => {
+    const res = await authInstance.delete(
+      `/api/virtual-friend/${info.virtualFriendId}`
+    );
+    if (res.status === 200) {
+      setVirtualFriendList((prevList) =>
+        prevList.filter((_, index) => index !== deleteIndex)
+      );
+    }
+  };
   return (
-    <div className="w-[157px] h-[192px] bg-white rounded-[8px] overflow-hidden relative border border-[#EEEEEE]">
+    <div className="relative h-[192px] w-[157px] overflow-hidden rounded-[8px] border border-[#EEEEEE] bg-white lg:w-[200px]">
+      <button onClick={handleDelete}>
+        <img
+          src="/public/icon/dustbin.svg"
+          alt="Delete"
+          className="absolute top-3 right-3 h-5 w-5 cursor-pointer"
+          width={16}
+          height={16}
+        />
+      </button>
       <img
-        src="/public/icon/dustbin.svg"
-        alt="Delete"
-        className="absolute top-3 right-3 w-5 h-5 cursor-pointer"
-        width={16}
-        height={16}
-      />
-
-      <img
-        src="/public/image/ENTP.png"
+        src={`/public/image/${info.mbti}_profile.png`}
         alt="Profile"
-        className="absolute top-[12px] left-[11px] w-12 h-12 object-cover rounded-full"
+        className="absolute top-[12px] left-[11px] h-12 w-12 rounded-full object-cover"
       />
 
-      <div className="pt-[69px] px-4">
-        <h2 className="text-base flex items-center space-x-1">
-          <span className="font-bold">김엠비</span>
-          <span className="font-light text-gray-600">ENTP</span>
+      <div className="px-4 pt-[69px]">
+        <h2 className="flex items-center space-x-1 text-base">
+          <span className="font-bold">{info.virtualFriendName}</span>
+          <span className="font-light text-gray-600">{info.mbti}</span>
         </h2>
-        <p className="text-xs text-gray-600 mt-2 font-light">
-          20대 · 여자 · 직장동료 · 여행 · 사회생활
+        <p className="mt-2 text-xs font-light text-gray-600">
+          {info.virtualFriendAge} · {info.virtualFriendSex} ·{" "}
+          {info.virtualFriendRelationship}
         </p>
       </div>
-
-      <button className="w-full h-[41px] bg-primary-pale text-primary-normal font-bold py-2 text-sm absolute bottom-0">
+      <button className="absolute bottom-0 h-[41px] w-full bg-primary-pale py-2 text-sm font-bold text-primary-normal">
         바로 대화하기
       </button>
     </div>
