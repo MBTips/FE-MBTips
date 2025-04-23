@@ -1,36 +1,37 @@
 import { useEffect, useState } from "react";
-import { VirtualFriend } from "@/types/virtualFreind";
+import { useNavigate } from "react-router-dom";
 import type { AxiosResponse } from "axios";
 import { authInstance } from "@/api/axios";
+import { VirtualFriend } from "@/types/virtualFreind";
 import Banner from "@/components/Banner";
 import StrokeBanner from "@/components/StrokeBanner";
 import SubTitle from "@/components/SubTitle";
 import ChatStartButton from "@/components/button/ChatStartButton";
 import Header from "@/components/header/Header";
-import Error from "@/pages/Error";
 import useAuthStore from "@/store/useAuthStore";
 import ProfileContainer from "@/components/ProfileContainer";
 
 const Home = () => {
+  const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
   const [virtualFreindList, setVirtualFriendList] = useState<VirtualFriend[]>(
     []
   );
 
   useEffect(() => {
-    console.log(virtualFreindList.length);
-    const fetchData = async () => {
+    const fetchFriendList = async () => {
       try {
         const res: AxiosResponse<{ data: VirtualFriend[] }> =
           await authInstance.get("/api/virtual-friend");
         setVirtualFriendList(res.data.data);
       } catch (err) {
         console.error("친구 목록을 불러오지 못했습니다.", err);
-        return <Error statusCode="404" />;
+        navigate("/error");
       }
     };
-    fetchData();
-  }, []);
+
+    if (isLoggedIn) fetchFriendList();
+  }, [isLoggedIn]);
 
   return (
     <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
