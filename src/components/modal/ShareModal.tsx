@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import UrlCopyBar from "@/components/button/UrlCopyBar";
-import KakaoShareButton from "../button/KakaoShareButton";
 import TwitterShareButton from "@/components/button/TwitterShareButton";
+import KakaoShareButton from "@/components/button/KakaoShareButton";
 
 interface ShareModalProps {
   closeModal: () => void;

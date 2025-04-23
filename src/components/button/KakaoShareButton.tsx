@@ -42,7 +42,7 @@ const KakaoShareButton = ({
       <button onClick={handleShare}>
         <img
           src="/icon/kakaotalk.svg"
-          alt="카카오통 공유하기 버튼"
+          alt="카카오톡 공유하기 버튼"
           width={72}
           height={72}
         />
