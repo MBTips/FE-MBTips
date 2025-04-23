@@ -1,4 +1,5 @@
 import { SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 import { authInstance } from "@/api/axios";
 import { VirtualFriend } from "@/types/virtualFreind";
 
@@ -8,6 +9,8 @@ interface ProfileProps {
   setVirtualFriendList: React.Dispatch<SetStateAction<VirtualFriend[]>>;
 }
 const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
+  const navigate = useNavigate();
+
   const handleDelete = async () => {
     const res = await authInstance.delete(
       `/api/virtual-friend/${info.virtualFriendId}`
@@ -18,6 +21,17 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
       );
     }
   };
+
+  const handleNavigate = () => {
+    navigate("/chat", {
+      state: {
+        mode: "virtualFriend",
+        mbti: info.mbti,
+        id: info.virtualFriendId
+      }
+    });
+  };
+
   return (
     <div className="relative h-[192px] w-[157px] overflow-hidden rounded-[8px] border border-[#EEEEEE] bg-white lg:w-[200px]">
       <button onClick={handleDelete}>
@@ -45,7 +59,10 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
           {info.virtualFriendRelationship}
         </p>
       </div>
-      <button className="absolute bottom-0 h-[41px] w-full bg-primary-pale py-2 text-sm font-bold text-primary-normal">
+      <button
+        className="absolute bottom-0 h-[41px] w-full bg-primary-pale py-2 text-sm font-bold text-primary-normal"
+        onClick={handleNavigate}
+      >
         바로 대화하기
       </button>
     </div>
