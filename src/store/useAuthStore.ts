@@ -16,7 +16,9 @@ const useAuthStore = create(
       accessToken: null,
       login: async (code: string) => {
         try {
-          const res = await instance.get(`/api/kakao/login?code=${code}`);
+          const res = await instance.get(
+            `/api/kakao/login?code=${code}` + // "&redirectUrl=https://localhost:5173/kakao-login"
+          );
           set({
             isLoggedIn: true,
             accessToken: res.data as string
