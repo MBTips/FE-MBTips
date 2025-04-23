@@ -11,10 +11,12 @@ const KakaoShareButton = ({
   description,
   imageUrl
 }: KakoShareButtonProps) => {
+  const kakaoJavascriptKey = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
+
   useEffect(() => {
     // 카카오톡 SDK 초기화
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("a4816c8b85267871796431d92ed23451");
+      window.Kakao.init(kakaoJavascriptKey);
     }
   }, []);
 

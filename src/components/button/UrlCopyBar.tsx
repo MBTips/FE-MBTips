@@ -1,4 +1,4 @@
-import UrlCopyButton from "./UrlCopyButton";
+import UrlCopyButton from "@/components/button/UrlCopyButton";
 
 const UrlCopyBar = () => {
   const currentUrl = window.location.href;
