@@ -1,5 +1,8 @@
 const KakaoLoginButton = () => {
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=3e5cfa29037d1bd11eb5448f9b298bfe&redirect_uri=https://localhost:5173/kakao-login&response_type=code`;
+  const kakaoRestApiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
+  const kakaoRedirectUrl = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApiKey}&redirect_uri=${kakaoRedirectUrl}&response_type=code`;
 
   const handleClick = () => {
     window.location.href = kakaoURL;
