@@ -4,7 +4,7 @@ import KakaoShareButton from "../button/KakaoShareButton";
 import TwitterShareButton from "@/components/button/TwitterShareButton";
 
 interface ShareModalProps {
-  closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+  closeModal: () => void;
 }
 
 const ShareModal = ({ closeModal }: ShareModalProps) => {
@@ -46,14 +46,11 @@ const ShareModal = ({ closeModal }: ShareModalProps) => {
           />
           <TwitterShareButton title={metaData.title} />
         </div>
-        <button onClick={() => closeModal((isOpen) => !isOpen)}>
-          <img
-            src="/icon/close.svg"
-            alt="닫기 버튼"
-            width={24}
-            height={24}
-            className="absolute top-[14px] right-[14px]"
-          />
+        <button
+          onClick={closeModal}
+          className="absolute top-[14px] right-[14px] h-6 w-6"
+        >
+          <img src="/icon/close.svg" alt="닫기 버튼" width={24} height={24} />
         </button>
         <div className="mt-10 flex w-full justify-center">
           <UrlCopyBar />

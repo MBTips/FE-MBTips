@@ -13,7 +13,7 @@ type SubHeaderProps = {
 const SubHeader = ({
   title = "",
   showPreviousIcon = true,
-  showShareIcon = false
+  showShareIcon = true
 }: SubHeaderProps) => {
   const navigate = useNavigate();
   const { pathname, state } = useLocation();
@@ -49,40 +49,35 @@ const SubHeader = ({
     navigate("/");
   };
 
-  const openShareModal = () => {
-    setShareModalIsOpen(true);
-  };
-
   return (
     <>
-      <header className="relative flex h-[56px] w-full flex-row items-center justify-center border-b border-gray-100 bg-white">
+      <header className="relative flex h-[56px] w-full items-center justify-between border-b border-gray-100 bg-white">
         {showPreviousIcon && (
           <img
             src="/public/icon/arrow_left.svg"
             alt="Go To Back"
-            className="absolute left-[18.77px] cursor-pointer"
+            className="absolute left-4 cursor-pointer"
             width={9}
             height={16}
             onClick={handleGoBack}
           />
         )}
 
-        <h1 className="absolute left-1/2 -translate-x-1/2 transform font-bold text-gray-900">
+        <h1 className="absolute left-1/2 -translate-x-1/2 font-bold text-gray-900">
           {title}
         </h1>
 
         {showShareIcon && (
-          <button onClick={openShareModal}>
+          <button
+            onClick={() => setShareModalIsOpen(true)}
+            className="absolute right-4"
+          >
             <img
               src="/public/icon/share.svg"
               alt="Share"
-              className="absolute right-[20px] cursor-pointer"
               width={16}
               height={16}
             />
-            {shareModalIsOpen && (
-              <ShareModal closeModal={() => setShareModalIsOpen(false)} />
-            )}
           </button>
         )}
       </header>
@@ -95,6 +90,14 @@ const SubHeader = ({
           confirmText="확인"
           onCancel={handleCancel}
           onConfirm={handleConfirm}
+        />
+      )}
+
+      {shareModalIsOpen && (
+        <ShareModal
+          closeModal={() => {
+            setShareModalIsOpen(false);
+          }}
         />
       )}
     </>
