@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { trackEvent } from "@/libs/analytics";
-const ChatStartButton = ({
-  mode
-}: {
+
+type ChatStartButtonProps = {
   mode: "go-fast" | "go-virtual" | "go-chat";
-}) => {
+  mbti?: string;
+};
+
+const ChatStartButton = ({ mode, mbti }: ChatStartButtonProps) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -14,14 +16,14 @@ const ChatStartButton = ({
           page: "홈",
           element: "빠른 대화 시작"
         });
-        navigate("/select-info", { state: "fastFriend" });
+        navigate("/select-info", { state: { type: "fastFriend", mbti } });
         break;
       case "go-virtual":
         trackEvent("Click", {
           page: "홈",
           element: "친구 - 바로 대화하기"
         });
-        navigate("/select-info", { state: "virtualFriend" });
+        navigate("/select-info", { state: { type: "virtualFriend", mbti } });
         break;
       case "go-chat":
         navigate("/chat");
