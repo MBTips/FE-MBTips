@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import trackClickEvent from "@/utils/trackClickEvent";
 
 const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
 
   const handleNavigate = () => {
     const type = mode === "빠른대화" ? "fastFriend" : "virtualFriend";
+    trackClickEvent("홈", "친구 추가 버튼");
     navigate("/select-info", { state: { type: type } });
   };
 

@@ -2,6 +2,7 @@ import { SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { authInstance } from "@/api/axios";
 import { VirtualFriend } from "@/types/virtualFreind";
+import trackClickEvent from "@/utils/trackClickEvent";
 
 interface ProfileProps {
   info: VirtualFriend;
@@ -12,6 +13,7 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
   const navigate = useNavigate();
 
   const handleDelete = async () => {
+    trackClickEvent("홈", "친구 - 삭제하기 버튼");
     const res = await authInstance.delete(
       `/api/virtual-friend/${info.virtualFriendId}`
     );
@@ -23,6 +25,7 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
   };
 
   const handleNavigate = () => {
+    trackClickEvent("홈", "친구 - 대화 시작하기 버튼");
     navigate("/chat", {
       state: {
         mode: "virtualFriend",
