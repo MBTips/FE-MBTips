@@ -7,22 +7,26 @@ const TipsMenu = ({
   mode: "topic" | "conversation" | "temporature";
 }) => {
   let text = "";
+  let tagElement = "";
   let imageUrl = "";
   let href = "";
 
   switch (mode) {
     case "topic":
       text = "대화 주제 추천";
+      tagElement = "대화 주제 추천";
       imageUrl = "/icon/starbubble.svg";
       href = "/chat-recommend";
       break;
     case "conversation":
       text = "대화 꿀팁";
+      tagElement = "대화 꿀팁";
       imageUrl = "/icon/lightbulb.svg";
       href = "/chat-tips";
       break;
     case "temporature":
       text = "현재 대화의 온도 측정하기";
+      tagElement = "대화의 온도";
       imageUrl = "/icon/thermometer.svg";
       href = "/chat-temporature";
       break;
@@ -31,7 +35,7 @@ const TipsMenu = ({
   }
 
   const handleClick = () => {
-    trackClickEvent("채팅방", text);
+    trackClickEvent("채팅방", tagElement);
   };
 
   return (
