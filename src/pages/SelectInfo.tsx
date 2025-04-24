@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FormButton from "@/components/button/FormButton";
 import Header from "@/components/header/Header";
 import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
-import instance from "@/api/axios";
+import { authInstance } from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";
 import { trackEvent } from "@/libs/analytics";
 
@@ -192,7 +192,7 @@ const SelectInfo = () => {
       type === "virtualFriend" ? "api/virtual-friend" : "api/fast-friend";
 
     try {
-      const response = await instance.post<FriendResponse>(
+      const response = await authInstance.post<FriendResponse>(
         `/${apiUrl}`,
         selectedData
       );
