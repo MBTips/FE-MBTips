@@ -2,7 +2,7 @@ import trackClickEvent from "@/utils/trackClickEvent";
 
 const LoginButton = () => {
   const handleClick = () => {
-    trackClickEvent("홈", "로그인 버튼");
+    trackClickEvent("홈", "로그인");
   };
 
   return (
