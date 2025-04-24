@@ -19,8 +19,7 @@ const MbtiTestQuestions = () => {
   const { currentPage } = useMbtiTestState();
 
   useEffect(() => {
-    const pageName = `MBTI 테스트 진행중 - Step ${currentPage}`;
-    trackPageView("/mbti-progress", pageName);
+    trackPageView(`바이럴 콘텐츠 (질문 ${currentPage})`, "");
   }, [currentPage]);
 
   if (currentPage) {

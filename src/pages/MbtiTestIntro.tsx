@@ -62,7 +62,7 @@ const MbtiTestIntro = () => {
             type="submit"
             className="mt-[60px] h-[60px] w-[320px] rounded-lg bg-primary-normal font-bold text-white hover:opacity-80 lg:w-[460px]"
             onClick={() =>
-              trackClickEvent("Mbti 테스트 첫 화면", "시작하기 버튼")
+              trackClickEvent("바이럴 콘텐츠 소개", "시작하기 버튼")
             }
           >
             시작하기
