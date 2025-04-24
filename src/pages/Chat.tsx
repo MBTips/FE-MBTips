@@ -20,7 +20,7 @@ interface ChatResponse {
 
 const Chat = () => {
   const { state } = useLocation();
-  const { mbti, mode, id } = state;
+  const { mbti, mode, id = Date.now().toString() } = state;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -30,10 +30,20 @@ const Chat = () => {
   const chatTitle = `${mbti}와 대화`;
   const assistantInfo = mbti;
   const assistantImgUrl = pickMbtiImage(assistantInfo);
+  const storageKey = `chatMessages_${id}`;
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem(storageKey);
+    if (stored) setMessages(JSON.parse(stored));
+  }, [storageKey]);
+
+  useEffect(() => {
+    sessionStorage.setItem(storageKey, JSON.stringify(messages));
+  }, [messages, storageKey]);
 
   const handleToggleTips = () => {
     const nextAction = !isOpen;

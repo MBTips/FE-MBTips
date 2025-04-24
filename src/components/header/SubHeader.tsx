@@ -24,6 +24,7 @@ const SubHeader = ({
   const isChatPage = pathname === "/chat";
   const isFirstQuestionPage = currentPage === 1;
   const mode = state?.mode;
+  const chatId = state?.id;
 
   const handleGoBack = () => {
     if (isProgressPage && !isFirstQuestionPage) {
@@ -45,6 +46,10 @@ const SubHeader = ({
   const handleCancel = () => setIsLeaveChatModalOpen(false);
 
   const handleConfirm = () => {
+    if (chatId) {
+      sessionStorage.removeItem(`chatMessages_${chatId}`);
+    }
+
     setIsLeaveChatModalOpen(false);
     navigate("/");
   };
