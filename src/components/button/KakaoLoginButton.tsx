@@ -1,5 +1,8 @@
 const KakaoLoginButton = () => {
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}&response_type=code`;
+  const kakaoRestApiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
+  const kakaoRedirectUrl = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApiKey}&redirect_uri=${kakaoRedirectUrl}&response_type=code`;
 
   const handleClick = () => {
     window.location.href = kakaoURL;
@@ -9,7 +12,7 @@ const KakaoLoginButton = () => {
     <button
       type="button"
       onClick={handleClick}
-      className="flex justify-center items-center bg-[#F9E622] hover:opacity-80 rounded-lg w-[320px] h-[56px] font-bold text-black"
+      className="flex h-[56px] w-[320px] items-center justify-center rounded-lg bg-[#F9E622] font-bold text-black hover:opacity-80"
     >
       카카오로 시작하기
     </button>
