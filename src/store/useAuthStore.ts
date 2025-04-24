@@ -5,7 +5,7 @@ import instance from "@/api/axios";
 interface AuthStore {
   isLoggedIn: boolean;
   accessToken: string | null;
-  login: (code: string) => Promise<void>;
+  login: (code: string) => Promise<{ ok: boolean }>;
   logout: () => void;
 }
 
@@ -17,16 +17,18 @@ const useAuthStore = create(
       login: async (code: string) => {
         try {
           const res = await instance.get(
-            `/api/kakao/login?code=${code}&redirectUrl=https://localhost:5173/kakao-login`
+            `/api/kakao/login?code=${code}`
+            // + "&redirectUrl=https://localhost:5173/kakao-login"
           );
-          if (res.data) {
-            set({
-              isLoggedIn: true,
-              accessToken: res.data.data as string
-            });
-          }
+          set({
+            isLoggedIn: true,
+            accessToken: res.data as string
+          });
+          return {
+            ok: true
+          };
         } catch (error) {
-          console.error("Error during login:", error);
+          throw error;
         }
       },
       logout: () => {
@@ -34,6 +36,7 @@ const useAuthStore = create(
           isLoggedIn: false,
           accessToken: null
         });
+        return { ok: true };
       }
     }),
     {

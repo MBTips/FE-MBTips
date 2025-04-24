@@ -14,7 +14,7 @@ type HeaderProps = {
 const Header = ({
   title = "",
   showPreviousIcon = true,
-  showShareIcon = false,
+  showShareIcon = true,
   children
 }: HeaderProps) => {
   const { pathname } = useLocation();
