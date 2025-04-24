@@ -1,3 +1,4 @@
+import trackClickEvent from "@/utils/trackClickEvent";
 import { Link } from "react-router-dom";
 
 const TipsMenu = ({
@@ -29,8 +30,12 @@ const TipsMenu = ({
       return;
   }
 
+  const handleClick = () => {
+    trackClickEvent("채팅방", text);
+  };
+
   return (
-    <Link to={href}>
+    <Link to={href} onClick={handleClick}>
       <div className="flex h-[56px] w-full border-t border-gray-100 bg-white px-4 py-4 hover:bg-primary-pale">
         <img src={imageUrl} alt={text} width={20} height={20} />
         <h2 className="text-2lg ml-[22px] font-medium text-gray-800">{text}</h2>
