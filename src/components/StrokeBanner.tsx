@@ -5,7 +5,7 @@ const StrokeBanner = () => {
 
   const handleNavigate = () => {
     const mode = "virtualFriend";
-    navigate("/select-info", { state: mode });
+    navigate("/select-info", { state: { type: mode } });
   };
 
   return (
