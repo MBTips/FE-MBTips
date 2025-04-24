@@ -15,8 +15,8 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
   };
 
   const handleNavigate = () => {
-    const mode = "virtualFriend";
-    navigate("/select-info", { state: mode });
+    const type = mode === "빠른대화" ? "fastFriend" : "virtualFriend";
+    navigate("/select-info", { state: { type: type } });
   };
 
   return (

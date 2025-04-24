@@ -4,6 +4,8 @@ import ActionConfirmModal from "@/components/modal/ActionConfirmModal";
 import useAuthStore from "@/store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import TermsAndPrivacyModal from "@/components/modal/TermsAndPrivacyModal";
+import { trackEvent } from "@/libs/analytics";
+import { deleteUser } from "@/api/user";
 
 type ModalType = "logout" | "withdraw" | "terms" | "privacy" | null;
 
@@ -31,12 +33,28 @@ const MyInfo = () => {
     setModalType(null);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (modalType === "logout") {
+      trackEvent("Click", {
+        page: "내 정보",
+        element: "로그아웃"
+      });
       logout();
       navigate("/login");
     } else if (modalType === "withdraw") {
-      console.log("회원탈퇴 실행"); //TODO: 회원탈퇴 기능 구현 시 추가 필요
+      trackEvent("Click", {
+        page: "내 정보",
+        element: "회원탈퇴"
+      });
+
+      try {
+        await deleteUser();
+        logout();
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+        navigate("/error");
+      }
     }
     setModalType(null);
   };
