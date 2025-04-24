@@ -13,7 +13,7 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
   const navigate = useNavigate();
 
   const handleDelete = async () => {
-    trackClickEvent("홈", "친구 - 삭제하기 버튼");
+    trackClickEvent("홈", "친구 - 삭제");
     const res = await authInstance.delete(
       `/api/virtual-friend/${info.virtualFriendId}`
     );

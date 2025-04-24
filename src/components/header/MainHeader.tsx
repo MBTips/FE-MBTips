@@ -6,7 +6,7 @@ const MainHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    trackClickEvent("홈", "내 정보 버튼");
+    trackClickEvent("홈", "내정보");
     navigate("/my-info");
   };
 

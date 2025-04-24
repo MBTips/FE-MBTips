@@ -17,7 +17,7 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
 
   const handleNavigate = () => {
     const type = mode === "빠른대화" ? "fastFriend" : "virtualFriend";
-    trackClickEvent("홈", "친구 추가 버튼");
+    trackClickEvent("홈", "친구 - 추가");
     navigate("/select-info", { state: { type: type } });
   };
 
