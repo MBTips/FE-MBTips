@@ -27,7 +27,7 @@ const ActionConfirmModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-2xl font-bold">{title}</h3>
-        <p className="mt-[9px] text-center text-xl font-medium">
+        <p className="mt-[9px] text-center text-xl font-medium whitespace-pre-wrap">
           {message.map((line, index) => (
             <span key={index} className="block">
               {line}
