@@ -10,7 +10,7 @@ const KakaoLoginButton = () => {
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApiKey}&redirect_uri=${kakaoRedirectUrl}&response_type=code`;
 
   const handleClick = () => {
-    trackClickEvent("로그인/회원가입", "카카오 로그인 버튼");
+    trackClickEvent("로그인/회원가입", "로그인");
     window.location.href = kakaoURL;
   };
 

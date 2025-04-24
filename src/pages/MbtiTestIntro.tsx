@@ -61,9 +61,7 @@ const MbtiTestIntro = () => {
           <button
             type="submit"
             className="mt-[60px] h-[60px] w-[320px] rounded-lg bg-primary-normal font-bold text-white hover:opacity-80 lg:w-[460px]"
-            onClick={() =>
-              trackClickEvent("바이럴 콘텐츠 소개", "시작하기 버튼")
-            }
+            onClick={() => trackClickEvent("바이럴 콘텐츠 소개", "")}
           >
             시작하기
           </button>
