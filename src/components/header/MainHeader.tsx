@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoginButton from "@/components/button/LoginButton";
+import trackClickEvent from "@/utils/trackClickEvent";
 
 const MainHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
+    trackClickEvent("홈", "내 정보 버튼");
     navigate("/my-info");
   };
 
