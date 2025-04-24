@@ -14,7 +14,7 @@ const TipsMenu = ({
   switch (mode) {
     case "topic":
       text = "대화 주제 추천";
-      imageUrl = "/icon/starbubb₩le.svg";
+      imageUrl = "/icon/starbubble.svg";
       href = `/chat-recommend/${conversationId}`;
       break;
     case "conversation":

@@ -3,7 +3,7 @@ import useAuthStore from "@/store/useAuthStore";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 10000,
+  timeout: 100000,
   headers: {
     "Content-Type": "application/json"
   }
@@ -12,7 +12,7 @@ const instance = axios.create({
 // 인증 절차가 필요한 API는 authInstance로 HTTP요청
 const authInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 10000,
+  timeout: 100000,
   headers: {
     "Content-Type": "application/json"
   }

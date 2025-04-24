@@ -49,7 +49,7 @@ const ChatTips = () => {
   return (
     <div>
       <Header title="대화 꿀팁" showPreviousIcon={true} showShareIcon={true} />
-      <main className="mx-auto flex flex-col px-5 py-6">
+      <main className="mx-auto flex h-screen flex-col px-5 py-6">
         <img
           src={mbtiImage}
           alt="mbti 이미지"

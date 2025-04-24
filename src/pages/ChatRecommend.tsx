@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Mbti } from "@/types/mbti";
 import Header from "@/components/header/Header";
-import instance from "@/api/axios";
+import instance, { authInstance } from "@/api/axios";
 import pickMbtiImage from "@/utils/pickMbtiImage";
 
 interface VirtualFriendResponse {
@@ -27,16 +27,17 @@ const ChatRecommend = () => {
     const fetchData = async () => {
       try {
         const [friendInfoRes, tipsRes] = await Promise.all([
-          instance.get<VirtualFriendResponse>(
+          authInstance.get<VirtualFriendResponse>(
             `/api/virtual-friend/${virtualFriendId}`
           ),
           instance.get<ChatTipsResponse>(
             `/api/addition/recommendtopic/${virtualFriendId}`
           )
         ]);
+        console.log(tipsRes.data.data);
 
         setVirtualFrinedInfo({
-          mbti: friendInfoRes.data.mbti,
+          mbti: friendInfoRes.data.data.mbti,
           tips: tipsRes.data.data
         });
       } catch (error) {
@@ -54,7 +55,7 @@ const ChatRecommend = () => {
         showPreviousIcon={true}
         showShareIcon={true}
       />
-      <main className="mx-auto flex flex-col px-5 py-6">
+      <main className="mx-auto flex h-screen flex-col px-5 py-6">
         <img
           src={mbtiImage}
           alt="mbti 이미지"
