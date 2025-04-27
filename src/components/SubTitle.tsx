@@ -1,7 +1,12 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import trackClickEvent from "@/utils/trackClickEvent";
+import ActionConfirmModal from "@/components/modal/ActionConfirmModal";
+import useAuthStore from "@/store/useAuthStore";
 
 const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
+  const [needLoginModalIsOpen, setNeedLoginModalIsOpen] = useState(false);
+  const { isLoggedIn } = useAuthStore();
   const navigate = useNavigate();
 
   const titleList = {
@@ -16,9 +21,11 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
   };
 
   const handleNavigate = () => {
-    const type = mode === "빠른대화" ? "fastFriend" : "virtualFriend";
     trackClickEvent("홈", "친구 - 추가");
-    navigate("/select-info", { state: { type: type } });
+    if (isLoggedIn) {
+      const type = mode === "빠른대화" ? "fastFriend" : "virtualFriend";
+      navigate("/select-info", { state: { type: type } });
+    } else setNeedLoginModalIsOpen(true);
   };
 
   return (
@@ -38,6 +45,16 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
             height={20}
           />
         </button>
+      )}
+      {needLoginModalIsOpen && (
+        <ActionConfirmModal
+          title="로그인이 필요합니다."
+          message={[`로그인 페이지로\n이동할까요?`]}
+          cancelText="취소"
+          confirmText="확인"
+          onCancel={() => setNeedLoginModalIsOpen(false)}
+          onConfirm={() => navigate("/login")}
+        />
       )}
     </div>
   );
