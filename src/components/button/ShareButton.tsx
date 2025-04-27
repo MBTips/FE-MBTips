@@ -1,13 +1,11 @@
 import { useState } from "react";
 import ShareModal from "@/components/modal/ShareModal";
-import trackClickEvent from "@/utils/trackClickEvent";
 
 const ShareButton = () => {
   const [shareModalIsOpen, setShareModalIsOpen] = useState(false);
 
   const handleClick = () => {
     setShareModalIsOpen(true);
-    trackClickEvent("MBTI 테스트 결과", "공유하기 버튼");
   };
   return (
     <>

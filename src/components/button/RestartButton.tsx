@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import trackClickEvent from "@/utils/trackClickEvent";
 
 const RestartButton = () => {
   const navigate = useNavigate();
 
   const goFirstStep = () => {
-    trackClickEvent("/MBTI 테스트 결과", "돌아가기 버튼");
     navigate("/mbti-test");
   };
 
