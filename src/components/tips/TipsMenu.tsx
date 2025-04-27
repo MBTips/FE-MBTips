@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 
 const TipsMenu = ({
   mode,
+  mbti,
   conversationId
 }: {
   mode: "topic" | "conversation" | "temporature";
-  conversationId: string;
+  mbti?: string;
+  conversationId?: string;
 }) => {
   let text = "";
   let imageUrl = "";
@@ -15,12 +17,12 @@ const TipsMenu = ({
     case "topic":
       text = "대화 주제 추천";
       imageUrl = "/icon/starbubble.svg";
-      href = `/chat-recommend/${conversationId}`;
+      href = `/chat-recommend/${mbti}`;
       break;
     case "conversation":
       text = "대화 꿀팁";
       imageUrl = "/icon/lightbulb.svg";
-      href = `/chat-tips/${conversationId}`;
+      href = `/chat-tips/${mbti}`;
       break;
     case "temporature":
       text = "현재 대화의 온도 측정하기";

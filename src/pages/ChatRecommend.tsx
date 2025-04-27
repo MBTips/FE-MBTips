@@ -1,52 +1,21 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Mbti } from "@/types/mbti";
+import { chatRecommend } from "@/mock/chatRecommend";
 import Header from "@/components/header/Header";
-import instance, { authInstance } from "@/api/axios";
 import pickMbtiImage from "@/utils/pickMbtiImage";
-
-interface VirtualFriendResponse {
-  mbti: string;
-}
-
-interface ChatTipsResponse {
-  data: string;
-}
+import Error from "@/pages/Error";
 
 const ChatRecommend = () => {
-  const { virtualFriendId } = useParams();
-  const [virtualFrinedInfo, setVirtualFrinedInfo] = useState({
-    mbti: "",
-    tips: ""
-  });
-  const mbti = virtualFrinedInfo.mbti;
-  const tips = virtualFrinedInfo.tips;
-  const mbtiImage = pickMbtiImage(mbti as Mbti);
+  const { mbti } = useParams();
+  let title = "";
+  let description = "";
+  let mbtiImage = "";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [friendInfoRes, tipsRes] = await Promise.all([
-          authInstance.get<VirtualFriendResponse>(
-            `/api/virtual-friend/${virtualFriendId}`
-          ),
-          instance.get<ChatTipsResponse>(
-            `/api/addition/recommendtopic/${virtualFriendId}`
-          )
-        ]);
-        console.log(tipsRes.data.data);
-
-        setVirtualFrinedInfo({
-          mbti: friendInfoRes.data.data.mbti,
-          tips: tipsRes.data.data
-        });
-      } catch (error) {
-        console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  if (mbti) {
+    title = chatRecommend[mbti].title;
+    description = chatRecommend[mbti].description;
+    mbtiImage = pickMbtiImage(mbti as Mbti);
+  } else return <Error statusCode="404" />;
 
   return (
     <div>
@@ -61,8 +30,8 @@ const ChatRecommend = () => {
           alt="mbti 이미지"
           className="h-auto w-full rounded-2xl"
         />
-        <h1 className="mt-9 text-xl font-bold">{mbti}와 나눌 대화 주제 추천</h1>
-        <span className="mt-6 whitespace-pre-wrap">{tips}</span>
+        <h1 className="mt-9 text-xl font-bold">{title}</h1>
+        <span className="mt-6 whitespace-pre-wrap">{description}</span>
       </main>
     </div>
   );

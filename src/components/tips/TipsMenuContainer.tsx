@@ -1,10 +1,16 @@
 import TipsMenu from "@/components/tips/TipsMenu";
 
-const TipsMenuContainer = ({ conversationId }: { conversationId: string }) => {
+const TipsMenuContainer = ({
+  conversationId,
+  mbti
+}: {
+  conversationId: string;
+  mbti: string;
+}) => {
   return (
     <>
-      <TipsMenu mode="topic" conversationId={conversationId} />
-      <TipsMenu mode="conversation" conversationId={conversationId} />
+      <TipsMenu mode="topic" mbti={mbti} />
+      <TipsMenu mode="conversation" mbti={mbti} />
       <TipsMenu mode="temporature" conversationId={conversationId} />
     </>
   );
