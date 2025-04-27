@@ -25,7 +25,7 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
   };
 
   const handleNavigate = () => {
-    trackClickEvent("홈", "친구 - 대화 시작하기 버튼");
+    trackClickEvent("홈", "친구 - 바로 대화하기");
     navigate("/chat", {
       state: {
         mode: "virtualFriend",
