@@ -33,7 +33,11 @@ const PageTracker = () => {
     { path: "/my-info", page: "내 정보" },
     { path: "/chat", page: "채팅방" },
     { path: "/select-info", page: "빠른 대화 설정" },
-    { path: "/select-info", page: "친구 저장" }
+    { path: "/mbti-test", page: "바이럴 콘텐츠 소개" },
+    { path: "/mbti-result", page: "바이럴 콘텐츠 결과" },
+    { path: "/chat-recommend", page: "대화주제추천" },
+    { path: "/chat-tips", page: "대화 꿀팁" },
+    { path: "/chat-temporature", page: "대화 온도" }
   ];
 
   useEffect(() => {
