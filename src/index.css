@@ -63,10 +63,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 80%;
-}
-
 @keyframes pulse-custom {
   0%,
   100% {

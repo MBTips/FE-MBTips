@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ActionConfirmModal from "@/components/modal/ActionConfirmModal";
+import useAuthStore from "@/store/useAuthStore";
 
 const StrokeBanner = () => {
+  const [needLoginModalIsOpen, setNeedLoginModalIsOpen] = useState(false);
+  const { isLoggedIn } = useAuthStore();
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    const mode = "virtualFriend";
-    navigate("/select-info", { state: mode });
+    if (isLoggedIn) {
+      const mode = "virtualFriend";
+      navigate("/select-info", { state: { type: mode } });
+    } else {
+      setNeedLoginModalIsOpen(true);
+    }
   };
 
   return (
@@ -27,6 +36,16 @@ const StrokeBanner = () => {
         <br />
         입력해서 빠르게 대화할 수 있어요
       </p>
+      {needLoginModalIsOpen && (
+        <ActionConfirmModal
+          title="로그인이 필요합니다."
+          message={[`로그인 페이지로\n이동할까요?`]}
+          cancelText="취소"
+          confirmText="확인"
+          onCancel={() => setNeedLoginModalIsOpen(false)}
+          onConfirm={() => navigate("/login")}
+        />
+      )}
     </div>
   );
 };
