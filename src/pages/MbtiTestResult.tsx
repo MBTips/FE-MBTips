@@ -1,4 +1,3 @@
-import { MouseEvent } from "react";
 import { MBTI_RESULT_INFO } from "@/constants/MBTI_RESULT_INFO";
 import ShareButton from "@/components/button/ShareButton";
 import RestartButton from "@/components/button/RestartButton";
