@@ -6,7 +6,6 @@ import ChatActionBar from "@/components/ChatActionBar";
 import pickMbtiImage from "@/utils/pickMbtiImage";
 import instance from "@/api/axios";
 import { useLocation } from "react-router-dom";
-import { cls } from "@/utils/cls";
 import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
 
 interface Message {
@@ -20,7 +19,7 @@ interface ChatResponse {
 
 const Chat = () => {
   const { state } = useLocation();
-  const { mbti, mode, id } = state;
+  const { mbti, mode, id, name } = state;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -31,7 +30,7 @@ const Chat = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
 
-  const chatTitle = `${mbti}와 대화`;
+  const chatTitle = mode === "fastFriend" ? `${mbti}와 대화` : `${name}과 대화`;
   const assistantInfo = mbti;
   const assistantImgUrl = pickMbtiImage(assistantInfo);
 
