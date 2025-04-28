@@ -207,7 +207,8 @@ const SelectInfo = () => {
           state: {
             mbti,
             mode: type,
-            id: responseData.conversationId
+            id: responseData.conversationId,
+            name: responseData.virtualFriendName
           }
         });
       } else if (type === "fastFriend" && typeof responseData === "number") {
