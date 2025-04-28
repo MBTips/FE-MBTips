@@ -71,7 +71,6 @@ const PageTracker = () => {
 const App = () => {
   useEffect(() => {
     initGA();
-    console.log("init");
   }, []);
 
   return (
