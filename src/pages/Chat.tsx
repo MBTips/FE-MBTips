@@ -20,14 +20,14 @@ interface ChatResponse {
 
 const Chat = () => {
   const { state } = useLocation();
-  const { mbti, mode, id = Date.now().toString() } = state;
+  const { mbti, mode, id = Date.now().toString(), name } = state;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const chatTitle = `${mbti}와 대화`;
+  const chatTitle = mode === "fastFriend" ? `${mbti}와 대화` : `${name}과 대화`;
   const assistantInfo = mbti;
   const assistantImgUrl = pickMbtiImage(assistantInfo);
   const storageKey = `chatMessages_${id}`;

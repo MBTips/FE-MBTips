@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import trackClickEvent from "@/utils/trackClickEvent";
 import ActionConfirmModal from "@/components/modal/ActionConfirmModal";
 import useAuthStore from "@/store/useAuthStore";
 
@@ -20,6 +21,7 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
   };
 
   const handleNavigate = () => {
+    trackClickEvent("홈", "친구 - 추가");
     if (isLoggedIn) {
       const type = mode === "빠른대화" ? "fastFriend" : "virtualFriend";
       navigate("/select-info", { state: { type: type } });

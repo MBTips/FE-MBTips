@@ -2,6 +2,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/header/Header";
 import useLayoutSize from "@/hooks/useLayoutSize";
+import trackClickEvent from "@/utils/trackClickEvent";
+
 const MbtiTestIntro = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
@@ -59,6 +61,7 @@ const MbtiTestIntro = () => {
           <button
             type="submit"
             className="mt-[60px] h-[60px] w-[320px] rounded-lg bg-primary-normal font-bold text-white hover:opacity-80 lg:w-[460px]"
+            onClick={() => trackClickEvent("바이럴 콘텐츠 소개", "")}
           >
             시작하기
           </button>
