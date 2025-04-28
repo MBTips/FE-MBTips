@@ -27,7 +27,8 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
       state: {
         mode: "virtualFriend",
         mbti: info.mbti,
-        id: info.virtualFriendId
+        id: info.virtualFriendId,
+        name: info.virtualFriendName
       }
     });
   };
