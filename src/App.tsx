@@ -21,6 +21,7 @@ import MbtiTestResult from "@/pages/MbtiTestResult";
 import CenteredLayout from "@/components/CenteredLayout";
 import { initGA, trackPageView } from "@/libs/analytics";
 import Error from "@/pages/Error";
+import useAuthStore from "@/store/useAuthStore";
 
 const PageTracker = () => {
   const location = useLocation();
@@ -69,8 +70,21 @@ const PageTracker = () => {
 };
 
 const App = () => {
+  const { logout } = useAuthStore();
+  const storageAuth = localStorage.getItem("auth-storage");
+  const parsedAuth = storageAuth ? JSON.parse(storageAuth) : null;
+
+  const checkSession = () => {
+    const expirationTime = new Date(
+      new Date(parsedAuth.loginTime).getTime() + 24 * 60 * 60 * 1000
+    );
+    const now = new Date();
+    if (now > expirationTime) logout();
+  };
+
   useEffect(() => {
     initGA();
+    checkSession();
   }, []);
 
   return (
