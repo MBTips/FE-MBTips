@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { Mbti } from "@/types/mbti";
+import { tips } from "@/mock/tips";
 import Header from "@/components/header/Header";
 import pickMbtiImage from "@/utils/pickMbtiImage";
-import { tips } from "@/mock/chatTips";
 import Error from "@/pages/Error";
 
 const ChatTips = () => {

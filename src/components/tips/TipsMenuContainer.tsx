@@ -11,7 +11,7 @@ const TipsMenuContainer = ({
     <>
       <TipsMenu mode="topic" mbti={mbti} />
       <TipsMenu mode="conversation" mbti={mbti} />
-      <TipsMenu mode="temporature" conversationId={conversationId} />
+      <TipsMenu mode="temperature" conversationId={conversationId} />
     </>
   );
 };

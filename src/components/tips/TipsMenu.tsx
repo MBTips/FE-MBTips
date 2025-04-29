@@ -5,7 +5,7 @@ const TipsMenu = ({
   mbti,
   conversationId
 }: {
-  mode: "topic" | "conversation" | "temporature";
+  mode: "topic" | "conversation" | "temperature";
   mbti?: string;
   conversationId?: string;
 }) => {
@@ -24,10 +24,10 @@ const TipsMenu = ({
       imageUrl = "/icon/lightbulb.svg";
       href = `/chat-tips/${mbti}`;
       break;
-    case "temporature":
+    case "temperature":
       text = "현재 대화의 온도 측정하기";
       imageUrl = "/icon/thermometer.svg";
-      href = `/chat-temporature/${conversationId}`;
+      href = `/chat-temperature/${conversationId}`;
       break;
     default:
       return;
