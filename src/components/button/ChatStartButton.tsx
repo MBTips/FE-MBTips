@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { trackEvent } from "@/libs/analytics";
 
 type ChatStartButtonProps = {
@@ -8,13 +8,17 @@ type ChatStartButtonProps = {
 
 const ChatStartButton = ({ mode, mbti }: ChatStartButtonProps) => {
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
 
   const handleNavigate = () => {
     switch (mode) {
       case "go-fast":
         trackEvent("Click", {
-          page: "홈",
-          element: "빠른 대화 시작"
+          page: pathname === "/mbti-test-result" ? "바이럴 콘텐츠 결과" : "홈",
+          element:
+            pathname === "/mbti-test-result"
+              ? "대화 시작하기"
+              : "빠른 대화 시작"
         });
         navigate("/select-info", { state: { type: "fastFriend", mbti } });
         break;

@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from "react";
+import { useLocation } from "react-router-dom";
 import IntroGuide from "@/components/IntroGuide";
 import Header from "@/components/header/Header";
 import ChatMessage from "@/components/ChatMessage";
 import ChatActionBar from "@/components/ChatActionBar";
-import pickMbtiImage from "@/utils/pickMbtiImage";
-import instance from "@/api/axios";
-import { useLocation } from "react-router-dom";
 import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
+import pickMbtiImage from "@/utils/pickMbtiImage";
+import { authInstance } from "@/api/axios";
 import { trackEvent } from "@/libs/analytics";
 
 interface Message {
@@ -18,81 +18,107 @@ interface ChatResponse {
   data: string;
 }
 
+interface GetChatHistoryAPIResponse {
+  data: ChatHistoryResponse[];
+}
+
+interface ChatHistoryResponse {
+  messageContent: string;
+  virtualFriendId: number | null;
+}
+
 const Chat = () => {
   const { state } = useLocation();
-  const { mbti, mode, id = Date.now().toString() } = state;
+  const { mbti, mode, id = Date.now().toString(), name } = state;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  const chatTitle = `${mbti}와 대화`;
-  const assistantInfo = mbti;
-  const assistantImgUrl = pickMbtiImage(assistantInfo);
+  const chatTitle = mode === "fastFriend" ? `${mbti}와 대화` : `${name}과 대화`;
+  const assistantImgUrl = pickMbtiImage(mbti);
   const storageKey = `chatMessages_${id}`;
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (mode === "virtualFriend") {
+        try {
+          const virtualFriendChatHistory =
+            await authInstance.get<GetChatHistoryAPIResponse>(
+              `/api/message/${id}`
+            );
+          const chatHistory = virtualFriendChatHistory.data.data;
+
+          const fetchedMessages: Message[] = chatHistory.map((msg) => ({
+            role: msg.virtualFriendId ? "assistant" : "user",
+            content: msg.messageContent
+          }));
+
+          setMessages(fetchedMessages);
+        } catch (error) {
+          console.error("채팅 불러오기 실패", error);
+        }
+      } else {
+        const storedMessage = sessionStorage.getItem(storageKey);
+        if (storedMessage) {
+          setMessages(JSON.parse(storedMessage));
+        }
+      }
+    };
+
+    fetchMessages();
+  }, [mode, id, storageKey]);
+
+  useEffect(() => {
+    if (mode !== "virtualFriend") {
+      sessionStorage.setItem(storageKey, JSON.stringify(messages));
+    }
+  }, [messages, mode, storageKey]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
 
-  useEffect(() => {
-    const stored = sessionStorage.getItem(storageKey);
-    if (stored) setMessages(JSON.parse(stored));
-  }, [storageKey]);
-
-  useEffect(() => {
-    sessionStorage.setItem(storageKey, JSON.stringify(messages));
-  }, [messages, storageKey]);
-
   const handleToggleTips = () => {
-    const nextAction = !isOpen;
-
+    const nextState = !isOpen;
     trackEvent("Click", {
       page: "채팅방",
-      element: nextAction ? "콘텐츠 열기" : "콘텐츠 닫기"
+      element: nextState ? "콘텐츠 열기" : "콘텐츠 닫기"
     });
-
-    setIsOpen(nextAction);
+    setIsOpen(nextState);
   };
 
   const handleSend = async (messageToSend: string) => {
     if (!messageToSend.trim()) return;
 
-    const newMessages: Message[] = [
+    const updatedMessages: Message[] = [
       ...messages,
       { role: "user", content: messageToSend }
     ];
-    setMessages(newMessages);
+    setMessages(updatedMessages);
     setInput("");
 
     try {
-      let url = "";
-      let payload = {};
+      const url =
+        mode === "fastFriend" ? "/api/fast-friend/message" : "/api/message";
+      const payload =
+        mode === "fastFriend"
+          ? { fastFriendId: id, content: messageToSend }
+          : { conversationId: id, messageContent: messageToSend };
 
-      if (mode === "fastFriend") {
-        url = "/api/fast-friend/message";
-        payload = { fastFriendId: id, content: messageToSend };
-      } else {
-        url = "/api/message";
-        payload = {
-          conversationId: id,
-          messageContent: messageToSend
-        };
-      }
-
-      const response = await instance.post<ChatResponse>(url, payload);
+      const { data } = await authInstance.post<ChatResponse>(url, payload);
 
       setMessages([
-        ...newMessages,
+        ...updatedMessages,
         {
           role: "assistant",
-          content: response.data.data || "응답이 없어요"
+          content: data.data || "응답이 없어요"
         }
       ]);
-    } catch (e) {
+    } catch (error) {
       setMessages([
-        ...newMessages,
+        ...updatedMessages,
         { role: "assistant", content: "오류가 발생했어요. 다시 시도해 주세요." }
       ]);
     }
@@ -104,7 +130,7 @@ const Chat = () => {
 
   const handleKeyup = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleSend(e.currentTarget.value);
+      handleSend(input);
     }
   };
 
@@ -115,12 +141,10 @@ const Chat = () => {
       <div className="flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
         <IntroGuide />
         {/* 메시지 리스트 */}
-        {messages.map((msg, index) => (
+        {messages.map((msg, idx) => (
           <div
-            key={index}
-            className={`flex ${
-              msg.role === "user" ? "justify-end" : "justify-start"
-            } items-start`}
+            key={idx}
+            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} items-start`}
           >
             {/* 캐릭터 아이콘 */}
             {msg.role === "assistant" && (

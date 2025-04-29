@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import TermsAndPrivacyModal from "@/components/modal/TermsAndPrivacyModal";
 import { trackEvent } from "@/libs/analytics";
 import { deleteUser } from "@/api/user";
+import Error from "@/pages/Error";
 
 type ModalType = "logout" | "withdraw" | "terms" | "privacy" | null;
 
@@ -26,7 +27,7 @@ const alertConfig = {
 
 const MyInfo = () => {
   const [modalType, setModalType] = useState<ModalType>(null);
-  const { logout } = useAuthStore();
+  const { logout, isLoggedIn } = useAuthStore();
   const navigate = useNavigate();
 
   const handleCancel = () => {
@@ -60,11 +61,15 @@ const MyInfo = () => {
   };
 
   const menuItems = [
-    { label: "이용약관", onClick: () => setModalType("terms") }, //TODO: 이용약관 팝업 구현 시 추가 필요
-    { label: "개인정보처리방침", onClick: () => setModalType("privacy") }, //TODO: 개인정보처리방침 팝업 구현 시 추가 필요
+    { label: "이용약관", onClick: () => setModalType("terms") },
+    { label: "개인정보처리방침", onClick: () => setModalType("privacy") },
     { label: "로그아웃", onClick: () => setModalType("logout") },
     { label: "회원탈퇴", onClick: () => setModalType("withdraw") }
   ];
+
+  if (!isLoggedIn) {
+    return <Error statusCode="401" />;
+  }
 
   return (
     <div className="relative flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">

@@ -56,6 +56,9 @@ const SelectInfo = () => {
       ? testResultMBTI
       : undefined;
 
+  const confirmButtonText =
+    type === "fastFriend" ? "대화 시작하기" : "친구 저장하기";
+
   const [selectedMBTI, setSelectedMBTI] = useState<{
     [key: string]: string | null;
   }>({
@@ -152,7 +155,7 @@ const SelectInfo = () => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  const handleStartChat = async () => {
+  const handleConfirmButton = async () => {
     const isMBTIComplete = Object.values(selectedMBTI).every(
       (val) => val !== null
     );
@@ -201,15 +204,9 @@ const SelectInfo = () => {
       if (type === "virtualFriend" && isVirtualFriendResponse(responseData)) {
         trackEvent("Click", {
           page: "친구 저장",
-          element: "대화 시작하기"
+          element: "친구 저장하기"
         });
-        navigate("/chat", {
-          state: {
-            mbti,
-            mode: type,
-            id: responseData.conversationId
-          }
-        });
+        navigate("/");
       } else if (type === "fastFriend" && typeof responseData === "number") {
         trackEvent("Click", {
           page: "빠른 대화 설정",
@@ -230,7 +227,7 @@ const SelectInfo = () => {
 
   return (
     <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
-      <Header title={headerTitle} />
+      <Header title={headerTitle} showShareIcon={false} />
 
       <div className="mx-auto w-[320px]">
         {/* MBTI 선택 */}
@@ -371,9 +368,9 @@ const SelectInfo = () => {
         {/* 대화 시작 버튼 */}
         <button
           className="my-[22px] h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white"
-          onClick={handleStartChat}
+          onClick={handleConfirmButton}
         >
-          대화 시작하기
+          {confirmButtonText}
         </button>
       </div>
     </div>
