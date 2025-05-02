@@ -176,7 +176,7 @@ const Chat = () => {
         onSend={() => handleSend(input)}
       />
 
-      {isOpen && <TipsMenuContainer />}
+      {isOpen && <TipsMenuContainer conversationId={id} mbti={mbti} />}
     </div>
   );
 };
