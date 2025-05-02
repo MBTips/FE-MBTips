@@ -2,9 +2,13 @@ import trackClickEvent from "@/utils/trackClickEvent";
 import { Link } from "react-router-dom";
 
 const TipsMenu = ({
-  mode
+  mode,
+  mbti,
+  conversationId
 }: {
-  mode: "topic" | "conversation" | "temporature";
+  mode: "topic" | "conversation" | "temperature";
+  mbti?: string;
+  conversationId?: string;
 }) => {
   let text = "";
   let tagElement = "";
@@ -16,19 +20,19 @@ const TipsMenu = ({
       text = "대화 주제 추천";
       tagElement = "대화 주제 추천";
       imageUrl = "/icon/starbubble.svg";
-      href = "/chat-recommend";
+      href = `/chat-recommend/${mbti}`;
       break;
     case "conversation":
       text = "대화 꿀팁";
       tagElement = "대화 꿀팁";
       imageUrl = "/icon/lightbulb.svg";
-      href = "/chat-tips";
+      href = `/chat-tips/${mbti}`;
       break;
-    case "temporature":
+    case "temperature":
       text = "현재 대화의 온도 측정하기";
       tagElement = "대화의 온도";
       imageUrl = "/icon/thermometer.svg";
-      href = "/chat-temporature";
+      href = `/chat-temperature/${conversationId}`;
       break;
     default:
       return;

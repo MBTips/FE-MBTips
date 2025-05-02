@@ -19,7 +19,7 @@ const Content = () => {
       element: "대화 시작하기"
     });
 
-    navigate("/select-info", { state: "fastFriend" });
+    navigate("/select-info", { state: { type: "fastFriend" } });
   };
 
   const renderContentWithLineBreaks = (text: string) => {
@@ -34,7 +34,7 @@ const Content = () => {
 
   return (
     <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
-      <Header title="상대방 정보선택" />
+      <Header title="콘텐츠" />
 
       <div className="flex flex-col gap-[36px] px-5 py-5">
         {/* 상단 배너 */}
