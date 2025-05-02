@@ -37,10 +37,8 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Mbtips</title>
-        <meta name="description" content="Mbtips 홈페이지입니다." />
-        <meta property="og:title" content="Mbtips" />
-        <meta property="og:image" content="/logo/logo.svg" />
+        <meta name="description" content="홈" />
+        <meta property="og:description" content="홈" />
       </Helmet>
 
       <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">

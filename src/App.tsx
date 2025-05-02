@@ -5,12 +5,13 @@ import {
   Route,
   useLocation
 } from "react-router-dom";
+import { initGA, trackPageView } from "@/libs/analytics";
 import Home from "@/pages/Home";
 import SelectInfo from "@/pages/SelectInfo";
 import Chat from "@/pages/Chat";
 import ChatRecommend from "@/pages/ChatRecommend";
 import ChatTips from "@/pages/ChatTips";
-import ChatTemporature from "@/pages/ChatTemporature";
+import ChatTemperature from "@/pages/ChatTemperature";
 import Content from "@/pages/Content";
 import Login from "@/pages/Login";
 import MyInfo from "@/pages/MyInfo";
@@ -19,8 +20,8 @@ import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
 import CenteredLayout from "@/components/CenteredLayout";
-import { initGA, trackPageView } from "@/libs/analytics";
 import Error from "@/pages/Error";
+import { Helmet } from "react-helmet";
 
 const PageTracker = () => {
   const location = useLocation();
@@ -74,33 +75,37 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <PageTracker />
-      <CenteredLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/select-info" element={<SelectInfo />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route
-            path="/chat-recommend/:virtualFriendId"
-            element={<ChatRecommend />}
-          />
-          <Route path="/chat-tips/:virtualFriendId" element={<ChatTips />} />
-          <Route
-            path="/chat-temporature/:conversationId"
-            element={<ChatTemporature />}
-          />
-          <Route path="/contents/:id" element={<Content />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/my-info" element={<MyInfo />} />
-          <Route path="/kakao-login" element={<KaKaoLogin />} />
-          <Route path="/mbti-test" element={<MbtiTestIntro />} />
-          <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
-          <Route path="/mbti-test-result" element={<MbtiTestResult />} />
-          <Route path="*" element={<Error statusCode="500" />} />
-        </Routes>
-      </CenteredLayout>
-    </Router>
+    <>
+      <Helmet>
+        <meta name="title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+        <meta property="og:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+      </Helmet>
+
+      <Router>
+        <PageTracker />
+        <CenteredLayout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/select-info" element={<SelectInfo />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat-recommend/:mbti" element={<ChatRecommend />} />
+            <Route path="/chat-tips/:mbti" element={<ChatTips />} />
+            <Route
+              path="/chat-temperature/:conversationId"
+              element={<ChatTemperature />}
+            />
+            <Route path="/contents/:id" element={<Content />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/my-info" element={<MyInfo />} />
+            <Route path="/kakao-login" element={<KaKaoLogin />} />
+            <Route path="/mbti-test" element={<MbtiTestIntro />} />
+            <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
+            <Route path="/mbti-test-result" element={<MbtiTestResult />} />
+            <Route path="*" element={<Error statusCode="500" />} />
+          </Routes>
+        </CenteredLayout>
+      </Router>
+    </>
   );
 };
 

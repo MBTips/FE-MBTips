@@ -1,11 +1,12 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import FormButton from "@/components/button/FormButton";
-import Header from "@/components/header/Header";
+import { Helmet } from "react-helmet";
 import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 import { authInstance } from "@/api/axios";
-import ToastMessage from "@/components/ToastMessage";
 import { trackEvent } from "@/libs/analytics";
+import FormButton from "@/components/button/FormButton";
+import Header from "@/components/header/Header";
+import ToastMessage from "@/components/ToastMessage";
 
 type FastFriendResponse = {
   header: {
@@ -55,6 +56,9 @@ const SelectInfo = () => {
     typeof location.state === "object" && testResultMBTI !== null
       ? testResultMBTI
       : undefined;
+
+  const confirmButtonText =
+    type === "fastFriend" ? "대화 시작하기" : "친구 저장하기";
 
   const [selectedMBTI, setSelectedMBTI] = useState<{
     [key: string]: string | null;
@@ -152,7 +156,7 @@ const SelectInfo = () => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  const handleStartChat = async () => {
+  const handleConfirmButton = async () => {
     const isMBTIComplete = Object.values(selectedMBTI).every(
       (val) => val !== null
     );
@@ -201,16 +205,9 @@ const SelectInfo = () => {
       if (type === "virtualFriend" && isVirtualFriendResponse(responseData)) {
         trackEvent("Click", {
           page: "친구 저장",
-          element: "대화 시작하기"
+          element: "친구 저장하기"
         });
-        navigate("/chat", {
-          state: {
-            mbti,
-            mode: type,
-            id: responseData.conversationId,
-            name: responseData.virtualFriendName
-          }
-        });
+        navigate("/");
       } else if (type === "fastFriend" && typeof responseData === "number") {
         trackEvent("Click", {
           page: "빠른 대화 설정",
@@ -230,154 +227,171 @@ const SelectInfo = () => {
   };
 
   return (
-    <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
-      <Header title={headerTitle} showShareIcon={false} />
+    <>
+      <Helmet>
+        <meta
+          name="description"
+          content={
+            type === "fastFriend" ? "상대방 정보 설정" : "친구 정보 저장"
+          }
+        />
+        <meta
+          property="og:description"
+          content={
+            type === "fastFriend" ? "상대방 정보 설정" : "친구 정보 저장"
+          }
+        />
+      </Helmet>
 
-      <div className="mx-auto w-[320px]">
-        {/* MBTI 선택 */}
-        <div className="mb-[40px] pt-[48px]">
-          <p className="text-[20px] leading-[30px] font-bold tracking-[-0.01em] whitespace-pre-line">
-            {selectInfoTitle}
-          </p>
+      <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+        <Header title={headerTitle} showShareIcon={false} />
 
-          <div className="grid grid-cols-4 gap-[24px_13px] pt-[24px]">
-            {mbtiOptions.map((option) => (
-              <FormButton
-                key={option}
-                size="md"
-                selected={isMBTISelected(option)}
-                onClick={() => handleMBTISelect(option)}
+        <div className="mx-auto w-[320px]">
+          {/* MBTI 선택 */}
+          <div className="mb-[40px] pt-[48px]">
+            <p className="text-[20px] leading-[30px] font-bold tracking-[-0.01em] whitespace-pre-line">
+              {selectInfoTitle}
+            </p>
+
+            <div className="grid grid-cols-4 gap-[24px_13px] pt-[24px]">
+              {mbtiOptions.map((option) => (
+                <FormButton
+                  key={option}
+                  size="md"
+                  selected={isMBTISelected(option)}
+                  onClick={() => handleMBTISelect(option)}
+                >
+                  {option}
+                </FormButton>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="h-[8px] w-full bg-[#EEF0F3]" />
+
+        <div className="mx-auto w-[320px]">
+          <div className="pt-[40px]">
+            <p className="text-[20px] leading-[30px] font-bold tracking-[-0.01em]">
+              정보 추가 입력
+            </p>
+
+            {/* 이름 입력 */}
+            <div className="flex flex-col gap-2 pt-[32px]">
+              <label
+                htmlFor="name"
+                className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600"
               >
-                {option}
-              </FormButton>
-            ))}
+                이름
+                {isNameRequired && <span className="text-red-500">*</span>}
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={handleNameChange}
+                className="h-[56px] w-full rounded-lg border border-gray-200 px-4 focus:border-primary-light focus:ring-primary-light focus:outline-none"
+                placeholder="이름"
+                maxLength={6}
+              />
+            </div>
+
+            {/* 나이 선택 */}
+            <div className="pt-[20px] pb-[12px]">
+              <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
+                나이
+              </p>
+              <div className="flex gap-[16px] pt-[16px]">
+                {ageOptions.map((option) => (
+                  <FormButton
+                    key={option}
+                    size="sm"
+                    selected={age === option}
+                    onClick={() => handleButtonClick(option, setAge, age)}
+                  >
+                    {option}
+                  </FormButton>
+                ))}
+              </div>
+            </div>
+
+            {/* 성별 선택 */}
+            <div className="pt-[20px] pb-[12px]">
+              <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
+                성별
+              </p>
+              <div className="flex gap-[16px] pt-[16px]">
+                {genderOptions.map((option) => (
+                  <FormButton
+                    key={option}
+                    size="sm"
+                    selected={gender === option}
+                    onClick={() => handleButtonClick(option, setGender, gender)}
+                  >
+                    {option}
+                  </FormButton>
+                ))}
+              </div>
+            </div>
+
+            {/* 관계 선택 */}
+            <div className="pt-[20px] pb-[20px]">
+              <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
+                상대방과 나의 관계
+              </p>
+              <div className="grid grid-cols-4 gap-[16px] pt-[16px]">
+                {relationshipOptions.map((option) => (
+                  <FormButton
+                    key={option}
+                    size="sm"
+                    selected={relationship === option}
+                    onClick={() =>
+                      handleButtonClick(option, setRelationship, relationship)
+                    }
+                  >
+                    {option}
+                  </FormButton>
+                ))}
+              </div>
+            </div>
+
+            {/* 관심사 선택 */}
+            <div className="pt-[20px] pb-[26px]">
+              <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
+                관심사
+              </p>
+              <div className="grid grid-cols-4 gap-[16px] pt-[16px]">
+                {interestOptions.map((option) => (
+                  <FormButton
+                    key={option}
+                    size="sm"
+                    selected={isInterestSelected(option)}
+                    onClick={() => handleInterestSelect(option)}
+                  >
+                    {option}
+                  </FormButton>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="h-[8px] w-full bg-[#EEF0F3]" />
-
-      <div className="mx-auto w-[320px]">
-        <div className="pt-[40px]">
-          <p className="text-[20px] leading-[30px] font-bold tracking-[-0.01em]">
-            정보 추가 입력
-          </p>
-
-          {/* 이름 입력 */}
-          <div className="flex flex-col gap-2 pt-[32px]">
-            <label
-              htmlFor="name"
-              className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600"
-            >
-              이름
-              {isNameRequired && <span className="text-red-500">*</span>}
-            </label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={handleNameChange}
-              className="h-[56px] w-full rounded-lg border border-gray-200 px-4 focus:border-primary-light focus:ring-primary-light focus:outline-none"
-              placeholder="이름"
-              maxLength={6}
+          {toastMessage && (
+            <ToastMessage
+              message={toastMessage}
+              onClose={() => setToastMessage(null)}
             />
-          </div>
+          )}
 
-          {/* 나이 선택 */}
-          <div className="pt-[20px] pb-[12px]">
-            <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
-              나이
-            </p>
-            <div className="flex gap-[16px] pt-[16px]">
-              {ageOptions.map((option) => (
-                <FormButton
-                  key={option}
-                  size="sm"
-                  selected={age === option}
-                  onClick={() => handleButtonClick(option, setAge, age)}
-                >
-                  {option}
-                </FormButton>
-              ))}
-            </div>
-          </div>
-
-          {/* 성별 선택 */}
-          <div className="pt-[20px] pb-[12px]">
-            <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
-              성별
-            </p>
-            <div className="flex gap-[16px] pt-[16px]">
-              {genderOptions.map((option) => (
-                <FormButton
-                  key={option}
-                  size="sm"
-                  selected={gender === option}
-                  onClick={() => handleButtonClick(option, setGender, gender)}
-                >
-                  {option}
-                </FormButton>
-              ))}
-            </div>
-          </div>
-
-          {/* 관계 선택 */}
-          <div className="pt-[20px] pb-[20px]">
-            <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
-              상대방과 나의 관계
-            </p>
-            <div className="grid grid-cols-4 gap-[16px] pt-[16px]">
-              {relationshipOptions.map((option) => (
-                <FormButton
-                  key={option}
-                  size="sm"
-                  selected={relationship === option}
-                  onClick={() =>
-                    handleButtonClick(option, setRelationship, relationship)
-                  }
-                >
-                  {option}
-                </FormButton>
-              ))}
-            </div>
-          </div>
-
-          {/* 관심사 선택 */}
-          <div className="pt-[20px] pb-[26px]">
-            <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
-              관심사
-            </p>
-            <div className="grid grid-cols-4 gap-[16px] pt-[16px]">
-              {interestOptions.map((option) => (
-                <FormButton
-                  key={option}
-                  size="sm"
-                  selected={isInterestSelected(option)}
-                  onClick={() => handleInterestSelect(option)}
-                >
-                  {option}
-                </FormButton>
-              ))}
-            </div>
-          </div>
+          {/* 대화 시작 버튼 */}
+          <button
+            className="my-[22px] h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white"
+            onClick={handleConfirmButton}
+          >
+            {confirmButtonText}
+          </button>
         </div>
-
-        {toastMessage && (
-          <ToastMessage
-            message={toastMessage}
-            onClose={() => setToastMessage(null)}
-          />
-        )}
-
-        {/* 대화 시작 버튼 */}
-        <button
-          className="my-[22px] h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white"
-          onClick={handleStartChat}
-        >
-          대화 시작하기
-        </button>
       </div>
-    </div>
+    </>
   );
 };
 
