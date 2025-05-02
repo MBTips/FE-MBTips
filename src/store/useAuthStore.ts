@@ -38,10 +38,8 @@ const useAuthStore = create(
         }
       },
       logout: () => {
-        set({
-          isLoggedIn: false,
-          accessToken: null
-        });
+        set(null);
+        window.location.href = "/";
         return { ok: true };
       }
     }),
