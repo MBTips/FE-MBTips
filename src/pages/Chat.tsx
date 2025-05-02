@@ -36,7 +36,7 @@ const Chat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const chatTitle = mode === "fastFriend" ? `${mbti}와 대화` : `${name}과 대화`;
+  const chatTitle = name ? `${name}과 대화` : `${mbti}와 대화`;
   const assistantImgUrl = pickMbtiImage(mbti);
   const storageKey = `chatMessages_${id}`;
 
