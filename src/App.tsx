@@ -106,11 +106,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/select-info" element={<SelectInfo />} />
           <Route path="/chat" element={<Chat />} />
-          <Route
-            path="/chat-recommend/:virtualFriendId"
-            element={<ChatRecommend />}
-          />
-          <Route path="/chat-tips/:virtualFriendId" element={<ChatTips />} />
+          <Route path="/chat-recommend/:mbti" element={<ChatRecommend />} />
+          <Route path="/chat-tips/:mbti" element={<ChatTips />} />
           <Route
             path="/chat-temporature/:conversationId"
             element={<ChatTemperature />}
