@@ -89,7 +89,7 @@ const App = () => {
 
   useEffect(() => {
     initGA();
-    if (parsedAuth) checkSession();
+    if (parsedAuth.accessToken) checkSession();
   }, []);
 
   return (
