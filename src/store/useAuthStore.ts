@@ -42,7 +42,11 @@ const useAuthStore = create(
         }
       },
       logout: () => {
-        set(null);
+        set({
+          isLoggedIn: false,
+          accessToken: null,
+          loginTime: null
+        });
         window.location.href = "/";
         return { ok: true };
       }
