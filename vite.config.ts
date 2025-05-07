@@ -54,6 +54,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
         {
           find: "@/libs",
           replacement: path.resolve(__dirname, "src/libs")
+        },
+        {
+          find: "@/mock",
+          replacement: path.resolve(__dirname, "src/mock")
         }
       ]
     }

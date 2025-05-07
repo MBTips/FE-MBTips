@@ -19,7 +19,7 @@ const Content = () => {
       element: "대화 시작하기"
     });
 
-    navigate("/select-info", { state: "fastFriend" });
+    navigate("/select-info", { state: { type: "fastFriend" } });
   };
 
   const renderContentWithLineBreaks = (text: string) => {

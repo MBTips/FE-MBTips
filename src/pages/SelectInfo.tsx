@@ -216,7 +216,8 @@ const SelectInfo = () => {
           state: {
             mbti,
             mode: type,
-            id: responseData
+            id: responseData,
+            name
           }
         });
       }
