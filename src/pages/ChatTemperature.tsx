@@ -16,7 +16,7 @@ const ChatTemperature = () => {
   const [temperature, setTemperature] = useState("");
 
   useEffect(() => {
-    const getTemporature = async () => {
+    const getTemperature = async () => {
       try {
         const res = await instance.get<TemperatureResponse>(
           `/api/addition/temperature/${conversationId}`
@@ -27,7 +27,7 @@ const ChatTemperature = () => {
       }
     };
 
-    getTemporature();
+    getTemperature();
   }, []);
 
   return (
