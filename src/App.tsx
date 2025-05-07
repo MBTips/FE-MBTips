@@ -109,7 +109,7 @@ const App = () => {
           <Route path="/chat-recommend/:mbti" element={<ChatRecommend />} />
           <Route path="/chat-tips/:mbti" element={<ChatTips />} />
           <Route
-            path="/chat-temporature/:conversationId"
+            path="/chat-temperature/:conversationId"
             element={<ChatTemperature />}
           />
           <Route path="/contents/:id" element={<Content />} />

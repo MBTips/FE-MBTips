@@ -10,6 +10,10 @@ interface AuthStore {
   logout: () => void;
 }
 
+interface LoginResponse {
+  data: string;
+}
+
 const useAuthStore = create(
   persist<AuthStore>(
     (set) => ({
@@ -23,11 +27,11 @@ const useAuthStore = create(
               ? `/api/kakao/login?code=${code}`
               : `/api/kakao/login?code=${code}&redirectUrl=https://localhost:5173/kakao-login`;
 
-          const res = await instance.get(requestURI);
+          const res = await instance.get<LoginResponse>(requestURI);
           const currentTime = new Date().toISOString();
           set({
             isLoggedIn: true,
-            accessToken: res.data.data as string,
+            accessToken: res.data.data,
             loginTime: currentTime
           });
           return {
