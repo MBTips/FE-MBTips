@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,8 +19,10 @@ import KaKaoLogin from "@/pages/KaKaoLogin";
 import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
-import CenteredLayout from "@/components/CenteredLayout";
 import Error from "@/pages/Error";
+import CenteredLayout from "@/components/CenteredLayout";
+import ToastMessage from "@/components/ToastMessage";
+import useAuthStore from "@/store/useAuthStore";
 
 const PageTracker = () => {
   const location = useLocation();
@@ -69,14 +71,37 @@ const PageTracker = () => {
 };
 
 const App = () => {
+  const { logout } = useAuthStore();
+  const [toastMessage, setToastMessage] = useState("");
+  const storageAuth = localStorage.getItem("auth-storage");
+  const parsedAuth = storageAuth ? JSON.parse(storageAuth).state : null;
+
+  const checkSession = () => {
+    const expirationTime = new Date(
+      new Date(parsedAuth.loginTime).getTime() + 24 * 60 * 60 * 1000
+    );
+    const now = new Date();
+    if (now > expirationTime) {
+      setToastMessage("로그인 세션이 만료되었습니다.");
+      logout();
+    }
+  };
+
   useEffect(() => {
     initGA();
+    if (parsedAuth) checkSession();
   }, []);
 
   return (
     <Router>
       <PageTracker />
       <CenteredLayout>
+        {toastMessage && (
+          <ToastMessage
+            message={toastMessage}
+            onClose={() => setToastMessage("")}
+          />
+        )}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/select-info" element={<SelectInfo />} />
