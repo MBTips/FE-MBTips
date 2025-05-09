@@ -39,7 +39,7 @@ const PageTracker = () => {
     { path: "/mbti-result", page: "바이럴 콘텐츠 결과" },
     { path: "/chat-recommend", page: "대화주제추천" },
     { path: "/chat-tips", page: "대화 꿀팁" },
-    { path: "/chat-temporature", page: "대화 온도" }
+    { path: "/chat-temperature", page: "대화 온도" }
   ];
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const App = () => {
 
   useEffect(() => {
     initGA();
-    if (parsedAuth) checkSession();
+    if (parsedAuth.accessToken) checkSession();
   }, []);
 
   return (
