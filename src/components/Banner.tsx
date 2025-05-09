@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { cls } from "@/utils/cls";
-import Indicator from "@/components/Indicator";
 import { trackEvent } from "@/libs/analytics";
+import Indicator from "@/components/Indicator";
 
 interface BannerImage {
   sm: string;

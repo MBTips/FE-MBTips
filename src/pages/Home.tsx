@@ -34,9 +34,9 @@ const Home = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+    <>
       <Header />
-      <main>
+      <main className="mt-14">
         <section aria-label="콘텐츠 배너">
           <Banner />
         </section>
@@ -44,7 +44,7 @@ const Home = () => {
           <div className="w-full px-[20px] py-[13px]">
             <SubTitle mode="빠른대화" />
           </div>
-          <div className="px-5 py-3">
+          <div className="flex justify-center px-5 py-3">
             <ChatStartButton mode={"go-fast"} />
           </div>
         </section>
@@ -64,7 +64,7 @@ const Home = () => {
           </div>
         </section>
       </main>
-    </div>
+    </>
   );
 };
 

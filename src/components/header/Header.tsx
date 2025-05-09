@@ -23,7 +23,7 @@ const Header = ({
 
   return (
     <>
-      <div className="fixed z-50 w-[360px] bg-white md:w-[375px] lg:w-[500px]">
+      <header className="fixed z-50 w-full bg-white lg:w-[500px]">
         {isHomepage ? (
           <MainHeader isLoggedIn={isLoggedIn} />
         ) : (
@@ -33,9 +33,9 @@ const Header = ({
             showShareIcon={showShareIcon}
           />
         )}
-      </div>
+      </header>
 
-      <div className="pt-14">{children}</div>
+      {children && <div className="pt-14">{children}</div>}
     </>
   );
 };
