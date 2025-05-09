@@ -19,7 +19,7 @@ const MbtiTestResult = () => {
   if (!result) return <div>404 error occured</div>;
 
   return (
-    <div className="flex h-[1008px] flex-col sm:w-[360px] md:w-[375px] lg:w-[500px]">
+    <div className="flex h-[1008px] w-full flex-col lg:w-[500px]">
       <Header title="결과" showShareIcon={false} />
       <main className="flex h-screen w-full flex-grow flex-col items-center bg-white px-5 py-5">
         <img

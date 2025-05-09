@@ -29,6 +29,7 @@ body {
 }
 
 main {
+  padding-top: 56px;
   background-color: white;
   font-size: 14px;
   width: 100vh;
