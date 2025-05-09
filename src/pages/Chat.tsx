@@ -135,7 +135,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex h-screen w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+    <div className="flex h-screen w-full flex-col bg-white  lg:w-[500px]">
       <Header title={chatTitle} />
 
       <div className="flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">

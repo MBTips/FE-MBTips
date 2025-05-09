@@ -29,18 +29,14 @@ body {
 }
 
 main {
-  @media screen and (min-width: 360px) {
-    background-color: white;
-    font-size: 14px;
-    width: 360px;
-  }
-  @media screen and (min-width: 375px) {
-    font-size: 16px;
-    width: 375px;
-  }
+  margin-top: 56px;
+  background-color: white;
+  font-size: 14px;
+  width: 100vh;
+  max-width: 500px;
+
   @media screen and (min-width: 500px) {
     font-size: 16px;
-    width: 500px;
   }
 }
 
