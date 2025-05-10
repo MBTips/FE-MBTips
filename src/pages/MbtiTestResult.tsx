@@ -4,9 +4,10 @@ import RestartButton from "@/components/button/RestartButton";
 import ChatStartButton from "@/components/button/ChatStartButton";
 import useLayoutSize from "@/hooks/useLayoutSize";
 import Header from "@/components/header/Header";
+import { useParams } from "react-router-dom";
 
 const MbtiTestResult = () => {
-  const mbti = localStorage.getItem("mbti-test-mbti") ?? "";
+  const { mbti } = useParams();
   const result = MBTI_RESULT_INFO[mbti as keyof typeof MBTI_RESULT_INFO];
   const size = useLayoutSize();
   const imageURL =
