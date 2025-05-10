@@ -6,7 +6,6 @@ import RestartButton from "@/components/button/RestartButton";
 import ChatStartButton from "@/components/button/ChatStartButton";
 import useLayoutSize from "@/hooks/useLayoutSize";
 import Header from "@/components/header/Header";
-import { useParams } from "react-router-dom";
 
 const MbtiTestResult = () => {
   const { mbti } = useParams();
@@ -46,7 +45,7 @@ const MbtiTestResult = () => {
         />
       </Helmet>
 
-      <div className="flex h-[1008px] flex-col sm:w-[360px] md:w-[375px] lg:w-[500px]">
+      <div className="flex h-[1008px] w-full flex-col lg:w-[500px]">
         <Header title="결과" showShareIcon={false} />
         <main className="flex h-screen w-full flex-grow flex-col items-center bg-white px-5 py-5">
           <img
