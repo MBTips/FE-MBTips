@@ -217,7 +217,8 @@ const SelectInfo = () => {
           state: {
             mbti,
             mode: type,
-            id: responseData
+            id: responseData,
+            name
           }
         });
       }
@@ -237,6 +238,12 @@ const SelectInfo = () => {
         />
         <meta
           property="og:description"
+          content={
+            type === "fastFriend" ? "상대방 정보 설정" : "친구 정보 저장"
+          }
+        />
+        <meta
+          property="twitter:description"
           content={
             type === "fastFriend" ? "상대방 정보 설정" : "친구 정보 저장"
           }

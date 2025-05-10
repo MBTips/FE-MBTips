@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,6 +6,7 @@ import {
   useLocation
 } from "react-router-dom";
 import { initGA, trackPageView } from "@/libs/analytics";
+import { Helmet } from "react-helmet";
 import Home from "@/pages/Home";
 import SelectInfo from "@/pages/SelectInfo";
 import Chat from "@/pages/Chat";
@@ -19,9 +20,10 @@ import KaKaoLogin from "@/pages/KaKaoLogin";
 import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
-import CenteredLayout from "@/components/CenteredLayout";
 import Error from "@/pages/Error";
-import { Helmet } from "react-helmet";
+import CenteredLayout from "@/components/CenteredLayout";
+import ToastMessage from "@/components/ToastMessage";
+import useAuthStore from "@/store/useAuthStore";
 
 const PageTracker = () => {
   const location = useLocation();
@@ -38,7 +40,7 @@ const PageTracker = () => {
     { path: "/mbti-result", page: "바이럴 콘텐츠 결과" },
     { path: "/chat-recommend", page: "대화주제추천" },
     { path: "/chat-tips", page: "대화 꿀팁" },
-    { path: "/chat-temporature", page: "대화 온도" }
+    { path: "/chat-temperature", page: "대화 온도" }
   ];
 
   useEffect(() => {
@@ -70,42 +72,71 @@ const PageTracker = () => {
 };
 
 const App = () => {
+  const { logout } = useAuthStore();
+  const [toastMessage, setToastMessage] = useState("");
+  const storageAuth = localStorage.getItem("auth-storage");
+  const parsedAuth = storageAuth ? JSON.parse(storageAuth).state : null;
+
+  const checkSession = () => {
+    const expirationTime = new Date(
+      new Date(parsedAuth.loginTime).getTime() + 24 * 60 * 60 * 1000
+    );
+    const now = new Date();
+    if (now > expirationTime) {
+      setToastMessage("로그인 세션이 만료되었습니다.");
+      logout();
+    }
+  };
+
   useEffect(() => {
     initGA();
+    if (parsedAuth.accessToken) checkSession();
   }, []);
 
   return (
-    <>
-      <Helmet>
-        <meta name="title" content="MBTips_MBTI AI 대화 시뮬레이션" />
-        <meta property="og:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
-      </Helmet>
+    <Router>
+      <PageTracker />
+      <CenteredLayout>
+        {toastMessage && (
+          <ToastMessage
+            message={toastMessage}
+            onClose={() => setToastMessage("")}
+          />
+        )}
 
-      <Router>
-        <PageTracker />
-        <CenteredLayout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/select-info" element={<SelectInfo />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/chat-recommend/:mbti" element={<ChatRecommend />} />
-            <Route path="/chat-tips/:mbti" element={<ChatTips />} />
-            <Route
-              path="/chat-temperature/:conversationId"
-              element={<ChatTemperature />}
-            />
-            <Route path="/contents/:id" element={<Content />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/my-info" element={<MyInfo />} />
-            <Route path="/kakao-login" element={<KaKaoLogin />} />
-            <Route path="/mbti-test" element={<MbtiTestIntro />} />
-            <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
-            <Route path="/mbti-test-result" element={<MbtiTestResult />} />
-            <Route path="*" element={<Error statusCode="500" />} />
-          </Routes>
-        </CenteredLayout>
-      </Router>
-    </>
+        <Helmet>
+          <meta name="title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+          <meta property="og:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+          <meta property="og:image" content="%PUBLIC_URL%/image/og_image.png" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+          <meta
+            property="twitter:image"
+            content="%PUBLIC_URL%/image/og_image.png"
+          />
+        </Helmet>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/select-info" element={<SelectInfo />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat-recommend/:mbti" element={<ChatRecommend />} />
+          <Route path="/chat-tips/:mbti" element={<ChatTips />} />
+          <Route
+            path="/chat-temperature/:conversationId"
+            element={<ChatTemperature />}
+          />
+          <Route path="/contents/:id" element={<Content />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/my-info" element={<MyInfo />} />
+          <Route path="/kakao-login" element={<KaKaoLogin />} />
+          <Route path="/mbti-test" element={<MbtiTestIntro />} />
+          <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
+          <Route path="/mbti-test-result" element={<MbtiTestResult />} />
+          <Route path="*" element={<Error statusCode="500" />} />
+        </Routes>
+      </CenteredLayout>
+    </Router>
   );
 };
 

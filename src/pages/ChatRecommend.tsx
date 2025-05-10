@@ -23,6 +23,7 @@ const ChatRecommend = () => {
       <Helmet>
         <meta name="description" content="대화 주제 추천" />
         <meta property="og:description" content="대화 주제 추천" />
+        <meta property="twitter:description" content="대화 주제 추천" />
       </Helmet>
 
       <div>

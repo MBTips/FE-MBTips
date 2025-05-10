@@ -17,7 +17,7 @@ const ChatTemperature = () => {
   const [temperature, setTemperature] = useState("");
 
   useEffect(() => {
-    const getTemporature = async () => {
+    const getTemperature = async () => {
       try {
         const res = await instance.get<TemperatureResponse>(
           `/api/addition/temperature/${conversationId}`
@@ -28,7 +28,7 @@ const ChatTemperature = () => {
       }
     };
 
-    getTemporature();
+    getTemperature();
   }, []);
 
   return (
@@ -36,6 +36,7 @@ const ChatTemperature = () => {
       <Helmet>
         <meta name="description" content="대화의 온도" />
         <meta property="og:description" content="대화의 온도" />
+        <meta property="twitter:description" content="대화의 온도" />
       </Helmet>
 
       <div>

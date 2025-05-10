@@ -1,9 +1,9 @@
-import Header from "@/components/header/Header";
+import { Helmet } from "react-helmet";
+import { useNavigate, useParams } from "react-router-dom";
 import { CONTENT_DATA } from "@/constants/CONTENT";
 import { trackEvent } from "@/libs/analytics";
 import React from "react";
-import { Helmet } from "react-helmet";
-import { useNavigate, useParams } from "react-router-dom";
+import Header from "@/components/header/Header";
 
 const Content = () => {
   const navigate = useNavigate();
@@ -48,6 +48,16 @@ const Content = () => {
         />
         <meta
           property="og:description"
+          content={
+            id === "1"
+              ? "상대방 MBTI 알아보기 Test"
+              : id === "2"
+                ? "썸탈 때 대화주제 추천(MBTI별)"
+                : "MBTI 별 피해야할 대화스타일/주제"
+          }
+        />
+        <meta
+          property="twitter:description"
           content={
             id === "1"
               ? "상대방 MBTI 알아보기 Test"

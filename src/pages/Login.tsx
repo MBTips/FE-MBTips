@@ -31,6 +31,7 @@ const Login = () => {
       <Helmet>
         <meta name="description" content="로그인/회원가입" />
         <meta property="og:description" content="로그인/회원가입" />
+        <meta property="twitter:description" content="로그인/회원가입" />
       </Helmet>
 
       <main className="flex h-[812px] flex-col items-center bg-white">
