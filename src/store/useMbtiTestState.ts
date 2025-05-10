@@ -5,6 +5,7 @@ type PageNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 interface MbtiTestState {
   currentPage: PageNumber;
   currentMbti: string;
+  pageIsCompleted: Record<PageNumber, boolean>;
   mbtiLog: Record<string, number>;
   setNextStep: () => void;
   setPreviousStep: () => void;
@@ -18,6 +19,20 @@ interface MbtiTestState {
 const useMbtiTestState = create<MbtiTestState>((set, get) => ({
   currentPage: 1,
   currentMbti: "",
+  pageIsCompleted: {
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+    8: false,
+    9: false,
+    10: false,
+    11: false,
+    12: false
+  },
   mbtiLog: {
     E: 0,
     I: 0,
@@ -30,6 +45,7 @@ const useMbtiTestState = create<MbtiTestState>((set, get) => ({
   },
   setNextStep: () => {
     const currentPage = get().currentPage;
+    const currentMbti = get().currentMbti;
     const setPageComplete = get().setPageComplete;
 
     setPageComplete(currentPage); // 현재 페이지를 완료로 설정
@@ -37,7 +53,8 @@ const useMbtiTestState = create<MbtiTestState>((set, get) => ({
     // 마지막 페이지라면 결과 페이지로 이동
     if (currentPage === 12) {
       get().getMbtiByLog();
-      if (get().currentMbti !== "") window.location.href = "/mbti-test-result";
+      if (currentMbti !== "")
+        window.location.href = `/mbti-test-result/${currentMbti}`;
       else console.error("mbti가 비어있습니다.");
     } else {
       // 그렇지 않다면 페이지를 증가시킴
