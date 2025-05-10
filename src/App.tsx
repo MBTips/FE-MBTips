@@ -6,6 +6,7 @@ import {
   useLocation
 } from "react-router-dom";
 import { initGA, trackPageView } from "@/libs/analytics";
+import { Helmet } from "react-helmet";
 import Home from "@/pages/Home";
 import SelectInfo from "@/pages/SelectInfo";
 import Chat from "@/pages/Chat";
@@ -102,6 +103,18 @@ const App = () => {
             onClose={() => setToastMessage("")}
           />
         )}
+
+        <Helmet>
+          <meta property="og:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+          <meta property="og:image" content="%PUBLIC_URL%/image/og_image.png" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+          <meta
+            property="twitter:image"
+            content="%PUBLIC_URL%/image/og_image.png"
+          />
+        </Helmet>
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/select-info" element={<SelectInfo />} />

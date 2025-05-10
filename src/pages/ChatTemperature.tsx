@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import instance from "@/api/axios";
 import Header from "@/components/header/Header";
 
@@ -31,28 +32,40 @@ const ChatTemperature = () => {
   }, []);
 
   return (
-    <div>
-      <Header title="대화 온도" showPreviousIcon={true} showShareIcon={true} />
-      <main className="mx-auto flex h-screen flex-col px-5 py-6">
-        <img
-          src={"/image/image_온도.png"}
-          alt="mbti 온도 이미지"
-          className="h-auto w-full rounded-2xl"
+    <>
+      <Helmet>
+        <meta name="description" content="대화의 온도" />
+        <meta property="og:description" content="대화의 온도" />
+        <meta property="twitter:description" content="대화의 온도" />
+      </Helmet>
+
+      <div>
+        <Header
+          title="대화 온도"
+          showPreviousIcon={true}
+          showShareIcon={true}
         />
-        <h1 className="mt-9 text-xl font-bold">
-          방금까지 나눈 대화로 온도를 측정했어요!
-        </h1>
-        {temperature ? (
-          <span className="mt-6 whitespace-pre-wrap">
-            현재까지 나눈 대화의 온도는 {temperature}도에요
-          </span>
-        ) : (
-          <span className="mt-6 whitespace-pre-wrap">
-            ...대화의 온도를 불러오는 중
-          </span>
-        )}
-      </main>
-    </div>
+        <main className="mx-auto flex h-screen flex-col px-5 py-6">
+          <img
+            src={"/image/image_온도.png"}
+            alt="mbti 온도 이미지"
+            className="h-auto w-full rounded-2xl"
+          />
+          <h1 className="mt-9 text-xl font-bold">
+            방금까지 나눈 대화로 온도를 측정했어요!
+          </h1>
+          {temperature ? (
+            <span className="mt-6 whitespace-pre-wrap">
+              현재까지 나눈 대화의 온도는 {temperature}도에요
+            </span>
+          ) : (
+            <span className="mt-6 whitespace-pre-wrap">
+              ...대화의 온도를 불러오는 중
+            </span>
+          )}
+        </main>
+      </div>
+    </>
   );
 };
 
