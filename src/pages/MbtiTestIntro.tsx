@@ -32,10 +32,6 @@ const MbtiTestIntro = () => {
   return (
     <>
       <Helmet>
-        <meta
-          name="title"
-          content="MBTips_MBTI AI 대화 시뮬레이션 - 상대방 MBTI 알아보기"
-        />
         <meta name="description" content="상대방 MBTI 알아보기 Test" />
         <meta
           property="og:title"
