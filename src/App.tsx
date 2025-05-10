@@ -90,7 +90,7 @@ const App = () => {
 
   useEffect(() => {
     initGA();
-    if (parsedAuth.accessToken) checkSession();
+    if (parsedAuth && parsedAuth.accessToken) checkSession();
   }, []);
 
   return (
@@ -105,7 +105,6 @@ const App = () => {
         )}
 
         <Helmet>
-          <meta name="title" content="MBTips_MBTI AI 대화 시뮬레이션" />
           <meta property="og:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
           <meta property="og:image" content="%PUBLIC_URL%/image/og_image.png" />
           <meta name="twitter:card" content="summary_large_image" />

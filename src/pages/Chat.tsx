@@ -140,6 +140,7 @@ const Chat = () => {
       <Helmet>
         <meta name="description" content={`${mbti}와의 대화창`} />
         <meta property="og:description" content={`${mbti}와의 대화창`} />
+        <meta property="twitter:description" content={`${mbti}와의 대화창`} />
       </Helmet>
 
       <div className="flex h-screen w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">

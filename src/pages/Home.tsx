@@ -37,7 +37,6 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <meta name="description" content="홈" />
         <meta property="og:description" content="홈" />
         <meta property="twitter:description" content="홈" />
       </Helmet>

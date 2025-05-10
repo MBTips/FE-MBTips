@@ -23,6 +23,7 @@ const ChatTips = () => {
       <Helmet>
         <meta name="description" content="대화 꿀팁" />
         <meta property="og:description" content="대화 꿀팁" />
+        <meta property="twitter:description" content="대화 꿀팁" />
       </Helmet>
 
       <div>
