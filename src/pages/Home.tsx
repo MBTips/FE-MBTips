@@ -34,7 +34,7 @@ const Home = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+    <>
       <Header />
       <main>
         <section aria-label="콘텐츠 배너">
@@ -64,7 +64,7 @@ const Home = () => {
           </div>
         </section>
       </main>
-    </div>
+    </>
   );
 };
 

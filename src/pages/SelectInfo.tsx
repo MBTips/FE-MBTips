@@ -227,7 +227,7 @@ const SelectInfo = () => {
   };
 
   return (
-    <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+    <div className="flex w-full  flex-col bg-white lg:w-[500px]">
       <Header title={headerTitle} showShareIcon={false} />
 
       <div className="mx-auto w-[320px]">
