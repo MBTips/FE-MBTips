@@ -144,7 +144,7 @@ const Chat = () => {
       </Helmet>
 
       <div className="flex h-screen w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
-        <Header title={chatTitle} />
+        <Header title={chatTitle} showShareIcon={false}/>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
           <IntroGuide />

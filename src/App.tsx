@@ -131,7 +131,7 @@ const App = () => {
           <Route path="/kakao-login" element={<KaKaoLogin />} />
           <Route path="/mbti-test" element={<MbtiTestIntro />} />
           <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
-          <Route path="/mbti-test-result" element={<MbtiTestResult />} />
+          <Route path="/mbti-test-result/:mbti" element={<MbtiTestResult />} />
           <Route path="*" element={<Error statusCode="500" />} />
         </Routes>
       </CenteredLayout>
