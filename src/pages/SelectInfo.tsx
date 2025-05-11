@@ -250,9 +250,9 @@ const SelectInfo = () => {
         />
       </Helmet>
 
-      <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
-        <Header title={headerTitle} showShareIcon={false} />
+      <Header title={headerTitle} showShareIcon={false} />
 
+      <main>
         <div className="mx-auto w-[320px]">
           {/* MBTI 선택 */}
           <div className="mb-[40px] pt-[48px]">
@@ -397,7 +397,7 @@ const SelectInfo = () => {
             {confirmButtonText}
           </button>
         </div>
-      </div>
+      </main>
     </>
   );
 };

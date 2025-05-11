@@ -75,39 +75,41 @@ const MyInfo = () => {
     <div className="relative flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
       <Header title="내 정보" showShareIcon={false} />
 
-      <ul className="mt-[10px] flex flex-col justify-between gap-[20px]">
-        {menuItems.map((item, index) => (
-          <li
-            key={index}
-            className="flex h-[56px] cursor-pointer items-center justify-between px-5 py-4 hover:bg-gray-50"
-            onClick={item.onClick}
-          >
-            <span className="text-base font-medium text-gray-900">
-              {item.label}
-            </span>
-            <img
-              src="/icon/arrow_right.svg"
-              alt="arrow"
-              className="h-6 w-6 text-gray-600"
-            />
-          </li>
-        ))}
-      </ul>
+      <main>
+        <ul className="mt-[10px] flex flex-col justify-between gap-[20px]">
+          {menuItems.map((item, index) => (
+            <li
+              key={index}
+              className="flex h-[56px] cursor-pointer items-center justify-between px-5 py-4 hover:bg-gray-50"
+              onClick={item.onClick}
+            >
+              <span className="text-base font-medium text-gray-900">
+                {item.label}
+              </span>
+              <img
+                src="/icon/arrow_right.svg"
+                alt="arrow"
+                className="h-6 w-6 text-gray-600"
+              />
+            </li>
+          ))}
+        </ul>
 
-      {modalType && (modalType === "logout" || modalType === "withdraw") && (
-        <ActionConfirmModal
-          title={alertConfig[modalType].title}
-          message={alertConfig[modalType].message}
-          cancelText={alertConfig[modalType].cancelText}
-          confirmText={alertConfig[modalType].confirmText}
-          onCancel={handleCancel}
-          onConfirm={handleConfirm}
-        />
-      )}
+        {modalType && (modalType === "logout" || modalType === "withdraw") && (
+          <ActionConfirmModal
+            title={alertConfig[modalType].title}
+            message={alertConfig[modalType].message}
+            cancelText={alertConfig[modalType].cancelText}
+            confirmText={alertConfig[modalType].confirmText}
+            onCancel={handleCancel}
+            onConfirm={handleConfirm}
+          />
+        )}
 
-      {modalType && (modalType === "terms" || modalType === "privacy") && (
-        <TermsAndPrivacyModal mode={modalType} closeModal={handleCancel} />
-      )}
+        {modalType && (modalType === "terms" || modalType === "privacy") && (
+          <TermsAndPrivacyModal mode={modalType} closeModal={handleCancel} />
+        )}
+      </main>
     </div>
   );
 };

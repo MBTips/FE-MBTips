@@ -1,7 +1,6 @@
 import { ChangeEvent, KeyboardEvent } from "react";
 import ToggleChatTipsButton from "@/components/button/ToggleChatTipsButton";
 import MessageInput from "@/components/input/MessageInput";
-import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
 
 interface ChatActionProps {
   isOpen: boolean;
@@ -21,7 +20,7 @@ const ChatActionBar = ({
   onSend
 }: ChatActionProps) => {
   return (
-    <div className="flex h-[68px] w-full items-center justify-center border-t border-gray-100 bg-white">
+    <section className="flex h-[68px] w-full items-center justify-center border-t border-gray-100 bg-white">
       <ToggleChatTipsButton isOpen={isOpen} setIsOpen={setIsOpen} />
       <MessageInput value={value} onChange={onChange} onKeyUp={onKeyUp} />
       <img
@@ -32,7 +31,7 @@ const ChatActionBar = ({
         width={40}
         height={40}
       />
-    </div>
+    </section>
   );
 };
 
