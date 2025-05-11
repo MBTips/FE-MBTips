@@ -6,7 +6,6 @@ import RestartButton from "@/components/button/RestartButton";
 import ChatStartButton from "@/components/button/ChatStartButton";
 import useLayoutSize from "@/hooks/useLayoutSize";
 import Header from "@/components/header/Header";
-import { useParams } from "react-router-dom";
 
 const MbtiTestResult = () => {
   const { mbti } = useParams();
