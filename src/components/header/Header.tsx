@@ -20,7 +20,7 @@ const Header = ({
 
   return (
     <>
-      <header className="fixed top-0 z-50 w-[360px] bg-white md:w-[375px] lg:w-[500px]">
+      <header className="fixed top-0 z-50 w-full bg-white lg:w-[500px]">
         {isHomepage ? (
           <MainHeader isLoggedIn={isLoggedIn} />
         ) : (
