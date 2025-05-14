@@ -72,7 +72,7 @@ const MyInfo = () => {
   }
 
   return (
-    <div className="relative flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+    <div className="relative flex flex-col bg-white lg:w-[500px]">
       <Header title="내 정보" showShareIcon={false} />
 
       <ul className="mt-[10px] flex flex-col justify-between gap-[20px]">

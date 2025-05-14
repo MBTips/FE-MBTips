@@ -41,7 +41,7 @@ const Home = () => {
         <meta property="twitter:description" content="홈" />
       </Helmet>
 
-      <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+      <div className="flex w-full flex-col bg-white lg:w-[500px]">
         <Header />
         <main>
           <section aria-label="콘텐츠 배너">
