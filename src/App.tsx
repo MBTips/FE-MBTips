@@ -108,13 +108,13 @@ const App = () => {
           <meta property="og:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
           <meta
             property="og:image"
-            content={`${import.meta.env.VITE_API_BASE_URL}/image/og_image.png`}
+            content={`${import.meta.env.VITE_API_BASE_URL}image/og_image.png`}
           />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
           <meta
             property="twitter:image"
-            content={`${import.meta.env.VITE_API_BASE_URL}/image/og_image.png`}
+            content={`${import.meta.env.VITE_API_BASE_URL}image/og_image.png`}
           />
         </Helmet>
 
