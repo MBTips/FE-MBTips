@@ -143,10 +143,9 @@ const Chat = () => {
         <meta property="twitter:description" content={`${mbti}와의 대화창`} />
       </Helmet>
 
-      <div className="flex h-screen w-full flex-col bg-white lg:w-[500px]">
-        <Header title={chatTitle} showShareIcon={false} />
-
-        <div className="flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
+      <Header title={chatTitle} showShareIcon={false} />
+      <main>
+        <section className="h-[calc(100vh-124px)] flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
           <IntroGuide />
           {/* 메시지 리스트 */}
           {messages.map((msg, idx) => (
@@ -173,7 +172,7 @@ const Chat = () => {
           ))}
 
           <div ref={bottomRef} />
-        </div>
+        </section>
 
         <ChatActionBar
           isOpen={isOpen}
@@ -185,7 +184,7 @@ const Chat = () => {
         />
 
         {isOpen && <TipsMenuContainer conversationId={id} mbti={mbti} />}
-      </div>
+      </main>
     </>
   );
 };

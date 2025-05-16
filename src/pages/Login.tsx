@@ -34,7 +34,7 @@ const Login = () => {
         <meta property="twitter:description" content="로그인/회원가입" />
       </Helmet>
 
-      <main className="flex h-[812px] flex-col items-center bg-white">
+      <main className="!mt-0 flex h-[812px] flex-col items-center bg-white">
         <img
           src={isPC ? "/image/login/banner_lg.png" : "/image/login/banner.png"}
           alt="로그인 페이지 이미지"

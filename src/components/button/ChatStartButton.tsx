@@ -39,7 +39,7 @@ const ChatStartButton = ({ mode, mbti }: ChatStartButtonProps) => {
   };
   return (
     <button
-      className="flex h-[56px] w-[320px] items-center justify-center rounded-lg bg-primary-normal font-bold text-white md:w-[335px] lg:w-[460px]"
+      className="flex h-[56px] w-full items-center justify-center rounded-lg bg-primary-normal font-bold text-white lg:w-[460px]"
       onClick={handleNavigate}
     >
       대화 시작하기

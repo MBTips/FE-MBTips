@@ -56,7 +56,7 @@ const SubHeader = ({
 
   return (
     <>
-      <header className="relative flex h-[56px] w-full items-center justify-between border-b border-gray-100 bg-white">
+      <div className="relative flex h-[56px] w-full items-center justify-between border-b border-gray-100 bg-white">
         {showPreviousIcon && (
           <img
             src="/public/icon/arrow_left.svg"
@@ -85,7 +85,7 @@ const SubHeader = ({
             />
           </button>
         )}
-      </header>
+      </div>
 
       {isLeaveChatModalOpen && (
         <ActionConfirmModal
