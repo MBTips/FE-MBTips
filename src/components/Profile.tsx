@@ -40,7 +40,7 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
     <div className="relative h-[192px] w-[157px] overflow-hidden rounded-[8px] border border-[#EEEEEE] bg-white lg:w-[200px]">
       <button onClick={handleDelete}>
         <img
-          src="/public/icon/dustbin.svg"
+          src="/icon/dustbin.svg"
           alt="Delete"
           className="absolute top-3 right-3 h-5 w-5 cursor-pointer"
           width={16}
@@ -48,7 +48,7 @@ const Profile = ({ info, deleteIndex, setVirtualFriendList }: ProfileProps) => {
         />
       </button>
       <img
-        src={`/public/image/${info.mbti}_profile.png`}
+        src={`/image/${info.mbti}_profile.png`}
         alt="Profile"
         className="absolute top-[12px] left-[11px] h-12 w-12 rounded-full object-cover"
       />

@@ -59,7 +59,7 @@ const SubHeader = ({
       <div className="relative flex h-[56px] w-full items-center justify-between border-b border-gray-100 bg-white">
         {showPreviousIcon && (
           <img
-            src="/public/icon/arrow_left.svg"
+            src="/icon/arrow_left.svg"
             alt="Go To Back"
             className="absolute left-4 cursor-pointer"
             width={9}
@@ -77,12 +77,7 @@ const SubHeader = ({
             onClick={() => setShareModalIsOpen(true)}
             className="absolute right-4"
           >
-            <img
-              src="/public/icon/share.svg"
-              alt="Share"
-              width={16}
-              height={16}
-            />
+            <img src="/icon/share.svg" alt="Share" width={16} height={16} />
           </button>
         )}
       </div>
