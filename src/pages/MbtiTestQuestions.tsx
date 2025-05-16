@@ -45,25 +45,23 @@ const MbtiTestQuestions = () => {
           />
         </Helmet>
 
-        <div className="flex flex-col sm:w-[360px] md:w-[375px] lg:w-[500px]">
-          <Header title="상대방 MBTI 유추 테스트" />
-          <main className="flex h-full flex-col items-center justify-center bg-white whitespace-pre-wrap ">
-            <span className="text-lg font-medium text-gray-500">
-              {content.number}/12
-            </span>
-            <h1 className="mt-[20px] text-center text-3xl font-medium whitespace-pre-wrap">
-              {content.question}
-            </h1>
-            <img
-              src={`/icon/mbti_test_${currentPage}.svg`}
-              alt="mbti 테스트 과정 이미지"
-              className="mt-10"
-            />
-            <div className="mt-[93px]">
-              <MbtiAnswerButtons content={content.answers} />
-            </div>
-          </main>
-        </div>
+        <Header title="상대방 MBTI 유추 테스트" />
+        <main className="flex h-full flex-col items-center justify-center bg-white whitespace-pre-wrap ">
+          <span className="text-lg font-medium text-gray-500">
+            {content.number}/12
+          </span>
+          <h1 className="mt-[20px] text-center text-3xl font-medium whitespace-pre-wrap">
+            {content.question}
+          </h1>
+          <img
+            src={`/icon/mbti_test_${currentPage}.svg`}
+            alt="mbti 테스트 과정 이미지"
+            className="mt-10"
+          />
+          <div className="mt-[60px]">
+            <MbtiAnswerButtons content={content.answers} />
+          </div>
+        </main>
       </>
     );
   } else return <Error statusCode="404" />;

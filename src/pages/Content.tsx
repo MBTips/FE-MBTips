@@ -68,10 +68,10 @@ const Content = () => {
         />
       </Helmet>
 
-      <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+      <div className="flex w-full flex-col bg-white lg:w-[500px]">
         <Header title="콘텐츠" />
 
-        <div className="flex flex-col gap-[36px] px-5 py-5">
+        <main className="flex flex-col gap-[36px] px-5 py-5">
           {/* 상단 배너 */}
           <div className="relative overflow-hidden rounded-[16px] bg-gray-100">
             <picture>
@@ -104,7 +104,7 @@ const Content = () => {
           >
             대화 시작하기
           </button>
-        </div>
+        </main>
       </div>
     </>
   );
