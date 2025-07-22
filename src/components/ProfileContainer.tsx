@@ -15,6 +15,7 @@ const ProfileContainer = ({
       {list.map((el, index) => (
         <Profile
           key={index}
+          mode="friend"
           info={el}
           deleteIndex={index}
           setVirtualFriendList={setVirtualFriendList}
