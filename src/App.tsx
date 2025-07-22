@@ -6,6 +6,7 @@ import {
   useLocation
 } from "react-router-dom";
 import { initGA, trackPageView } from "@/libs/analytics";
+import { Helmet } from "react-helmet";
 import Home from "@/pages/Home";
 import SelectInfo from "@/pages/SelectInfo";
 import Chat from "@/pages/Chat";
@@ -39,7 +40,7 @@ const PageTracker = () => {
     { path: "/mbti-result", page: "바이럴 콘텐츠 결과" },
     { path: "/chat-recommend", page: "대화주제추천" },
     { path: "/chat-tips", page: "대화 꿀팁" },
-    { path: "/chat-temporature", page: "대화 온도" }
+    { path: "/chat-temperature", page: "대화 온도" }
   ];
 
   useEffect(() => {
@@ -89,7 +90,7 @@ const App = () => {
 
   useEffect(() => {
     initGA();
-    if (parsedAuth) checkSession();
+    if (parsedAuth && parsedAuth.accessToken) checkSession();
   }, []);
 
   return (
@@ -102,6 +103,21 @@ const App = () => {
             onClose={() => setToastMessage("")}
           />
         )}
+
+        <Helmet>
+          <meta property="og:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+          <meta
+            property="og:image"
+            content={`${import.meta.env.VITE_API_BASE_URL}image/og_image.png`}
+          />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="MBTips_MBTI AI 대화 시뮬레이션" />
+          <meta
+            property="twitter:image"
+            content={`${import.meta.env.VITE_API_BASE_URL}image/og_image.png`}
+          />
+        </Helmet>
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/select-info" element={<SelectInfo />} />
@@ -118,7 +134,7 @@ const App = () => {
           <Route path="/kakao-login" element={<KaKaoLogin />} />
           <Route path="/mbti-test" element={<MbtiTestIntro />} />
           <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
-          <Route path="/mbti-test-result" element={<MbtiTestResult />} />
+          <Route path="/mbti-test-result/:mbti" element={<MbtiTestResult />} />
           <Route path="*" element={<Error statusCode="500" />} />
         </Routes>
       </CenteredLayout>

@@ -10,6 +10,7 @@ import ChatStartButton from "@/components/button/ChatStartButton";
 import Header from "@/components/header/Header";
 import useAuthStore from "@/store/useAuthStore";
 import ProfileContainer from "@/components/ProfileContainer";
+import { Helmet } from "react-helmet";
 import TopicProfileContainer from "@/components/TopicProfileContainer";
 
 const Home = () => {
@@ -35,48 +36,55 @@ const Home = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className="flex w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
-      <Header />
-      <main>
-        <section aria-label="콘텐츠 배너">
-          <Banner />
-        </section>
+    <>
+      <Helmet>
+        <meta property="og:description" content="홈" />
+        <meta property="twitter:description" content="홈" />
+      </Helmet>
 
-        <section className="mt-5 w-full" aria-label="빠른 대화">
-          <div className="w-full px-[20px] py-[13px]">
-            <SubTitle mode="빠른대화" />
-          </div>
-          <div className="px-5 py-3">
-            <ChatStartButton mode={"go-fast"} />
-          </div>
-        </section>
+      <div className="flex w-full flex-col bg-white lg:w-[500px]">
+        <Header />
+        <main>
+          <section aria-label="콘텐츠 배너">
+            <Banner />
+          </section>
 
-        <section aria-label="주제별 대화방">
-          <div className="w-full px-[20px] py-[21px]">
-            <SubTitle mode="주제별대화방" />
-          </div>
-          <div className="flex justify-center pb-[11.35px]">
-            <TopicProfileContainer />
-          </div>
-        </section>
+          <section className="mt-5" aria-label="빠른 대화">
+            <div className="w-full px-[20px] py-[13px]">
+              <SubTitle mode="빠른대화" />
+            </div>
+            <div className="px-5 py-3">
+              <ChatStartButton mode={"go-fast"} />
+            </div>
+          </section>
 
-        <section aria-label="친구 목록">
-          <div className="w-full px-[20px] py-[21px]">
-            <SubTitle mode="친구목록" />
-          </div>
-          <div className="flex justify-center pb-[12px]">
-            {isLoggedIn && virtualFreindList.length > 0 ? (
-              <ProfileContainer
-                list={virtualFreindList}
-                setVirtualFriendList={setVirtualFriendList}
-              />
-            ) : (
-              <StrokeBanner />
-            )}
-          </div>
-        </section>
-      </main>
-    </div>
+          <section aria-label="주제별 대화방">
+            <div className="w-full px-[20px] py-[21px]">
+              <SubTitle mode="주제별대화방" />
+            </div>
+            <div className="flex justify-center pb-[11.35px]">
+              <TopicProfileContainer />
+            </div>
+          </section>
+
+          <section aria-label="친구 목록">
+            <div className="px-[20px] py-[21px]">
+              <SubTitle mode="친구목록" />
+            </div>
+            <div className="flex justify-center pb-[12px]">
+              {isLoggedIn && virtualFreindList.length > 0 ? (
+                <ProfileContainer
+                  list={virtualFreindList}
+                  setVirtualFriendList={setVirtualFriendList}
+                />
+              ) : (
+                <StrokeBanner />
+              )}
+            </div>
+          </section>
+        </main>
+      </div>
+    </>
   );
 };
 

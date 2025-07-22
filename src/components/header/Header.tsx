@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import SubHeader from "@/components/header/SubHeader";
 import MainHeader from "@/components/header/MainHeader";
@@ -8,14 +7,12 @@ type HeaderProps = {
   title?: string;
   showPreviousIcon?: boolean;
   showShareIcon?: boolean;
-  children?: ReactNode;
 };
 
 const Header = ({
   title = "",
   showPreviousIcon = true,
-  showShareIcon = true,
-  children
+  showShareIcon = true
 }: HeaderProps) => {
   const { pathname } = useLocation();
   const { isLoggedIn } = useAuthStore();
@@ -23,7 +20,7 @@ const Header = ({
 
   return (
     <>
-      <div className="fixed z-50 w-[360px] bg-white md:w-[375px] lg:w-[500px]">
+      <header className="fixed top-0 z-50 w-full bg-white lg:w-[500px]">
         {isHomepage ? (
           <MainHeader isLoggedIn={isLoggedIn} />
         ) : (
@@ -33,9 +30,7 @@ const Header = ({
             showShareIcon={showShareIcon}
           />
         )}
-      </div>
-
-      <div className="pt-14">{children}</div>
+      </header>
     </>
   );
 };

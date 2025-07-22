@@ -45,7 +45,7 @@ const Banner = () => {
   }, []);
 
   return (
-    <div className="relative flex h-[184px] w-full">
+    <div className="relative h-[184px] w-screen max-w-[500px]">
       <Link
         to={order === 0 ? "/mbti-test" : `/contents/${order}`}
         className="absolute h-full w-full"
@@ -67,11 +67,11 @@ const Banner = () => {
             )}
           >
             <source media="(min-width: 500px)" srcSet={image.lg} />
-            <source media="(min-width: 375px)" srcSet={image.md} />
+            <source media="(min-width: 375px)" srcSet={image.sm} />
             <img
               src={image.sm}
               alt={image.description}
-              className="h-full w-full object-cover"
+              className="h-full w-full"
             />
           </picture>
         ))}

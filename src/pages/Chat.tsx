@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from "react";
 import { useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { authInstance } from "@/api/axios";
+import { trackEvent } from "@/libs/analytics";
 import IntroGuide from "@/components/IntroGuide";
 import Header from "@/components/header/Header";
 import ChatMessage from "@/components/ChatMessage";
 import ChatActionBar from "@/components/ChatActionBar";
 import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
 import pickMbtiImage from "@/utils/pickMbtiImage";
-import { authInstance } from "@/api/axios";
-import { trackEvent } from "@/libs/analytics";
 
 interface Message {
   role: "user" | "assistant";
@@ -135,49 +136,56 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex h-screen w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
-      <Header title={chatTitle} />
+    <>
+      <Helmet>
+        <meta name="description" content={`${mbti}와의 대화창`} />
+        <meta property="og:description" content={`${mbti}와의 대화창`} />
+        <meta property="twitter:description" content={`${mbti}와의 대화창`} />
+      </Helmet>
 
-      <div className="flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
-        <IntroGuide />
-        {/* 메시지 리스트 */}
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} items-start`}
-          >
-            {/* 캐릭터 아이콘 */}
-            {msg.role === "assistant" && (
-              <img
-                src={assistantImgUrl}
-                alt="MBTI ICON"
-                className="mr-[9px] h-[36px] w-[36px] shrink-0 rounded-full border border-gray-200 object-cover"
-              />
-            )}
-            {/* 채팅 메시지 */}
-            <div className="mt-3.5">
-              <ChatMessage
-                message={msg.content}
-                myMessage={msg.role === "user"}
-              />
+      <Header title={chatTitle} showShareIcon={false} />
+      <main>
+        <section className="h-[calc(100vh-124px)] flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
+          <IntroGuide />
+          {/* 메시지 리스트 */}
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} items-start`}
+            >
+              {/* 캐릭터 아이콘 */}
+              {msg.role === "assistant" && (
+                <img
+                  src={assistantImgUrl}
+                  alt="MBTI ICON"
+                  className="mr-[9px] h-[36px] w-[36px] shrink-0 rounded-full border border-gray-200 object-cover"
+                />
+              )}
+              {/* 채팅 메시지 */}
+              <div className="mt-3.5">
+                <ChatMessage
+                  message={msg.content}
+                  myMessage={msg.role === "user"}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        <div ref={bottomRef} />
-      </div>
+          <div ref={bottomRef} />
+        </section>
 
-      <ChatActionBar
-        isOpen={isOpen}
-        setIsOpen={handleToggleTips}
-        value={input}
-        onChange={handleChange}
-        onKeyUp={handleKeyup}
-        onSend={() => handleSend(input)}
-      />
+        <ChatActionBar
+          isOpen={isOpen}
+          setIsOpen={handleToggleTips}
+          value={input}
+          onChange={handleChange}
+          onKeyUp={handleKeyup}
+          onSend={() => handleSend(input)}
+        />
 
-      {isOpen && <TipsMenuContainer conversationId={id} mbti={mbti} />}
-    </div>
+        {isOpen && <TipsMenuContainer conversationId={id} mbti={mbti} />}
+      </main>
+    </>
   );
 };
 

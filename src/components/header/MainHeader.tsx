@@ -11,20 +11,15 @@ const MainHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   };
 
   return (
-    <header className="flex h-[56px] w-full items-center justify-between bg-white px-5">
+    <div className="flex h-[56px] w-full items-center justify-between bg-white pl-5">
       <Link to="/" className="flex items-center">
-        <img
-          src="/public/icon/mbtipslogo.svg"
-          alt="Logo"
-          width={110}
-          height={31}
-        />
+        <img src="/icon/mbtipslogo.svg" alt="Logo" width={110} height={31} />
       </Link>
       {!isLoggedIn ? (
         <LoginButton />
       ) : (
         <img
-          src="/public/icon/people.svg"
+          src="/icon/people.svg"
           alt="Login Done"
           className="mx-auto mr-[20px] cursor-pointer"
           width={24}
@@ -32,7 +27,7 @@ const MainHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           onClick={handleNavigate}
         />
       )}
-    </header>
+    </div>
   );
 };
 

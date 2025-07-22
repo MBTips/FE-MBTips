@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import instance from "@/api/axios";
 import Header from "@/components/header/Header";
 
@@ -16,7 +17,7 @@ const ChatTemperature = () => {
   const [temperature, setTemperature] = useState("");
 
   useEffect(() => {
-    const getTemporature = async () => {
+    const getTemperature = async () => {
       try {
         const res = await instance.get<TemperatureResponse>(
           `/api/addition/temperature/${conversationId}`
@@ -27,11 +28,17 @@ const ChatTemperature = () => {
       }
     };
 
-    getTemporature();
+    getTemperature();
   }, []);
 
   return (
-    <div>
+    <>
+      <Helmet>
+        <meta name="description" content="대화의 온도" />
+        <meta property="og:description" content="대화의 온도" />
+        <meta property="twitter:description" content="대화의 온도" />
+      </Helmet>
+
       <Header title="대화 온도" showPreviousIcon={true} showShareIcon={true} />
       <main className="mx-auto flex h-screen flex-col px-5 py-6">
         <img
@@ -52,7 +59,7 @@ const ChatTemperature = () => {
           </span>
         )}
       </main>
-    </div>
+    </>
   );
 };
 
