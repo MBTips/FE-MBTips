@@ -79,8 +79,8 @@ const SelectInfo = () => {
   const [name, setName] = useState<string>("");
   const [age, setAge] = useState<string | null>(null);
   const [gender, setGender] = useState<string | null>(null);
-  const [relationship, setRelationship] = useState<string | null>(null);
-  const [interest, setInterest] = useState<string[]>([]);
+  const [job, setJob] = useState<string | null>(null);
+  const [freeSetting, setFreeSetting] = useState<string>("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -97,27 +97,15 @@ const SelectInfo = () => {
   const mbtiOptions = ["E", "N", "F", "P", "I", "S", "T", "J"];
   const ageOptions = ["10대", "20대", "30대 이상"];
   const genderOptions = ["여자", "남자"];
-  const relationshipOptions = [
-    "부모",
-    "자녀",
-    "친구",
-    "짝사랑",
-    "이별",
-    "연인",
-    "선생님",
-    "직장동료"
-  ];
-  const interestOptions = [
-    "연애",
-    "결혼",
-    "취미",
-    "사회생활",
-    "여행",
-    "운동",
-    "심리",
-    "뷰티/패션",
-    "음식",
-    "인간관계"
+  const jobOptions = [
+    "연습생",
+    "아이돌",
+    "스포츠선수",
+    "배우",
+    "작가",
+    "스트리머",
+    "유튜버",
+    "프로게이머"
   ];
 
   const handleMBTISelect = (option: string) => {
@@ -133,18 +121,8 @@ const SelectInfo = () => {
     return selectedMBTI[group] === option;
   };
 
-  const handleInterestSelect = (option: string) => {
-    if (interest.includes(option)) {
-      setInterest((prevInterests) =>
-        prevInterests.filter((item) => item !== option)
-      );
-    } else {
-      setInterest((prevInterests) => [...prevInterests, option]);
-    }
-  };
-
-  const isInterestSelected = (option: string) => {
-    return interest.includes(option);
+  const handleFreeSettingChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setFreeSetting(e.target.value);
   };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -206,7 +184,7 @@ const SelectInfo = () => {
     const commonData = {
       gender: gender === "남자" ? "MALE" : gender === "여자" ? "FEMALE" : null,
       mbti,
-      interests: interest
+      freeSetting
     };
 
     const selectedData = isVirtualFriend
@@ -214,13 +192,13 @@ const SelectInfo = () => {
           ...commonData,
           friendName: name,
           age: mapAgeToNumber(age),
-          relationship
+          job
         }
       : {
           ...commonData,
           fastFriendName: name,
           fastFriendAge: mapAgeToNumber(age),
-          fastFriendRelationship: relationship
+          fastFriendJob: job
         };
 
     const apiUrl = isVirtualFriend ? "api/virtual-friend" : "api/fast-friend";
@@ -387,20 +365,18 @@ const SelectInfo = () => {
                 </div>
               </div>
 
-              {/* 관계 선택 */}
+              {/* 직업 선택 */}
               <div className="pt-[20px] pb-[20px]">
                 <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
-                  상대방과 나의 관계
+                  직업
                 </p>
                 <div className="grid grid-cols-4 gap-[16px] pt-[16px]">
-                  {relationshipOptions.map((option) => (
+                  {jobOptions.map((option) => (
                     <FormButton
                       key={option}
                       size="sm"
-                      selected={relationship === option}
-                      onClick={() =>
-                        handleButtonClick(option, setRelationship, relationship)
-                      }
+                      selected={job === option}
+                      onClick={() => handleButtonClick(option, setJob, job)}
                     >
                       {option}
                     </FormButton>
@@ -408,22 +384,18 @@ const SelectInfo = () => {
                 </div>
               </div>
 
-              {/* 관심사 선택 */}
+              {/* 자유 설정 */}
               <div className="pt-[20px] pb-[26px]">
                 <p className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600">
-                  관심사
+                  자유 설정
                 </p>
-                <div className="grid grid-cols-4 gap-[16px] pt-[16px]">
-                  {interestOptions.map((option) => (
-                    <FormButton
-                      key={option}
-                      size="sm"
-                      selected={isInterestSelected(option)}
-                      onClick={() => handleInterestSelect(option)}
-                    >
-                      {option}
-                    </FormButton>
-                  ))}
+                <div className="pt-[8px]">
+                  <textarea
+                    value={freeSetting}
+                    onChange={handleFreeSettingChange}
+                    className="h-[92px] w-full resize-none overflow-y-auto rounded-lg border border-gray-300 px-4 py-4 text-sm focus:border-primary-light focus:ring-primary-light focus:outline-none"
+                    placeholder="상황, 상대방과의 관계, 세계관 등을 입력해주세요"
+                  />
                 </div>
               </div>
             </div>
