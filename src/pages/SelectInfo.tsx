@@ -155,9 +155,10 @@ const SelectInfo = () => {
       // topicChat은 바로 채팅으로 이동
       trackClickEvent("오픈채팅 - 내 정보 입력", "대화 시작하기");
       navigate("/chat", {
+        // FIXME: 추후 수정 필요 (오픈 채팅 기능)
         state: {
           mbti: "ENFP", // 기본 MBTI 또는 선택된 MBTI
-          mode: "fastFriend",
+          mode: "topicChat",
           id: Date.now().toString(),
           name,
           chatTitle,

@@ -55,10 +55,18 @@ const PageTracker = () => {
       }
       // select-info 페이지에서 state로 분기
       else if (pathname === "/select-info" && path === pathname) {
-        if (state === "fastFriend" && page === "빠른 대화 설정") {
-          trackPageView(path, page);
-        } else if (state === "virtualFriend" && page === "친구 저장") {
-          trackPageView(path, page);
+        if (state.type === "fastFriend") {
+          trackPageView(path, "빠른 대화 설정");
+        } else if (state.type === "virtualFriend") {
+          trackPageView(path, "친구 저장");
+        } else if (state.type === "topicChat") {
+          trackPageView(path, "오픈채팅 - 내 정보 입력");
+        }
+      } else if (pathname === "/chat" && path === pathname) {
+        if (state.mode === "topicChat") {
+          trackPageView(path, "오픈채팅방");
+        } else {
+          trackPageView(path, "채팅방");
         }
       }
       // 나머지 일반 path
