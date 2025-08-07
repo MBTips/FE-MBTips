@@ -62,7 +62,9 @@ const PageTracker = () => {
         } else if (state.type === "topicChat") {
           trackPageView(path, "오픈채팅 - 내 정보 입력");
         }
-      } else if (pathname === "/chat" && path === pathname) {
+      }
+      // chat 페이지에서 state로 분기
+      else if (pathname === "/chat" && path === pathname) {
         if (state.mode === "topicChat") {
           trackPageView(path, "오픈채팅방");
         } else {
