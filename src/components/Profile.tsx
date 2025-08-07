@@ -49,7 +49,7 @@ const Profile = ({
         }
       });
     } else if (mode === "topic" && topicData) {
-      trackClickEvent("홈", "주제별 대화방"); //FIXME: 기획 내용 정해지면 수정
+      trackClickEvent("홈", "오픈채팅 입장하기");
       navigate("/select-info", {
         state: {
           type: "topicChat",
