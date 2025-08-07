@@ -6,7 +6,7 @@ import Header from "@/components/header/Header";
 import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 import { authInstance } from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";
-import { trackEvent } from "@/libs/analytics";
+import trackClickEvent from "@/utils/trackClickEvent";
 
 type FastFriendResponse = {
   header: {
@@ -153,14 +153,12 @@ const SelectInfo = () => {
         return showToast("이름을 입력해주세요");
       }
       // topicChat은 바로 채팅으로 이동
-      trackEvent("Click", {
-        page: "내 정보입력",
-        element: "대화 시작하기"
-      });
+      trackClickEvent("오픈채팅 - 내 정보 입력", "대화 시작하기");
       navigate("/chat", {
+        // FIXME: 추후 수정 필요 (오픈 채팅 기능)
         state: {
           mbti: "ENFP", // 기본 MBTI 또는 선택된 MBTI
-          mode: "fastFriend",
+          mode: "topicChat",
           id: Date.now().toString(),
           name,
           chatTitle,
@@ -211,16 +209,10 @@ const SelectInfo = () => {
       const responseData = response.data.data;
 
       if (isVirtualFriend && isVirtualFriendResponse(responseData)) {
-        trackEvent("Click", {
-          page: "친구 저장",
-          element: "친구 저장하기"
-        });
+        trackClickEvent("친구 저장", "친구 저장하기");
         navigate("/");
       } else if (isFastFriend && typeof responseData === "number") {
-        trackEvent("Click", {
-          page: "빠른 대화 설정",
-          element: "대화 시작하기"
-        });
+        trackClickEvent("빠른 대화 설정", "대화 시작하기");
         navigate("/chat", {
           state: {
             mbti,
