@@ -3,16 +3,19 @@ import Profile from "@/components/Profile";
 type TopicData = {
   chatTitle: string;
   description: string;
+  image: string;
 };
 
 const topicData: TopicData[] = [
   {
-    chatTitle: "T의 대화",
-    description: "mbti t인사람들 모임"
+    chatTitle: "N의 대화",
+    description: "망상력 N% 대화방",
+    image: "/image/N의_대화.svg"
   },
   {
     chatTitle: "F의 대화",
-    description: "mbti f인사람들 모임"
+    description: "F 감성 대화방",
+    image: "/image/F의_대화.svg"
   }
 ];
 

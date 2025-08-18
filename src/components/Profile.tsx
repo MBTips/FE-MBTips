@@ -12,6 +12,7 @@ interface ProfileProps {
   topicData?: {
     chatTitle: string;
     description: string;
+    image: string;
   };
 }
 const Profile = ({
@@ -64,8 +65,7 @@ const Profile = ({
     if (mode === "friend" && info) {
       return `/public/image/${info.mbti}_profile.png`;
     } else if (mode === "topic" && topicData) {
-      //FIXME: 디자인 정해지면 수정
-      return "/icon/starbubble.svg";
+      return topicData.image;
     }
     return "";
   };
