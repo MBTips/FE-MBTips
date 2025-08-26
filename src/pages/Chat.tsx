@@ -30,14 +30,21 @@ interface ChatHistoryResponse {
 
 const Chat = () => {
   const { state } = useLocation();
-  const { mbti, mode, id = Date.now().toString(), name } = state;
+  const {
+    mbti,
+    mode,
+    id = Date.now().toString(),
+    name,
+    chatTitle: openChatTitle
+  } = state;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const chatTitle = name ? `${name}과 대화` : `${mbti}와 대화`;
+  const chatTitle =
+    openChatTitle || (name ? `${name}과 대화` : `${mbti}와 대화`);
   const assistantImgUrl = pickMbtiImage(mbti);
   const storageKey = `chatMessages_${id}`;
 
@@ -146,7 +153,7 @@ const Chat = () => {
       <Header title={chatTitle} showShareIcon={false} />
       <main>
         <section className="h-[calc(100vh-124px)] flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
-          <IntroGuide />
+          <IntroGuide mode={mode} chatTitle={openChatTitle} />
           {/* 메시지 리스트 */}
           {messages.map((msg, idx) => (
             <div
@@ -181,9 +188,12 @@ const Chat = () => {
           onChange={handleChange}
           onKeyUp={handleKeyup}
           onSend={() => handleSend(input)}
+          mode={mode}
         />
 
-        {isOpen && <TipsMenuContainer conversationId={id} mbti={mbti} />}
+        {mode !== "topicChat" && isOpen && (
+          <TipsMenuContainer conversationId={id} mbti={mbti} />
+        )}
       </main>
     </>
   );

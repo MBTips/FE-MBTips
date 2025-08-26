@@ -9,6 +9,7 @@ interface ChatActionProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyUp: (e: KeyboardEvent<HTMLInputElement>) => void;
   onSend: () => void;
+  mode?: string;
 }
 
 const ChatActionBar = ({
@@ -17,12 +18,23 @@ const ChatActionBar = ({
   value,
   onChange,
   onKeyUp,
-  onSend
+  onSend,
+  mode
 }: ChatActionProps) => {
+  const isTopicChat = mode === "topicChat";
+
   return (
     <section className="flex h-[68px] w-full items-center justify-center border-t border-gray-100 bg-white">
-      <ToggleChatTipsButton isOpen={isOpen} setIsOpen={setIsOpen} />
-      <MessageInput value={value} onChange={onChange} onKeyUp={onKeyUp} />
+      {!isTopicChat && (
+        <ToggleChatTipsButton isOpen={isOpen} setIsOpen={setIsOpen} />
+      )}
+      <MessageInput
+        value={value}
+        onChange={onChange}
+        onKeyUp={onKeyUp}
+        mode={mode}
+      />
+
       <img
         className={`ml-4 ${value ? "cursor-pointer" : "cursor-not-allowed"}`}
         onClick={onSend}
