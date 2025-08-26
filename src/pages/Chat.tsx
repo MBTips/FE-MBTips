@@ -35,8 +35,7 @@ const Chat = () => {
     mode,
     id = Date.now().toString(),
     name,
-    chatTitle: openChatTitle,
-    description: _description
+    chatTitle: openChatTitle
   } = state;
 
   const [messages, setMessages] = useState<Message[]>([]);
