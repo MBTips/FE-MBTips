@@ -21,6 +21,7 @@ import MbtiTestIntro from "@/pages/MbtiTestIntro";
 import MbtiTestQuestions from "@/pages/MbtiTestQuestions";
 import MbtiTestResult from "@/pages/MbtiTestResult";
 import Error from "@/pages/Error";
+
 import CenteredLayout from "@/components/CenteredLayout";
 import ToastMessage from "@/components/ToastMessage";
 import useAuthStore from "@/store/useAuthStore";
@@ -145,6 +146,7 @@ const App = () => {
           <Route path="/mbti-test" element={<MbtiTestIntro />} />
           <Route path="/mbti-test-progress" element={<MbtiTestQuestions />} />
           <Route path="/mbti-test-result/:mbti" element={<MbtiTestResult />} />
+
           <Route path="*" element={<Error statusCode="500" />} />
         </Routes>
       </CenteredLayout>

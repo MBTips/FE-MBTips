@@ -55,7 +55,8 @@ const Profile = ({
         state: {
           type: "topicChat",
           chatTitle: topicData.chatTitle,
-          description: topicData.description
+          description: topicData.description,
+          openChatId: topicData.chatTitle === "N의 대화" ? 1 : 2 // 임시 ID
         }
       });
     }

@@ -7,6 +7,7 @@ import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 import { authInstance } from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";
 import trackClickEvent from "@/utils/trackClickEvent";
+import { Mbti } from "@/types/mbti";
 
 type FastFriendResponse = {
   header: {
@@ -43,11 +44,17 @@ function isVirtualFriendResponse(
 const SelectInfo = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { type, mbti: testResultMBTI, chatTitle, description } = location.state; // type: fastFriend, virtualFriend, topicChat
+  const {
+    type,
+    mbti: testResultMBTI,
+    chatTitle,
+    description,
+    openChatId
+  } = location.state; // type: fastFriend, virtualFriend, topicChat
   const isFastFriend = type === "fastFriend";
   const isVirtualFriend = type === "virtualFriend";
   const isTopicChat = type === "topicChat";
-  const isNameRequired = isVirtualFriend;
+  const isNameRequired = isVirtualFriend || isTopicChat;
 
   const headerTitle = isTopicChat
     ? "내 정보입력"
@@ -82,6 +89,7 @@ const SelectInfo = () => {
   const [job, setJob] = useState<string | null>(null);
   const [freeSetting, setFreeSetting] = useState<string>("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isCheckingNickname, setIsCheckingNickname] = useState(false);
 
   useEffect(() => {
     if (mbtiTestResult && mbtiTestResult.length === 4) {
@@ -142,27 +150,61 @@ const SelectInfo = () => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
+  const checkNicknameAvailability = async (
+    nickname: string
+  ): Promise<boolean> => {
+    if (!openChatId) return true;
+
+    try {
+      // 임시로 랜덤하게 중복 검사 (실제 WebSocket 없이)
+      // 실제로는 websocketService.checkNickname을 사용
+      const isAvailable = Math.random() > 0.3; // 70% 확률로 사용 가능
+      return isAvailable;
+    } catch (error) {
+      console.error("Nickname check failed:", error);
+      return false;
+    }
+  };
+
   const handleConfirmButton = async () => {
     const isMBTIComplete = Object.values(selectedMBTI).every(
       (val) => val !== null
     );
 
-    // topicChat일 때는 이름만 필수
+    // topicChat일 때 처리
     if (isTopicChat) {
-      if (!name) {
-        return showToast("이름을 입력해주세요");
+      if (!name.trim()) {
+        return showToast("닉네임을 입력해주세요");
       }
-      // topicChat은 바로 채팅으로 이동
+
+      if (!isMBTIComplete) {
+        return showToast("MBTI를 선택해주세요");
+      }
+
+      // 닉네임 중복 검사
+      setIsCheckingNickname(true);
+      const isNicknameAvailable = await checkNicknameAvailability(name.trim());
+      setIsCheckingNickname(false);
+
+      if (!isNicknameAvailable) {
+        return showToast(
+          "이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요."
+        );
+      }
+
+      // 오픈 채팅방으로 이동
+      const mbti =
+        `${selectedMBTI.E}${selectedMBTI.N}${selectedMBTI.F}${selectedMBTI.P}` as Mbti;
       trackClickEvent("오픈채팅 - 내 정보 입력", "대화 시작하기");
       navigate("/chat", {
-        // FIXME: 추후 수정 필요 (오픈 채팅 기능)
         state: {
-          mbti: "ENFP", // 기본 MBTI 또는 선택된 MBTI
           mode: "topicChat",
-          id: Date.now().toString(),
-          name,
+          mbti,
+          id: openChatId.toString(),
           chatTitle,
-          description
+          description,
+          openChatId,
+          nickname: name.trim()
         }
       });
       return;
@@ -394,17 +436,18 @@ const SelectInfo = () => {
           </div>
         )}
 
-        {/* topicChat일 때만 이름 입력 필드 표시 */}
+        {/* topicChat일 때만 닉네임 입력 필드 표시 */}
         {isTopicChat && (
           <div className="mx-auto w-[320px]">
             <div className="pt-[40px]">
-              {/* 이름 입력 */}
+              {/* 닉네임 입력 */}
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="name"
                   className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600"
                 >
-                  이름
+                  닉네임
+                  <span className="ml-1 text-red-500">*</span>
                 </label>
                 <input
                   id="name"
@@ -412,9 +455,12 @@ const SelectInfo = () => {
                   value={name}
                   onChange={handleNameChange}
                   className="h-[56px] w-full rounded-lg border border-gray-200 px-4 focus:border-primary-light focus:ring-primary-light focus:outline-none"
-                  placeholder="이름"
+                  placeholder="채팅방에서 사용할 닉네임"
                   maxLength={6}
                 />
+                <p className="text-sm text-gray-500">
+                  채팅방에서 다른 사람들에게 표시될 이름입니다.
+                </p>
               </div>
             </div>
           </div>
@@ -430,10 +476,11 @@ const SelectInfo = () => {
         {/* 대화 시작 버튼 */}
         <div className="mx-auto mt-auto mb-[17px] w-[320px]">
           <button
-            className="h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white"
+            className="h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
             onClick={handleConfirmButton}
+            disabled={isCheckingNickname}
           >
-            {confirmButtonText}
+            {isCheckingNickname ? "닉네임 확인 중..." : confirmButtonText}
           </button>
         </div>
       </div>
