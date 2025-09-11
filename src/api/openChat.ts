@@ -38,10 +38,18 @@ export const getOpenChatMessages = async (
     const response = await authInstance.get<OpenChatMessagesResponse>(
       `/api/open-chat/${openChatId}${params}`
     );
-    return response.data.data;
+
+    // API 응답 데이터 검증
+    if (response.data && response.data.data) {
+      return response.data.data;
+    } else {
+      console.warn("API 응답 데이터가 예상 형식과 다름:", response.data);
+      return { messages: [], hasMore: false };
+    }
   } catch (error) {
     console.error("Failed to fetch open chat messages:", error);
-    throw new Error("채팅 메시지를 불러올 수 없습니다.");
+    // 오류 발생 시 빈 데이터 반환 (앱이 중단되지 않도록)
+    return { messages: [], hasMore: false };
   }
 };
 

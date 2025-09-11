@@ -8,7 +8,7 @@ import { authInstance } from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";
 import trackClickEvent from "@/utils/trackClickEvent";
 import { Mbti } from "@/types/mbti";
-// import websocketService from "@/services/websocket";
+import websocketService from "@/services/websocket";
 
 type FastFriendResponse = {
   header: {
@@ -157,18 +157,28 @@ const SelectInfo = () => {
     if (!openChatId) return true;
 
     try {
-      // WebSocket 닉네임 중복 검사 (서버 준비 시 활성화)
-      // return await websocketService.checkNickname(nicknameToCheck, openChatId);
+      // 현재 선택된 MBTI 조합 생성
+      const mbti =
+        `${selectedMBTI.E}${selectedMBTI.N}${selectedMBTI.F}${selectedMBTI.P}` as Mbti;
 
-      // 임시: 실제 서버 없이도 정상 작동하도록 mock 구현
+      // WebSocket 닉네임 중복 검사 (서버 준비 시 활성화)
+      return await websocketService.checkNickname(
+        nicknameToCheck,
+        openChatId,
+        mbti
+      );
+    } catch (error) {
+      console.warn(
+        "WebSocket nickname check failed, using mock:",
+        (error as Error).message
+      );
+
+      // WebSocket 서버가 준비되지 않았거나 연결 실패 시 Mock 구현으로 fallback
       await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log(
-        `Checking nickname: ${nicknameToCheck} for chatId: ${openChatId}`
+        `[MOCK] Checking nickname: ${nicknameToCheck} for chatId: ${openChatId}`
       );
       return Math.random() > 0.3; // 70% 확률로 사용 가능
-    } catch (error) {
-      console.error("Nickname check failed:", error);
-      return false;
     }
   };
 

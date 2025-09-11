@@ -9,7 +9,7 @@ import ChatMessage from "@/components/ChatMessage";
 import ChatActionBar from "@/components/ChatActionBar";
 import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
 import pickMbtiImage from "@/utils/pickMbtiImage";
-// import websocketService from "@/services/websocket";
+import websocketService from "@/services/websocket";
 import { getOpenChatMessages } from "@/api/openChat";
 import { WebSocketMessage } from "@/types/openChat";
 import { Mbti } from "@/types/mbti";
@@ -38,6 +38,8 @@ interface ChatHistoryResponse {
 const Chat = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  console.log("💬 Chat 컴포넌트 시작, state:", state);
+
   const {
     mbti,
     mode,
@@ -63,40 +65,89 @@ const Chat = () => {
   const isTopicChat = mode === "topicChat";
 
   useEffect(() => {
+    console.log("🔍 useEffect 실행", {
+      isTopicChat,
+      openChatId,
+      nickname,
+      mbti
+    });
+
     if (!isTopicChat) {
+      console.log("❌ topicChat 모드가 아님");
       return;
     }
 
     // topicChat 유효성 검증
     if (!openChatId || !nickname || !mbti) {
+      console.log("❌ 필수 데이터 누락:", { openChatId, nickname, mbti });
       navigate("/");
       return;
     }
 
     const initializeOpenChat = async () => {
+      console.log("🚀 initializeOpenChat 시작", { openChatId, nickname, mbti });
       try {
         // 기존 메시지 로드
-        const { messages: openChatMessages } =
-          await getOpenChatMessages(openChatId);
-        const convertedMessages: Message[] = openChatMessages.map((msg) => ({
-          role: msg.nickname === nickname ? "user" : "assistant",
-          content: msg.content,
-          nickname: msg.nickname,
-          mbti: msg.mbti,
-          messageType: msg.messageType
-        }));
-        setMessages(convertedMessages.reverse());
+        console.log("📥 메시지 로드 시작...");
+        try {
+          const response = await getOpenChatMessages(openChatId);
+          console.log("📥 API 응답:", response);
 
-        // WebSocket 연결 (서버 준비 시 활성화)
-        // await websocketService.connect({
-        //   nickname,
-        //   mbti: mbti as Mbti,
-        //   openChatId
-        // });
+          if (response && response.messages) {
+            console.log("📥 메시지 로드 완료:", response.messages.length, "개");
+            const convertedMessages: Message[] = response.messages.map(
+              (msg) => ({
+                role: msg.nickname === nickname ? "user" : "assistant",
+                content: msg.content,
+                nickname: msg.nickname,
+                mbti: msg.mbti,
+                messageType: msg.messageType
+              })
+            );
+            setMessages(convertedMessages.reverse());
+          } else {
+            console.log("📥 메시지가 없거나 API 응답 형식이 잘못됨");
+            setMessages([]);
+          }
+        } catch (apiError) {
+          console.warn("📥 메시지 로드 실패, 빈 배열로 시작:", apiError);
+          setMessages([]);
+        }
 
-        // websocketService.onMessage(handleWebSocketMessage);
-        // websocketService.onConnectionChange(setIsConnected);
-        setIsConnected(true); // 임시로 연결됨으로 표시
+        // WebSocket 연결 시도
+        const wsUrl =
+          import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080";
+        console.log(
+          "🔗 WebSocket 연결 시도:",
+          wsUrl,
+          nickname,
+          mbti,
+          openChatId
+        );
+
+        try {
+          console.log("hei");
+          const connected = await websocketService.connect({
+            nickname,
+            mbti: mbti as Mbti,
+            openChatId
+          });
+
+          if (connected) {
+            console.log("✅ WebSocket 연결 성공");
+            websocketService.onMessage(handleWebSocketMessage);
+            websocketService.onConnectionChange(setIsConnected);
+            setIsConnected(true);
+          } else {
+            console.log("❌ WebSocket 연결 실패, Mock 모드로 동작");
+            setIsConnected(false);
+          }
+        } catch (wsError) {
+          console.warn("WebSocket 연결 실패:", wsError);
+          console.log("📍 연결 시도한 URL:", wsUrl);
+          console.log("🔧 Mock 모드로 전환합니다");
+          setIsConnected(false);
+        }
       } catch (error) {
         console.error("오픈채팅 초기화 실패:", error);
       }
@@ -105,8 +156,9 @@ const Chat = () => {
     initializeOpenChat();
 
     return () => {
-      if (isTopicChat) {
-        // websocketService.disconnect();
+      if (isTopicChat && websocketService.isConnected()) {
+        console.log("🔌 WebSocket 연결 해제");
+        websocketService.disconnect();
       }
     };
   }, [isTopicChat, openChatId, nickname, mbti, navigate]);
@@ -206,33 +258,46 @@ const Chat = () => {
     setInput("");
 
     if (isTopicChat) {
-      // 오픈채팅 WebSocket 전송 (서버 준비 시 활성화)
+      // 사용자 메시지를 즉시 화면에 표시
+      const userMessage: Message = {
+        role: "user",
+        content: messageToSend,
+        nickname,
+        mbti: mbti as string
+      };
+      setMessages((prev) => [...prev, userMessage]);
+
+      // 오픈채팅 WebSocket 전송
       try {
-        // if (websocketService.isConnected()) {
-        //   websocketService.sendMessage(messageToSend.trim());
-        // }
-
-        // 임시: 실제 서버 없이도 정상 작동하도록 mock 구현
-        const userMessage: Message = {
-          role: "user",
-          content: messageToSend,
-          nickname,
-          mbti: mbti as string
-        };
-        setMessages((prev) => [...prev, userMessage]);
-
-        // Mock 응답
+        if (websocketService.isConnected()) {
+          // 실제 WebSocket으로 메시지 전송
+          websocketService.sendMessage(messageToSend.trim());
+          console.log("✅ WebSocket으로 메시지 전송:", messageToSend);
+        } else {
+          console.log("❌ WebSocket 연결되지 않음, Mock 응답 사용");
+          // WebSocket이 연결되지 않은 경우 Mock 응답
+          setTimeout(() => {
+            const mockResponse: Message = {
+              role: "assistant",
+              content: `[Mock] ${nickname}님의 메시지를 받았습니다! "${messageToSend}"에 대한 응답입니다.`,
+              nickname: "시스템",
+              mbti: "ENFP"
+            };
+            setMessages((prev) => [...prev, mockResponse]);
+          }, 1000);
+        }
+      } catch (error) {
+        console.error("메시지 전송 실패:", error);
+        // 오류 발생 시 Mock 응답
         setTimeout(() => {
-          const mockResponse: Message = {
+          const errorResponse: Message = {
             role: "assistant",
-            content: `${nickname}님의 메시지를 받았습니다! 서버 연결 후 실시간 채팅이 활성화됩니다.`,
+            content: `메시지 전송에 실패했습니다. Mock 응답으로 대체합니다.`,
             nickname: "시스템",
             mbti: "ENFP"
           };
-          setMessages((prev) => [...prev, mockResponse]);
+          setMessages((prev) => [...prev, errorResponse]);
         }, 1000);
-      } catch (error) {
-        console.error("메시지 전송 실패:", error);
       }
       return;
     }

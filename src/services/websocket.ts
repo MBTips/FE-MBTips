@@ -87,15 +87,17 @@ export class OpenChatWebSocket {
     this.ws.send(JSON.stringify(message));
   }
 
-  checkNickname(nickname: string, openChatId: number): Promise<boolean> {
+  checkNickname(
+    nickname: string,
+    openChatId: number,
+    mbti: Mbti = "ENFP"
+  ): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      if (!this.config) {
-        reject(new Error("WebSocket not configured"));
-        return;
-      }
+      // config가 없어도 닉네임 체크는 가능하도록 기본값 사용
+      const useMbti = this.config?.mbti || mbti;
 
       const tempWs = new WebSocket(
-        `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(nickname)}&mbti=${this.config.mbti}&open_chat_id=${openChatId}&check_only=true`
+        `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(nickname)}&mbti=${useMbti}&open_chat_id=${openChatId}&check_only=true`
       );
 
       const timeout = setTimeout(() => {
