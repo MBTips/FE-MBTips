@@ -8,6 +8,7 @@ import { authInstance } from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";
 import trackClickEvent from "@/utils/trackClickEvent";
 import { Mbti } from "@/types/mbti";
+// import websocketService from "@/services/websocket";
 
 type FastFriendResponse = {
   header: {
@@ -151,15 +152,20 @@ const SelectInfo = () => {
   };
 
   const checkNicknameAvailability = async (
-    nickname: string
+    nicknameToCheck: string
   ): Promise<boolean> => {
     if (!openChatId) return true;
 
     try {
-      // 임시로 랜덤하게 중복 검사 (실제 WebSocket 없이)
-      // 실제로는 websocketService.checkNickname을 사용
-      const isAvailable = Math.random() > 0.3; // 70% 확률로 사용 가능
-      return isAvailable;
+      // WebSocket 닉네임 중복 검사 (서버 준비 시 활성화)
+      // return await websocketService.checkNickname(nicknameToCheck, openChatId);
+
+      // 임시: 실제 서버 없이도 정상 작동하도록 mock 구현
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(
+        `Checking nickname: ${nicknameToCheck} for chatId: ${openChatId}`
+      );
+      return Math.random() > 0.3; // 70% 확률로 사용 가능
     } catch (error) {
       console.error("Nickname check failed:", error);
       return false;
@@ -187,9 +193,7 @@ const SelectInfo = () => {
       setIsCheckingNickname(false);
 
       if (!isNicknameAvailable) {
-        return showToast(
-          "이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요."
-        );
+        return showToast("이미 사용 중인 닉네임입니다");
       }
 
       // 오픈 채팅방으로 이동
@@ -458,9 +462,6 @@ const SelectInfo = () => {
                   placeholder="채팅방에서 사용할 닉네임"
                   maxLength={6}
                 />
-                <p className="text-sm text-gray-500">
-                  채팅방에서 다른 사람들에게 표시될 이름입니다.
-                </p>
               </div>
             </div>
           </div>

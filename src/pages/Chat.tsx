@@ -87,7 +87,7 @@ const Chat = () => {
         }));
         setMessages(convertedMessages.reverse());
 
-        // WebSocket 연결 (임시 비활성화)
+        // WebSocket 연결 (서버 준비 시 활성화)
         // await websocketService.connect({
         //   nickname,
         //   mbti: mbti as Mbti,
@@ -96,7 +96,7 @@ const Chat = () => {
 
         // websocketService.onMessage(handleWebSocketMessage);
         // websocketService.onConnectionChange(setIsConnected);
-        setIsConnected(true); // 임시로 연결된 것으로 처리
+        setIsConnected(true); // 임시로 연결됨으로 표시
       } catch (error) {
         console.error("오픈채팅 초기화 실패:", error);
       }
@@ -206,30 +206,30 @@ const Chat = () => {
     setInput("");
 
     if (isTopicChat) {
-      // 오픈채팅 WebSocket 전송 (임시 비활성화)
+      // 오픈채팅 WebSocket 전송 (서버 준비 시 활성화)
       try {
         // if (websocketService.isConnected()) {
         //   websocketService.sendMessage(messageToSend.trim());
         // }
 
-        // 임시로 메시지를 바로 추가 (실제 WebSocket 없이)
-        const newMessage: Message = {
+        // 임시: 실제 서버 없이도 정상 작동하도록 mock 구현
+        const userMessage: Message = {
           role: "user",
           content: messageToSend,
           nickname,
           mbti: mbti as string
         };
-        setMessages((prev) => [...prev, newMessage]);
+        setMessages((prev) => [...prev, userMessage]);
 
-        // 임시 응답 메시지 추가
+        // Mock 응답
         setTimeout(() => {
-          const responseMessage: Message = {
+          const mockResponse: Message = {
             role: "assistant",
-            content: "실시간 채팅 기능이 곧 활성화될 예정입니다!",
+            content: `${nickname}님의 메시지를 받았습니다! 서버 연결 후 실시간 채팅이 활성화됩니다.`,
             nickname: "시스템",
             mbti: "ENFP"
           };
-          setMessages((prev) => [...prev, responseMessage]);
+          setMessages((prev) => [...prev, mockResponse]);
         }, 1000);
       } catch (error) {
         console.error("메시지 전송 실패:", error);

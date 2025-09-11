@@ -1,8 +1,4 @@
-import {
-  WebSocketMessage,
-  OpenChatMessage,
-  ChatParticipant
-} from "@/types/openChat";
+import { WebSocketMessage } from "@/types/openChat";
 import { Mbti } from "@/types/mbti";
 
 export interface WebSocketConfig {
@@ -25,6 +21,7 @@ export class OpenChatWebSocket {
   connect(config: WebSocketConfig): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.config = config;
+      console.log("this.serverUrl", this.serverUrl);
       const wsUrl = `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(config.nickname)}&mbti=${config.mbti}&open_chat_id=${config.openChatId}`;
 
       try {
@@ -194,7 +191,6 @@ export class OpenChatWebSocket {
   }
 }
 
-// Singleton instance
 const websocketService = new OpenChatWebSocket(
   import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080"
 );

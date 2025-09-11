@@ -13,6 +13,7 @@ interface ProfileProps {
     chatTitle: string;
     description: string;
     image: string;
+    openChatId?: number;
   };
 }
 const Profile = ({
@@ -56,7 +57,7 @@ const Profile = ({
           type: "topicChat",
           chatTitle: topicData.chatTitle,
           description: topicData.description,
-          openChatId: topicData.chatTitle === "N의 대화" ? 1 : 2 // 임시 ID
+          openChatId: topicData.openChatId || 1
         }
       });
     }
