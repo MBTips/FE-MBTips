@@ -174,7 +174,7 @@ const SelectInfo = () => {
       );
 
       // WebSocket 서버가 준비되지 않았거나 연결 실패 시 Mock 구현으로 fallback
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 10000));
       console.log(
         `[MOCK] Checking nickname: ${nicknameToCheck} for chatId: ${openChatId}`
       );
@@ -203,7 +203,7 @@ const SelectInfo = () => {
       setIsCheckingNickname(false);
 
       if (!isNicknameAvailable) {
-        return showToast("이미 사용 중인 닉네임입니다");
+        return showToast("같은 닉네임을 가진 유저가 있어요!");
       }
 
       // 오픈 채팅방으로 이동
@@ -450,17 +450,17 @@ const SelectInfo = () => {
           </div>
         )}
 
-        {/* topicChat일 때만 닉네임 입력 필드 표시 */}
+        {/* topicChat일 때만 이름 입력 필드 표시 */}
         {isTopicChat && (
           <div className="mx-auto w-[320px]">
             <div className="pt-[40px]">
-              {/* 닉네임 입력 */}
+              {/* 이름 입력 */}
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="name"
                   className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600"
                 >
-                  닉네임
+                  이름
                   <span className="ml-1 text-red-500">*</span>
                 </label>
                 <input
@@ -469,7 +469,7 @@ const SelectInfo = () => {
                   value={name}
                   onChange={handleNameChange}
                   className="h-[56px] w-full rounded-lg border border-gray-200 px-4 focus:border-primary-light focus:ring-primary-light focus:outline-none"
-                  placeholder="채팅방에서 사용할 닉네임"
+                  placeholder="이름"
                   maxLength={6}
                 />
               </div>

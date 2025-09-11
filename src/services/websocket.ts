@@ -97,7 +97,7 @@ export class OpenChatWebSocket {
       const useMbti = this.config?.mbti || mbti;
 
       const tempWs = new WebSocket(
-        `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(nickname)}&mbti=${useMbti}&open_chat_id=${openChatId}&check_only=true`
+        `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(nickname)}&mbti=${useMbti}&open_chat_id=${openChatId}`
       );
 
       const timeout = setTimeout(() => {
