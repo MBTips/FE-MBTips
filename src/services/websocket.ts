@@ -95,38 +95,75 @@ export class OpenChatWebSocket {
     return new Promise((resolve, reject) => {
       // config가 없어도 닉네임 체크는 가능하도록 기본값 사용
       const useMbti = this.config?.mbti || mbti;
+      const wsUrl = `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(nickname)}&mbti=${useMbti}&open_chat_id=${openChatId}`;
 
-      const tempWs = new WebSocket(
-        `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(nickname)}&mbti=${useMbti}&open_chat_id=${openChatId}`
-      );
+      console.log("🔍 닉네임 체크 WebSocket 연결 시도:", wsUrl);
 
+      const tempWs = new WebSocket(wsUrl);
+
+      // 연결은 성공하지만 응답이 늦을 수 있으므로 5초로 설정
       const timeout = setTimeout(() => {
+        console.log("⏰ 닉네임 체크 타임아웃 (5초)");
         tempWs.close();
         reject(new Error("Nickname check timeout"));
       }, 5000);
 
+      tempWs.onopen = () => {
+        console.log("✅ 닉네임 체크 WebSocket 연결 성공");
+
+        // 서버에 닉네임 체크 요청 메시지 전송
+        const checkMessage = {
+          type: "nickname_check",
+          data: {
+            nickname: nickname,
+            mbti: useMbti,
+            openChatId: openChatId
+          }
+        };
+
+        console.log("📤 닉네임 체크 요청 전송:", checkMessage);
+        tempWs.send(JSON.stringify(checkMessage));
+      };
+
       tempWs.onmessage = (event) => {
         try {
+          console.log("📨 닉네임 체크 응답 받음:", event.data);
           const message: WebSocketMessage = JSON.parse(event.data);
           clearTimeout(timeout);
 
           if (message.type === "nickname_check") {
-            resolve(message.data.nicknameAvailable ?? false);
+            const available = message.data.nicknameAvailable ?? false;
+            console.log("🎯 닉네임 사용 가능:", available);
+            resolve(available);
           } else if (message.type === "error") {
+            console.log("❌ 서버에서 에러 응답");
+            resolve(false);
+          } else {
+            console.log("❓ 예상치 못한 메시지 타입:", message.type);
             resolve(false);
           }
 
           tempWs.close();
         } catch (error) {
+          console.error("📨 메시지 파싱 오류:", error);
           clearTimeout(timeout);
           reject(error);
           tempWs.close();
         }
       };
 
-      tempWs.onerror = () => {
+      tempWs.onerror = (error) => {
+        console.error("❌ 닉네임 체크 WebSocket 오류:", error);
         clearTimeout(timeout);
         reject(new Error("Failed to check nickname"));
+      };
+
+      tempWs.onclose = (event) => {
+        console.log(
+          "🔌 닉네임 체크 WebSocket 연결 종료:",
+          event.code,
+          event.reason
+        );
       };
     });
   }
