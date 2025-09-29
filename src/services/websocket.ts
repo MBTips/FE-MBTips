@@ -102,34 +102,38 @@ export class OpenChatWebSocket {
       const tempWs = new WebSocket(wsUrl);
 
       // 연결은 성공하지만 응답이 늦을 수 있으므로 5초로 설정
-      const timeout = setTimeout(() => {
-        console.log("⏰ 닉네임 체크 타임아웃 (5초)");
-        tempWs.close();
-        reject(new Error("Nickname check timeout"));
-      }, 5000);
+      // const timeout = setTimeout(() => {
+      //   console.log("⏰ 닉네임 체크 타임아웃 (5초)");
+      //   tempWs.close();
+      //   reject(new Error("Nickname check timeout"));
+      // }, 50000);
 
       tempWs.onopen = () => {
         console.log("✅ 닉네임 체크 WebSocket 연결 성공");
 
         // 서버에 닉네임 체크 요청 메시지 전송
-        const checkMessage = {
-          type: "nickname_check",
-          data: {
-            nickname: nickname,
-            mbti: useMbti,
-            openChatId: openChatId
-          }
+        const payload = {
+          // type: "nickname_check",
+          // payload: {
+          type: 1,
+          nickname: nickname,
+          message: useMbti,
+          openChatId: 1
+          // }
         };
 
-        console.log("📤 닉네임 체크 요청 전송:", checkMessage);
-        tempWs.send(JSON.stringify(checkMessage));
+        console.log("📤 닉네임 체크 요청 전송:", payload);
+        tempWs.send(JSON.stringify(payload));
       };
 
       tempWs.onmessage = (event) => {
         try {
+          console.log("eee", event);
           console.log("📨 닉네임 체크 응답 받음:", event.data);
+
           const message: WebSocketMessage = JSON.parse(event.data);
-          clearTimeout(timeout);
+          console.log("mm", message);
+          // clearTimeout(timeout);
 
           if (message.type === "nickname_check") {
             const available = message.data.nicknameAvailable ?? false;
@@ -146,7 +150,7 @@ export class OpenChatWebSocket {
           tempWs.close();
         } catch (error) {
           console.error("📨 메시지 파싱 오류:", error);
-          clearTimeout(timeout);
+          // clearTimeout(timeout);
           reject(error);
           tempWs.close();
         }
@@ -154,7 +158,7 @@ export class OpenChatWebSocket {
 
       tempWs.onerror = (error) => {
         console.error("❌ 닉네임 체크 WebSocket 오류:", error);
-        clearTimeout(timeout);
+        // clearTimeout(timeout);
         reject(new Error("Failed to check nickname"));
       };
 
