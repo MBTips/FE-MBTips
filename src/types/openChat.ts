@@ -10,13 +10,13 @@ export interface OpenChatRoom {
 }
 
 export interface OpenChatMessage {
-  id: number;
+  openChatMessageId: number;
   openChatId: number;
   nickname: string;
-  mbti: string;
-  content: string;
-  timestamp: string;
-  messageType: "text" | "image" | "system";
+  mbti: string | null;
+  message: string;
+  timestamp?: string;
+  messageType?: "text" | "image" | "system";
 }
 
 export interface ChatParticipant {
@@ -25,14 +25,22 @@ export interface ChatParticipant {
   joinedAt: string;
 }
 
+// 웹소켓 요청 메시지 형태
+export interface WebSocketRequestMessage {
+  type: string;
+  mbti: string;
+  nickname: string;
+  message: string;
+  openChatId: number;
+}
+
+// 웹소켓 응답 메시지 형태
 export interface WebSocketMessage {
-  type: "message" | "join" | "leave" | "nickname_check" | "error";
-  data: {
-    message?: OpenChatMessage;
-    participant?: ChatParticipant;
-    error?: string;
-    nicknameAvailable?: boolean;
-  };
+  type: "ERROR" | "NOTICE" | null;
+  mbti: string | null;
+  nickname: string | null;
+  message: string;
+  openChatId: number;
 }
 
 export interface CreateOpenChatRequest {

@@ -38,7 +38,6 @@ interface ChatHistoryResponse {
 const Chat = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  console.log("💬 Chat 컴포넌트 시작, state:", state);
 
   const {
     mbti,
@@ -56,6 +55,10 @@ const Chat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const wsCleanupRef = useRef<{
+    messageCleanup?: () => void;
+    connectionCleanup?: () => void;
+  }>({});
 
   const chatTitle =
     openChatTitle || (name ? `${name}과 대화` : `${mbti}와 대화`);
@@ -65,68 +68,53 @@ const Chat = () => {
   const isTopicChat = mode === "topicChat";
 
   useEffect(() => {
-    console.log("🔍 useEffect 실행", {
-      isTopicChat,
-      openChatId,
-      nickname,
-      mbti
-    });
-
     if (!isTopicChat) {
-      console.log("❌ topicChat 모드가 아님");
       return;
     }
 
     // topicChat 유효성 검증
     if (!openChatId || !nickname || !mbti) {
-      console.log("❌ 필수 데이터 누락:", { openChatId, nickname, mbti });
       navigate("/");
       return;
     }
 
     const initializeOpenChat = async () => {
-      console.log("🚀 initializeOpenChat 시작", { openChatId, nickname, mbti });
       try {
         // 기존 메시지 로드
-        console.log("📥 메시지 로드 시작...");
         try {
           const response = await getOpenChatMessages(openChatId);
-          console.log("📥 API 응답:", response);
 
-          if (response && response.messages) {
-            console.log("📥 메시지 로드 완료:", response.messages.length, "개");
+          if (
+            response &&
+            response.messages &&
+            Array.isArray(response.messages)
+          ) {
             const convertedMessages: Message[] = response.messages.map(
-              (msg) => ({
-                role: msg.nickname === nickname ? "user" : "assistant",
-                content: msg.content,
-                nickname: msg.nickname,
-                mbti: msg.mbti,
-                messageType: msg.messageType
-              })
+              (msg) => {
+                return {
+                  role: msg.nickname === nickname ? "user" : "assistant",
+                  content: msg.message,
+                  nickname: msg.nickname,
+                  mbti: msg.mbti || undefined,
+                  messageType: msg.messageType || "text"
+                };
+              }
             );
+
+            // 메시지 순서: API에서 최신순으로 오므로 reverse()로 시간순 정렬
             setMessages(convertedMessages.reverse());
           } else {
-            console.log("📥 메시지가 없거나 API 응답 형식이 잘못됨");
             setMessages([]);
           }
         } catch (apiError) {
-          console.warn("📥 메시지 로드 실패, 빈 배열로 시작:", apiError);
           setMessages([]);
         }
 
         // WebSocket 연결 시도
         const wsUrl =
           import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080";
-        console.log(
-          "🔗 WebSocket 연결 시도:",
-          wsUrl,
-          nickname,
-          mbti,
-          openChatId
-        );
 
         try {
-          console.log("hei");
           const connected = await websocketService.connect({
             nickname,
             mbti: mbti as Mbti,
@@ -134,18 +122,25 @@ const Chat = () => {
           });
 
           if (connected) {
-            console.log("✅ WebSocket 연결 성공");
-            websocketService.onMessage(handleWebSocketMessage);
-            websocketService.onConnectionChange(setIsConnected);
+            // 핸들러 등록 시 cleanup 함수들을 저장
+            const messageCleanup = websocketService.onMessage(
+              handleWebSocketMessage
+            );
+            const connectionCleanup =
+              websocketService.onConnectionChange(setIsConnected);
+
+            // cleanup 함수들을 ref에 저장
+            wsCleanupRef.current = {
+              messageCleanup,
+              connectionCleanup
+            };
+
             setIsConnected(true);
           } else {
-            console.log("❌ WebSocket 연결 실패, Mock 모드로 동작");
             setIsConnected(false);
           }
         } catch (wsError) {
           console.warn("WebSocket 연결 실패:", wsError);
-          console.log("📍 연결 시도한 URL:", wsUrl);
-          console.log("🔧 Mock 모드로 전환합니다");
           setIsConnected(false);
         }
       } catch (error) {
@@ -156,8 +151,18 @@ const Chat = () => {
     initializeOpenChat();
 
     return () => {
+      // 웹소켓 핸들러 정리
+      if (
+        wsCleanupRef.current.messageCleanup ||
+        wsCleanupRef.current.connectionCleanup
+      ) {
+        wsCleanupRef.current.messageCleanup?.();
+        wsCleanupRef.current.connectionCleanup?.();
+        wsCleanupRef.current = {};
+      }
+
+      // 웹소켓 연결 해제
       if (isTopicChat && websocketService.isConnected()) {
-        console.log("🔌 WebSocket 연결 해제");
         websocketService.disconnect();
       }
     };
@@ -213,42 +218,58 @@ const Chat = () => {
   };
 
   const handleWebSocketMessage = (wsMessage: WebSocketMessage) => {
-    switch (wsMessage.type) {
-      case "message":
-        if (wsMessage.data.message) {
-          const newMessage: Message = {
-            role:
-              wsMessage.data.message.nickname === nickname
-                ? "user"
-                : "assistant",
-            content: wsMessage.data.message.content,
-            nickname: wsMessage.data.message.nickname,
-            mbti: wsMessage.data.message.mbti,
-            messageType: wsMessage.data.message.messageType
-          };
-          setMessages((prev) => [...prev, newMessage]);
+    if (wsMessage.type === "ERROR") {
+      // 에러 메시지 처리
+      const errorMessage: Message = {
+        role: "assistant",
+        content: wsMessage.message,
+        messageType: "system"
+      };
+
+      // 중복 시스템 메시지 방지
+      setMessages((prev) => {
+        const lastMessage = prev[prev.length - 1];
+        if (
+          lastMessage?.messageType === "system" &&
+          lastMessage.content === wsMessage.message
+        ) {
+          return prev;
         }
-        break;
-      case "join":
-        if (wsMessage.data.participant) {
-          const systemMessage: Message = {
-            role: "assistant",
-            content: `${wsMessage.data.participant.nickname}님이 입장했습니다.`,
-            messageType: "system"
-          };
-          setMessages((prev) => [...prev, systemMessage]);
+        return [...prev, errorMessage];
+      });
+    } else if (wsMessage.type === "NOTICE") {
+      // 시스템 알림 메시지 처리 (입장/퇴장)
+      const systemMessage: Message = {
+        role: "assistant",
+        content: wsMessage.message,
+        messageType: "system"
+      };
+
+      // 중복 시스템 메시지 방지
+      setMessages((prev) => {
+        const lastMessage = prev[prev.length - 1];
+        if (
+          lastMessage?.messageType === "system" &&
+          lastMessage.content === wsMessage.message
+        ) {
+          return prev;
         }
-        break;
-      case "leave":
-        if (wsMessage.data.participant) {
-          const systemMessage: Message = {
-            role: "assistant",
-            content: `${wsMessage.data.participant.nickname}님이 퇴장했습니다.`,
-            messageType: "system"
-          };
-          setMessages((prev) => [...prev, systemMessage]);
-        }
-        break;
+        return [...prev, systemMessage];
+      });
+    } else if (
+      wsMessage.type === null &&
+      wsMessage.nickname &&
+      wsMessage.message
+    ) {
+      // 일반 채팅 메시지 처리
+      const newMessage: Message = {
+        role: wsMessage.nickname === nickname ? "user" : "assistant",
+        content: wsMessage.message,
+        nickname: wsMessage.nickname,
+        mbti: wsMessage.mbti || undefined,
+        messageType: "text"
+      };
+      setMessages((prev) => [...prev, newMessage]);
     }
   };
 
@@ -272,9 +293,7 @@ const Chat = () => {
         if (websocketService.isConnected()) {
           // 실제 WebSocket으로 메시지 전송
           websocketService.sendMessage(messageToSend.trim());
-          console.log("✅ WebSocket으로 메시지 전송:", messageToSend);
         } else {
-          console.log("❌ WebSocket 연결되지 않음, Mock 응답 사용");
           // WebSocket이 연결되지 않은 경우 Mock 응답
           setTimeout(() => {
             const mockResponse: Message = {
@@ -388,6 +407,7 @@ const Chat = () => {
         <section className="h-[calc(100vh-124px)] flex-1 space-y-4 overflow-y-auto px-[20px] pt-6">
           <IntroGuide mode={mode} chatTitle={openChatTitle} />
           {/* 메시지 리스트 */}
+
           {messages.map((msg, idx) => {
             // 시스템 메시지 처리
             if (msg.messageType === "system") {
@@ -429,9 +449,9 @@ const Chat = () => {
                   </div>
                 )}
                 {/* 채팅 메시지 */}
-                <div className="mt-3.5">
+                <div>
                   {isTopicChat && msg.role === "assistant" && msg.nickname && (
-                    <div className="mb-1 text-xs text-gray-600">
+                    <div className="text-lg leading-[27px] font-bold tracking-[-0.01em] text-foreground">
                       {msg.nickname}
                     </div>
                   )}

@@ -1,4 +1,4 @@
-import { WebSocketMessage } from "@/types/openChat";
+import { WebSocketMessage, WebSocketRequestMessage } from "@/types/openChat";
 import { Mbti } from "@/types/mbti";
 
 export interface WebSocketConfig {
@@ -20,15 +20,19 @@ export class OpenChatWebSocket {
 
   connect(config: WebSocketConfig): Promise<boolean> {
     return new Promise((resolve, reject) => {
+      // 기존 연결이 있으면 먼저 정리
+      if (this.ws && this.ws.readyState !== WebSocket.CLOSED) {
+        this.disconnect();
+      }
+
       this.config = config;
-      console.log("this.serverUrl", this.serverUrl);
+
       const wsUrl = `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(config.nickname)}&mbti=${config.mbti}&open_chat_id=${config.openChatId}`;
 
       try {
         this.ws = new WebSocket(wsUrl);
 
         this.ws.onopen = () => {
-          console.log("WebSocket connected");
           this.reconnectAttempts = 0;
           this.notifyConnectionHandlers(true);
           resolve(true);
@@ -44,7 +48,6 @@ export class OpenChatWebSocket {
         };
 
         this.ws.onclose = (event) => {
-          console.log("WebSocket closed:", event.code, event.reason);
           this.notifyConnectionHandlers(false);
 
           if (!event.wasClean && this.shouldReconnect()) {
@@ -67,6 +70,11 @@ export class OpenChatWebSocket {
       this.ws.close(1000, "User disconnected");
       this.ws = null;
     }
+
+    // 모든 핸들러 정리
+    this.messageHandlers.clear();
+    this.connectionHandlers.clear();
+
     this.config = null;
     this.reconnectAttempts = 0;
   }
@@ -76,12 +84,16 @@ export class OpenChatWebSocket {
       throw new Error("WebSocket is not connected");
     }
 
-    const message = {
-      type: "message",
-      data: {
-        content,
-        timestamp: new Date().toISOString()
-      }
+    if (!this.config) {
+      throw new Error("WebSocket config is not set");
+    }
+
+    const message: WebSocketRequestMessage = {
+      type: "MESSAGE",
+      mbti: this.config.mbti,
+      nickname: this.config.nickname,
+      message: content,
+      openChatId: this.config.openChatId
     };
 
     this.ws.send(JSON.stringify(message));
@@ -97,77 +109,54 @@ export class OpenChatWebSocket {
       const useMbti = this.config?.mbti || mbti;
       const wsUrl = `${this.serverUrl}/ws/chats?nickname=${encodeURIComponent(nickname)}&mbti=${useMbti}&open_chat_id=${openChatId}`;
 
-      console.log("🔍 닉네임 체크 WebSocket 연결 시도:", wsUrl);
-
       const tempWs = new WebSocket(wsUrl);
 
-      // 연결은 성공하지만 응답이 늦을 수 있으므로 5초로 설정
-      // const timeout = setTimeout(() => {
-      //   console.log("⏰ 닉네임 체크 타임아웃 (5초)");
-      //   tempWs.close();
-      //   reject(new Error("Nickname check timeout"));
-      // }, 50000);
-
       tempWs.onopen = () => {
-        console.log("✅ 닉네임 체크 WebSocket 연결 성공");
-
         // 서버에 닉네임 체크 요청 메시지 전송
-        const payload = {
-          // type: "nickname_check",
-          // payload: {
-          type: 1,
+        const payload: WebSocketRequestMessage = {
+          type: "NICKNAME_CHECK",
+          mbti: useMbti,
           nickname: nickname,
-          message: useMbti,
-          openChatId: 1
-          // }
+          message: "",
+          openChatId: openChatId
         };
 
-        console.log("📤 닉네임 체크 요청 전송:", payload);
         tempWs.send(JSON.stringify(payload));
       };
 
       tempWs.onmessage = (event) => {
         try {
-          console.log("eee", event);
-          console.log("📨 닉네임 체크 응답 받음:", event.data);
-
           const message: WebSocketMessage = JSON.parse(event.data);
-          console.log("mm", message);
-          // clearTimeout(timeout);
 
-          if (message.type === "nickname_check") {
-            const available = message.data.nicknameAvailable ?? false;
-            console.log("🎯 닉네임 사용 가능:", available);
-            resolve(available);
-          } else if (message.type === "error") {
-            console.log("❌ 서버에서 에러 응답");
+          // 닉네임 중복시 ERROR 타입으로 응답
+          if (
+            message.type === "ERROR" &&
+            message.message.includes("닉네임이 중복됩니다")
+          ) {
+            resolve(false);
+          } else if (message.type === "ERROR") {
             resolve(false);
           } else {
-            console.log("❓ 예상치 못한 메시지 타입:", message.type);
-            resolve(false);
+            resolve(true);
           }
 
           tempWs.close();
         } catch (error) {
-          console.error("📨 메시지 파싱 오류:", error);
-          // clearTimeout(timeout);
+          console.error("Failed to parse WebSocket message:", error);
+
           reject(error);
           tempWs.close();
         }
       };
 
       tempWs.onerror = (error) => {
-        console.error("❌ 닉네임 체크 WebSocket 오류:", error);
-        // clearTimeout(timeout);
+        console.error("Failed to check nickname:", error);
+
         reject(new Error("Failed to check nickname"));
       };
 
       tempWs.onclose = (event) => {
-        console.log(
-          "🔌 닉네임 체크 WebSocket 연결 종료:",
-          event.code,
-          event.reason
-        );
+        console.log("WebSocket closed:", event.code, event.reason);
       };
     });
   }

@@ -4,7 +4,6 @@ import {
   OpenChatMessage,
   CreateOpenChatRequest,
   OpenChatRoomsResponse,
-  OpenChatMessagesResponse,
   CreateOpenChatResponse
 } from "@/types/openChat";
 
@@ -35,13 +34,20 @@ export const getOpenChatMessages = async (
     const params = openChatMessageId
       ? `?openChatMessageId=${openChatMessageId}`
       : "";
-    const response = await authInstance.get<OpenChatMessagesResponse>(
+    const response = await authInstance.get<{ data: OpenChatMessage[] }>(
       `/api/open-chat/${openChatId}${params}`
     );
 
-    // API 응답 데이터 검증
-    if (response.data && response.data.data) {
-      return response.data.data;
+    // API 응답 데이터 검증 - 실제 API 구조에 맞게 수정
+    if (
+      response.data &&
+      response.data.data &&
+      Array.isArray(response.data.data)
+    ) {
+      return {
+        messages: response.data.data,
+        hasMore: false // 일단 false로 설정, 필요시 서버에서 제공
+      };
     } else {
       console.warn("API 응답 데이터가 예상 형식과 다름:", response.data);
       return { messages: [], hasMore: false };
