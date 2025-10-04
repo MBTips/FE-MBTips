@@ -7,6 +7,8 @@ import { getMBTIgroup, mapAgeToNumber } from "@/utils/helpers";
 import { authInstance } from "@/api/axios";
 import ToastMessage from "@/components/ToastMessage";
 import trackClickEvent from "@/utils/trackClickEvent";
+import { Mbti } from "@/types/mbti";
+import websocketService from "@/services/websocket";
 
 type FastFriendResponse = {
   header: {
@@ -43,11 +45,17 @@ function isVirtualFriendResponse(
 const SelectInfo = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { type, mbti: testResultMBTI, chatTitle, description } = location.state; // type: fastFriend, virtualFriend, topicChat
+  const {
+    type,
+    mbti: testResultMBTI,
+    chatTitle,
+    description,
+    openChatId
+  } = location.state; // type: fastFriend, virtualFriend, topicChat
   const isFastFriend = type === "fastFriend";
   const isVirtualFriend = type === "virtualFriend";
   const isTopicChat = type === "topicChat";
-  const isNameRequired = isVirtualFriend;
+  const isNameRequired = isVirtualFriend || isTopicChat;
 
   const headerTitle = isTopicChat
     ? "내 정보입력"
@@ -82,6 +90,7 @@ const SelectInfo = () => {
   const [job, setJob] = useState<string | null>(null);
   const [freeSetting, setFreeSetting] = useState<string>("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isCheckingNickname, setIsCheckingNickname] = useState(false);
 
   useEffect(() => {
     if (mbtiTestResult && mbtiTestResult.length === 4) {
@@ -142,27 +151,93 @@ const SelectInfo = () => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
+  const checkNicknameAvailability = async (
+    nicknameToCheck: string
+  ): Promise<boolean> => {
+    if (!openChatId) return true;
+
+    // 환경 변수로 WebSocket 사용 여부 체크
+    const useWebSocketServer =
+      import.meta.env.VITE_USE_WEBSOCKET_SERVER !== "false";
+
+    if (!useWebSocketServer) {
+      console.log("🔧 WebSocket 서버 사용 안함 (환경 변수), Mock 모드 사용");
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      console.log(
+        `[MOCK] Checking nickname: ${nicknameToCheck} for chatId: ${openChatId}`
+      );
+      return Math.random() > 0.3; // 70% 확률로 사용 가능
+    }
+
+    try {
+      // 현재 선택된 MBTI 조합 생성
+      const mbti =
+        `${selectedMBTI.E}${selectedMBTI.N}${selectedMBTI.F}${selectedMBTI.P}` as Mbti;
+
+      console.log("🔍 WebSocket 닉네임 검사 시작:", {
+        nicknameToCheck,
+        openChatId,
+        mbti
+      });
+
+      // WebSocket 닉네임 중복 검사 (서버 준비 시 활성화)
+      return await websocketService.checkNickname(
+        nicknameToCheck,
+        openChatId,
+        mbti
+      );
+    } catch (error) {
+      console.warn(
+        "WebSocket nickname check failed, using mock:",
+        (error as Error).message
+      );
+
+      // WebSocket 서버가 준비되지 않았거나 연결 실패 시 Mock 구현으로 fallback
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      console.log(
+        `[MOCK] Checking nickname: ${nicknameToCheck} for chatId: ${openChatId}`
+      );
+      return Math.random() > 0.3; // 70% 확률로 사용 가능
+    }
+  };
+
   const handleConfirmButton = async () => {
     const isMBTIComplete = Object.values(selectedMBTI).every(
       (val) => val !== null
     );
 
-    // topicChat일 때는 이름만 필수
+    // topicChat일 때 처리
     if (isTopicChat) {
-      if (!name) {
-        return showToast("이름을 입력해주세요");
+      if (!name.trim()) {
+        return showToast("닉네임을 입력해주세요");
       }
-      // topicChat은 바로 채팅으로 이동
+
+      if (!isMBTIComplete) {
+        return showToast("MBTI를 선택해주세요");
+      }
+
+      // 닉네임 중복 검사
+      setIsCheckingNickname(true);
+      const isNicknameAvailable = await checkNicknameAvailability(name.trim());
+      setIsCheckingNickname(false);
+
+      if (!isNicknameAvailable) {
+        return showToast("같은 닉네임을 가진 유저가 있어요!");
+      }
+
+      // 오픈 채팅방으로 이동
+      const mbti =
+        `${selectedMBTI.E}${selectedMBTI.N}${selectedMBTI.F}${selectedMBTI.P}` as Mbti;
       trackClickEvent("오픈채팅 - 내 정보 입력", "대화 시작하기");
       navigate("/chat", {
-        // FIXME: 추후 수정 필요 (오픈 채팅 기능)
         state: {
-          mbti: "ENFP", // 기본 MBTI 또는 선택된 MBTI
           mode: "topicChat",
-          id: Date.now().toString(),
-          name,
+          mbti,
+          id: openChatId.toString(),
           chatTitle,
-          description
+          description,
+          openChatId,
+          nickname: name.trim()
         }
       });
       return;
@@ -405,6 +480,7 @@ const SelectInfo = () => {
                   className="text-2lg leading-[24px] font-bold tracking-[0em] text-gray-600"
                 >
                   이름
+                  <span className="ml-1 text-red-500">*</span>
                 </label>
                 <input
                   id="name"
@@ -430,10 +506,11 @@ const SelectInfo = () => {
         {/* 대화 시작 버튼 */}
         <div className="mx-auto mt-auto mb-[17px] w-[320px]">
           <button
-            className="h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white"
+            className="h-[60px] w-full rounded-[8px] bg-primary-normal font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
             onClick={handleConfirmButton}
+            disabled={isCheckingNickname}
           >
-            {confirmButtonText}
+            {isCheckingNickname ? "닉네임 확인 중..." : confirmButtonText}
           </button>
         </div>
       </div>

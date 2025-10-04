@@ -58,6 +58,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
         {
           find: "@/mock",
           replacement: path.resolve(__dirname, "src/mock")
+        },
+        {
+          find: "@/services",
+          replacement: path.resolve(__dirname, "src/services")
         }
       ]
     }

@@ -13,6 +13,7 @@ interface ProfileProps {
     chatTitle: string;
     description: string;
     image: string;
+    openChatId?: number;
   };
 }
 const Profile = ({
@@ -55,7 +56,8 @@ const Profile = ({
         state: {
           type: "topicChat",
           chatTitle: topicData.chatTitle,
-          description: topicData.description
+          description: topicData.description,
+          openChatId: topicData.openChatId || 1
         }
       });
     }
