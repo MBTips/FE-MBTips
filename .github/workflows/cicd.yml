@@ -33,6 +33,7 @@ jobs:
           echo "VITE_KAKAO_PRODUCTION_REDIRECT_URI=${{ secrets.VITE_KAKAO_PRODUCTION_REDIRECT_URI }}" >> .env
           echo "VITE_KAKAO_DEVELOPE_REDIRECT_URI=${{ secrets.VITE_KAKAO_DEVELOPE_REDIRECT_URI }}" >> .env
           echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" >> .env
+          echo "VITE_WEBSOCKET_URL=${{ secrets.VITE_WEBSOCKET_URL }}" >> .env
 
       - name: Run build
         run: npm run build # 프로젝트에 맞는 빌드 명령어

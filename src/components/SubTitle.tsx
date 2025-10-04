@@ -4,7 +4,11 @@ import trackClickEvent from "@/utils/trackClickEvent";
 import ActionConfirmModal from "@/components/modal/ActionConfirmModal";
 import useAuthStore from "@/store/useAuthStore";
 
-const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
+const SubTitle = ({
+  mode
+}: {
+  mode: "빠른대화" | "친구목록" | "주제별대화방";
+}) => {
   const [needLoginModalIsOpen, setNeedLoginModalIsOpen] = useState(false);
   const { isLoggedIn } = useAuthStore();
   const navigate = useNavigate();
@@ -17,6 +21,10 @@ const SubTitle = ({ mode }: { mode: "빠른대화" | "친구목록" }) => {
     친구목록: {
       title: "친구 목록",
       description: "친구 정보와 대화 내용을 저장해요."
+    },
+    주제별대화방: {
+      title: "주제별 대화방",
+      description: "관심 있는 주제로 대화해보세요"
     }
   };
 

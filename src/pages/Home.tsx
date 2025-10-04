@@ -11,6 +11,7 @@ import Header from "@/components/header/Header";
 import useAuthStore from "@/store/useAuthStore";
 import ProfileContainer from "@/components/ProfileContainer";
 import { Helmet } from "react-helmet";
+import TopicProfileContainer from "@/components/TopicProfileContainer";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const Home = () => {
           <section aria-label="콘텐츠 배너">
             <Banner />
           </section>
+
           <section className="mt-5" aria-label="빠른 대화">
             <div className="w-full px-[20px] py-[13px]">
               <SubTitle mode="빠른대화" />
@@ -55,11 +57,21 @@ const Home = () => {
               <ChatStartButton mode={"go-fast"} />
             </div>
           </section>
+
+          <section aria-label="주제별 대화방">
+            <div className="w-full px-[20px] py-[21px]">
+              <SubTitle mode="주제별대화방" />
+            </div>
+            <div className="flex justify-center pb-[11.35px]">
+              <TopicProfileContainer />
+            </div>
+          </section>
+
           <section aria-label="친구 목록">
             <div className="px-[20px] py-[21px]">
               <SubTitle mode="친구목록" />
             </div>
-            <div className="flex justify-center pb-[127px]">
+            <div className="flex justify-center pb-[12px]">
               {isLoggedIn && virtualFreindList.length > 0 ? (
                 <ProfileContainer
                   list={virtualFreindList}

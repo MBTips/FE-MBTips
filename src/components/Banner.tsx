@@ -19,16 +19,16 @@ const bannerImages: BannerImage[] = [
     description: "내가 궁금한 그 사람의 MBTI는?"
   },
   {
-    sm: "/image/home_banner2_sm.png",
-    md: "/image/home_banner2_md.png",
-    lg: "/image/home_banner2_lg.png",
-    description: "썸탈 때 대화주제 추천 MBTI별 대백과"
+    sm: "/image/content_banner_1_md.svg",
+    md: "/image/content_banner_1_md.svg",
+    lg: "/image/content_banner_1_lg.svg",
+    description: "너와 결혼까지 생각했어.. 최애의 결혼생활 망상하기(mbti별)"
   },
   {
-    sm: "/image/home_banner3_sm.png",
-    md: "/image/home_banner3_md.png",
-    lg: "/image/home_banner3_lg.png",
-    description: "MBTI별 피해야 할 대화스타일 및 주제"
+    sm: "/image/content_banner_2_md.svg",
+    md: "/image/content_banner_2_md.svg",
+    lg: "/image/content_banner_2_lg.svg",
+    description: "버블로 어떤 칭찬을 해줘야 좋아할까? (mbti별)"
   }
 ];
 
