@@ -62,6 +62,7 @@ const Chat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const nicknameRef = useRef<string>(nickname);
   const wsCleanupRef = useRef<{
     messageCleanup?: () => void;
     connectionCleanup?: () => void;
@@ -74,74 +75,92 @@ const Chat = () => {
 
   const isTopicChat = mode === "topicChat";
 
-  const handleWebSocketMessage = useCallback(
-    (wsMessage: WebSocketMessage) => {
-      if (wsMessage.type === "ERROR") {
-        // 에러 메시지 처리
-        const errorMessage: Message = {
-          role: "assistant",
-          content: wsMessage.message,
-          messageType: "system"
-        };
+  // nickname이 변경되면 ref 업데이트
+  useEffect(() => {
+    nicknameRef.current = nickname;
+  }, [nickname]);
 
-        // 중복 시스템 메시지 방지
-        setMessages((prev) => {
-          const lastMessage = prev[prev.length - 1];
-          if (
-            lastMessage?.messageType === "system" &&
-            lastMessage.content === wsMessage.message
-          ) {
-            return prev;
-          }
-          return [...prev, errorMessage];
-        });
-      } else if (wsMessage.type === "NOTICE") {
-        // 시스템 알림 메시지 처리 (입장/퇴장)
-        const systemMessage: Message = {
-          role: "assistant",
-          content: wsMessage.message,
-          messageType: "system"
-        };
+  const handleWebSocketMessage = useCallback((wsMessage: WebSocketMessage) => {
+    console.log("WebSocket 메시지 수신 처리:", wsMessage);
 
-        // 중복 시스템 메시지 방지
-        setMessages((prev) => {
-          const lastMessage = prev[prev.length - 1];
-          if (
-            lastMessage?.messageType === "system" &&
-            lastMessage.content === wsMessage.message
-          ) {
-            return prev;
-          }
-          return [...prev, systemMessage];
-        });
-      } else if (
-        wsMessage.type === null &&
-        wsMessage.nickname &&
-        wsMessage.message
-      ) {
-        // 자신이 보낸 메시지는 이미 화면에 추가했으므로 무시
-        if (wsMessage.nickname === nickname) {
-          return;
+    if (wsMessage.type === "ERROR") {
+      // 에러 메시지 처리
+      const errorMessage: Message = {
+        role: "assistant",
+        content: wsMessage.message,
+        messageType: "system"
+      };
+
+      // 중복 시스템 메시지 방지
+      setMessages((prev) => {
+        const lastMessage = prev[prev.length - 1];
+        if (
+          lastMessage?.messageType === "system" &&
+          lastMessage.content === wsMessage.message
+        ) {
+          return prev;
         }
+        return [...prev, errorMessage];
+      });
+    } else if (wsMessage.type === "NOTICE") {
+      // 시스템 알림 메시지 처리 (입장/퇴장)
+      const systemMessage: Message = {
+        role: "assistant",
+        content: wsMessage.message,
+        messageType: "system"
+      };
 
-        // 다른 사용자의 메시지만 화면에 추가
-        console.log(
-          "다른 사용자 메시지 추가:",
-          wsMessage.nickname,
-          wsMessage.message
-        );
-        const newMessage: Message = {
-          role: "assistant",
-          content: wsMessage.message,
-          nickname: wsMessage.nickname,
-          mbti: wsMessage.mbti || undefined,
-          messageType: "text"
-        };
-        setMessages((prev) => [...prev, newMessage]);
+      // 중복 시스템 메시지 방지
+      setMessages((prev) => {
+        const lastMessage = prev[prev.length - 1];
+        if (
+          lastMessage?.messageType === "system" &&
+          lastMessage.content === wsMessage.message
+        ) {
+          return prev;
+        }
+        return [...prev, systemMessage];
+      });
+    } else if (
+      wsMessage.type === null &&
+      wsMessage.nickname &&
+      wsMessage.message
+    ) {
+      // ref를 사용해서 최신 nickname 참조
+      const currentNickname = nicknameRef.current;
+      console.log("메시지 비교:", {
+        received: wsMessage.nickname,
+        current: currentNickname,
+        isOwn: wsMessage.nickname === currentNickname
+      });
+
+      // 자신이 보낸 메시지는 이미 화면에 추가했으므로 무시
+      if (wsMessage.nickname === currentNickname) {
+        console.log("자신의 메시지 스킵");
+        return;
       }
-    },
-    [nickname]
-  );
+
+      // 다른 사용자의 메시지만 화면에 추가
+      console.log(
+        "다른 사용자 메시지 추가:",
+        wsMessage.nickname,
+        wsMessage.message
+      );
+      const newMessage: Message = {
+        role: "assistant",
+        content: wsMessage.message,
+        nickname: wsMessage.nickname,
+        mbti: wsMessage.mbti || undefined,
+        messageType: "text"
+      };
+      setMessages((prev) => {
+        console.log("메시지 추가 전:", prev.length);
+        const newMessages = [...prev, newMessage];
+        console.log("메시지 추가 후:", newMessages.length);
+        return newMessages;
+      });
+    }
+  }, []); // dependency 없음 - ref를 사용하므로
 
   useEffect(() => {
     if (!isTopicChat) {
