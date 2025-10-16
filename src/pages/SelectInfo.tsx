@@ -337,7 +337,7 @@ const SelectInfo = () => {
         />
       </Helmet>
 
-      <div className="flex min-h-screen w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
+      <div className="mx-auto flex min-h-screen w-[360px] flex-col bg-white md:w-[375px] lg:w-[500px]">
         <Header title={headerTitle} showShareIcon={false} />
 
         <div className="mx-auto w-[320px]">
