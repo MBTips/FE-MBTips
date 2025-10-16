@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, ChangeEvent, KeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  ChangeEvent,
+  KeyboardEvent
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { authInstance } from "@/api/axios";
@@ -67,6 +74,65 @@ const Chat = () => {
 
   const isTopicChat = mode === "topicChat";
 
+  const handleWebSocketMessage = useCallback(
+    (wsMessage: WebSocketMessage) => {
+      if (wsMessage.type === "ERROR") {
+        // 에러 메시지 처리
+        const errorMessage: Message = {
+          role: "assistant",
+          content: wsMessage.message,
+          messageType: "system"
+        };
+
+        // 중복 시스템 메시지 방지
+        setMessages((prev) => {
+          const lastMessage = prev[prev.length - 1];
+          if (
+            lastMessage?.messageType === "system" &&
+            lastMessage.content === wsMessage.message
+          ) {
+            return prev;
+          }
+          return [...prev, errorMessage];
+        });
+      } else if (wsMessage.type === "NOTICE") {
+        // 시스템 알림 메시지 처리 (입장/퇴장)
+        const systemMessage: Message = {
+          role: "assistant",
+          content: wsMessage.message,
+          messageType: "system"
+        };
+
+        // 중복 시스템 메시지 방지
+        setMessages((prev) => {
+          const lastMessage = prev[prev.length - 1];
+          if (
+            lastMessage?.messageType === "system" &&
+            lastMessage.content === wsMessage.message
+          ) {
+            return prev;
+          }
+          return [...prev, systemMessage];
+        });
+      } else if (
+        wsMessage.type === null &&
+        wsMessage.nickname &&
+        wsMessage.message
+      ) {
+        // 일반 채팅 메시지 처리
+        const newMessage: Message = {
+          role: wsMessage.nickname === nickname ? "user" : "assistant",
+          content: wsMessage.message,
+          nickname: wsMessage.nickname,
+          mbti: wsMessage.mbti || undefined,
+          messageType: "text"
+        };
+        setMessages((prev) => [...prev, newMessage]);
+      }
+    },
+    [nickname]
+  );
+
   useEffect(() => {
     if (!isTopicChat) {
       return;
@@ -111,9 +177,6 @@ const Chat = () => {
         }
 
         // WebSocket 연결 시도
-        const wsUrl =
-          import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080";
-
         try {
           const connected = await websocketService.connect({
             nickname,
@@ -166,7 +229,14 @@ const Chat = () => {
         websocketService.disconnect();
       }
     };
-  }, [isTopicChat, openChatId, nickname, mbti, navigate]);
+  }, [
+    isTopicChat,
+    openChatId,
+    nickname,
+    mbti,
+    navigate,
+    handleWebSocketMessage
+  ]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -215,62 +285,6 @@ const Chat = () => {
       element: nextState ? "콘텐츠 열기" : "콘텐츠 닫기"
     });
     setIsOpen(nextState);
-  };
-
-  const handleWebSocketMessage = (wsMessage: WebSocketMessage) => {
-    if (wsMessage.type === "ERROR") {
-      // 에러 메시지 처리
-      const errorMessage: Message = {
-        role: "assistant",
-        content: wsMessage.message,
-        messageType: "system"
-      };
-
-      // 중복 시스템 메시지 방지
-      setMessages((prev) => {
-        const lastMessage = prev[prev.length - 1];
-        if (
-          lastMessage?.messageType === "system" &&
-          lastMessage.content === wsMessage.message
-        ) {
-          return prev;
-        }
-        return [...prev, errorMessage];
-      });
-    } else if (wsMessage.type === "NOTICE") {
-      // 시스템 알림 메시지 처리 (입장/퇴장)
-      const systemMessage: Message = {
-        role: "assistant",
-        content: wsMessage.message,
-        messageType: "system"
-      };
-
-      // 중복 시스템 메시지 방지
-      setMessages((prev) => {
-        const lastMessage = prev[prev.length - 1];
-        if (
-          lastMessage?.messageType === "system" &&
-          lastMessage.content === wsMessage.message
-        ) {
-          return prev;
-        }
-        return [...prev, systemMessage];
-      });
-    } else if (
-      wsMessage.type === null &&
-      wsMessage.nickname &&
-      wsMessage.message
-    ) {
-      // 일반 채팅 메시지 처리
-      const newMessage: Message = {
-        role: wsMessage.nickname === nickname ? "user" : "assistant",
-        content: wsMessage.message,
-        nickname: wsMessage.nickname,
-        mbti: wsMessage.mbti || undefined,
-        messageType: "text"
-      };
-      setMessages((prev) => [...prev, newMessage]);
-    }
   };
 
   const handleSend = async (messageToSend: string) => {
