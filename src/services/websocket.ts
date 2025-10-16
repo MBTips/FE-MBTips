@@ -48,6 +48,11 @@ export class OpenChatWebSocket {
         };
 
         this.ws.onclose = (event) => {
+          console.warn("WebSocket 연결 종료:", {
+            code: event.code,
+            reason: event.reason,
+            wasClean: event.wasClean
+          });
           this.notifyConnectionHandlers(false);
 
           if (!event.wasClean && this.shouldReconnect()) {
@@ -81,10 +86,14 @@ export class OpenChatWebSocket {
 
   sendMessage(content: string) {
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket 연결 안됨:", {
+        readyState: this.ws?.readyState
+      });
       throw new Error("WebSocket is not connected");
     }
 
     if (!this.config) {
+      console.error("WebSocket config 없음");
       throw new Error("WebSocket config is not set");
     }
 

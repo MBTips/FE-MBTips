@@ -119,9 +119,19 @@ const Chat = () => {
         wsMessage.nickname &&
         wsMessage.message
       ) {
-        // 일반 채팅 메시지 처리
+        // 자신이 보낸 메시지는 이미 화면에 추가했으므로 무시
+        if (wsMessage.nickname === nickname) {
+          return;
+        }
+
+        // 다른 사용자의 메시지만 화면에 추가
+        console.log(
+          "다른 사용자 메시지 추가:",
+          wsMessage.nickname,
+          wsMessage.message
+        );
         const newMessage: Message = {
-          role: wsMessage.nickname === nickname ? "user" : "assistant",
+          role: "assistant",
           content: wsMessage.message,
           nickname: wsMessage.nickname,
           mbti: wsMessage.mbti || undefined,
