@@ -36,7 +36,7 @@ export interface WebSocketRequestMessage {
 
 // 웹소켓 응답 메시지 형태
 export interface WebSocketMessage {
-  type: "ERROR" | "NOTICE" | null;
+  type: "ERROR" | "NOTICE" | "MESSAGE" | null;
   mbti: string | null;
   nickname: string | null;
   message: string;
