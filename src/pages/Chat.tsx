@@ -76,46 +76,49 @@ const Chat = () => {
 
   const handleWebSocketMessage = useCallback(
     (wsMessage: WebSocketMessage) => {
+      console.log("📨 WebSocket 메시지 수신 처리:", wsMessage);
+
+      // 에러 메시지 처리
       if (wsMessage.type === "ERROR") {
-        // 에러 메시지 처리
         const errorMessage: Message = {
           role: "assistant",
           content: wsMessage.message,
           messageType: "system"
         };
-
-        // 중복 시스템 메시지 방지
         setMessages((prev) => {
-          const lastMessage = prev[prev.length - 1];
+          const last = prev[prev.length - 1];
           if (
-            lastMessage?.messageType === "system" &&
-            lastMessage.content === wsMessage.message
+            last?.messageType === "system" &&
+            last.content === wsMessage.message
           ) {
             return prev;
           }
           return [...prev, errorMessage];
         });
-      } else if (wsMessage.type === "NOTICE") {
-        // 시스템 알림 메시지 처리 (입장/퇴장)
-        const systemMessage: Message = {
+      }
+
+      // 입장/퇴장 알림 (NOTICE)
+      else if (wsMessage.type === "NOTICE" && wsMessage.message) {
+        const noticeMessage: Message = {
           role: "assistant",
           content: wsMessage.message,
           messageType: "system"
         };
-
-        // 중복 시스템 메시지 방지
         setMessages((prev) => {
-          const lastMessage = prev[prev.length - 1];
+          const last = prev[prev.length - 1];
           if (
-            lastMessage?.messageType === "system" &&
-            lastMessage.content === wsMessage.message
+            last?.messageType === "system" &&
+            last.content === wsMessage.message
           ) {
             return prev;
           }
-          return [...prev, systemMessage];
+          return [...prev, noticeMessage];
         });
-      } else if (
-        wsMessage.type === null &&
+      }
+
+      // 일반 채팅 메시지 (MESSAGE)
+      else if (
+        wsMessage.type === "MESSAGE" &&
         wsMessage.nickname &&
         wsMessage.message
       ) {
@@ -124,12 +127,12 @@ const Chat = () => {
           return;
         }
 
-        // 다른 사용자의 메시지만 화면에 추가
         console.log(
-          "다른 사용자 메시지 추가:",
+          "💬 다른 사용자 메시지 추가:",
           wsMessage.nickname,
           wsMessage.message
         );
+
         const newMessage: Message = {
           role: "assistant",
           content: wsMessage.message,
@@ -137,7 +140,13 @@ const Chat = () => {
           mbti: wsMessage.mbti || undefined,
           messageType: "text"
         };
+
         setMessages((prev) => [...prev, newMessage]);
+      }
+
+      // 예상치 못한 메시지 형식 로그
+      else {
+        console.warn("알 수 없는 WebSocket 메시지:", wsMessage);
       }
     },
     [nickname]
