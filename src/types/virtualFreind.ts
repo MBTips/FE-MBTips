@@ -5,5 +5,5 @@ export interface VirtualFriend {
   virtualFriendName: string;
   virtualFriendAge: number;
   virtualFriendSex: string;
-  virtualFriendRelationship: string;
+  virtualFriendJob: string;
 }
