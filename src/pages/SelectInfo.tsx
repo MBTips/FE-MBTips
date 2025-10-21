@@ -30,7 +30,7 @@ type VirtualFriendResponse = {
     virtualFriendName: string;
     virtualFriendAge: number;
     virtualFriendSex: "MALE" | "FEMALE";
-    virtualFriendRelationship: string;
+    virtualFriendJob: string;
   };
 };
 

@@ -92,7 +92,31 @@ const Profile = ({
 
   const getDescription = () => {
     if (mode === "friend" && info) {
-      return `${info.virtualFriendAge} · ${info.virtualFriendSex} · ${info.virtualFriendRelationship}`;
+      const parts = [];
+
+      // 나이 처리 (0이면 추가하지 않음)
+      if (info.virtualFriendAge && info.virtualFriendAge > 0) {
+        parts.push(`${info.virtualFriendAge}대`);
+      }
+
+      // 성별 처리
+      if (info.virtualFriendSex === "FEMALE") {
+        parts.push("여성");
+      } else if (info.virtualFriendSex === "MALE") {
+        parts.push("남성");
+      }
+
+      // 관계 추가
+      if (info.virtualFriendJob) {
+        parts.push(info.virtualFriendJob);
+      }
+
+      // 모든 데이터가 없으면 기본 메시지 반환
+      if (parts.length === 0) {
+        return "이 친구 추가 정보를 선택하지 않았어요";
+      }
+
+      return parts.join(" · ");
     } else if (mode === "topic" && topicData) {
       return topicData.description;
     }
@@ -122,7 +146,7 @@ const Profile = ({
         className="absolute top-[12px] left-[11px] h-12 w-12 rounded-full object-cover"
       />
 
-      <div className="px-4 pt-[69px]">
+      <div className="px-4 pt-[60px]">
         <h2 className="flex items-center space-x-1 text-base">
           <span className="font-bold">{getTitle()}</span>
           {getSubtitle() && (
