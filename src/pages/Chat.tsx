@@ -574,11 +574,6 @@ const Chat = () => {
                             {msg.nickname.charAt(0)}
                           </div>
                         )}
-                        {msg.mbti && (
-                          <span className="mt-1 text-xs text-gray-500">
-                            {msg.mbti}
-                          </span>
-                        )}
                       </div>
                     ) : (
                       <img
