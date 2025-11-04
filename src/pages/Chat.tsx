@@ -16,6 +16,7 @@ import ChatMessage from "@/components/ChatMessage";
 import ChatActionBar from "@/components/ChatActionBar";
 import TipsMenuContainer from "@/components/tips/TipsMenuContainer";
 import pickMbtiImage from "@/utils/pickMbtiImage";
+import pickMbtiProfileImage from "@/utils/pickMbtiProfileImage";
 import websocketService from "@/services/websocket";
 import { getOpenChatMessages } from "@/api/openChat";
 import { WebSocketMessage } from "@/types/openChat";
@@ -71,6 +72,8 @@ const Chat = () => {
     openChatTitle || (name ? `${name}과 대화` : `${mbti}와 대화`);
   const assistantImgUrl = pickMbtiImage(mbti);
   const storageKey = `chatMessages_${id}`;
+  const topicChatStorageKey = `topicChatMessages_${openChatId}_${nickname}`;
+  const topicChatMbtiCacheKey = `topicChatMbti_${openChatId}`;
 
   const isTopicChat = mode === "topicChat";
 
@@ -133,15 +136,51 @@ const Chat = () => {
           wsMessage.message
         );
 
-        const newMessage: Message = {
-          role: "assistant",
-          content: wsMessage.message,
-          nickname: wsMessage.nickname,
-          mbti: wsMessage.mbti || undefined,
-          messageType: "text"
-        };
+        // 웹소켓에서 받은 mbti가 없으면 기존 메시지에서 찾아서 사용
+        setMessages((prev) => {
+          // 같은 닉네임의 이전 메시지에서 mbti 찾기
+          const existingMsg = prev
+            .slice()
+            .reverse()
+            .find((m) => m.nickname === wsMessage.nickname);
+          // localStorage에서 mbti 찾기
+          let cachedMbti = null;
+          if (topicChatMbtiCacheKey && wsMessage.nickname) {
+            const mbtiCache = localStorage.getItem(topicChatMbtiCacheKey);
+            if (mbtiCache) {
+              try {
+                const cacheData = JSON.parse(mbtiCache);
+                cachedMbti = cacheData[wsMessage.nickname];
+              } catch (e) {
+                console.error("Failed to parse mbti cache", e);
+              }
+            }
+          }
 
-        setMessages((prev) => [...prev, newMessage]);
+          const userMbti =
+            wsMessage.mbti ?? existingMsg?.mbti ?? cachedMbti ?? undefined;
+
+          // mbti가 있으면 localStorage에 저장
+          if (userMbti && topicChatMbtiCacheKey && wsMessage.nickname) {
+            const mbtiCache = localStorage.getItem(topicChatMbtiCacheKey);
+            const cacheData = mbtiCache ? JSON.parse(mbtiCache) : {};
+            cacheData[wsMessage.nickname] = userMbti;
+            localStorage.setItem(
+              topicChatMbtiCacheKey,
+              JSON.stringify(cacheData)
+            );
+          }
+
+          const newMessage: Message = {
+            role: "assistant",
+            content: wsMessage.message,
+            nickname: wsMessage.nickname ?? undefined,
+            mbti: userMbti,
+            messageType: "text"
+          };
+
+          return [...prev, newMessage];
+        });
       }
 
       // 예상치 못한 메시지 형식 로그
@@ -149,7 +188,7 @@ const Chat = () => {
         console.warn("알 수 없는 WebSocket 메시지:", wsMessage);
       }
     },
-    [nickname]
+    [nickname, topicChatMbtiCacheKey]
   );
 
   useEffect(() => {
@@ -180,14 +219,65 @@ const Chat = () => {
                   role: msg.nickname === nickname ? "user" : "assistant",
                   content: msg.message,
                   nickname: msg.nickname,
-                  mbti: msg.mbti || undefined,
+                  mbti: msg.mbti ?? undefined,
                   messageType: msg.messageType || "text"
                 };
               }
             );
 
             // 메시지 순서: API에서 최신순으로 오므로 reverse()로 시간순 정렬
-            setMessages(convertedMessages.reverse());
+            const apiMessages = convertedMessages.reverse();
+
+            // sessionStorage에서 이전 MBTI 정보 가져오기
+            let cachedMessages: Message[] = [];
+            if (topicChatStorageKey) {
+              const storedMessage = sessionStorage.getItem(topicChatStorageKey);
+              if (storedMessage) {
+                cachedMessages = JSON.parse(storedMessage);
+              }
+            }
+
+            // API 메시지에 mbti가 없으면 캐시에서 찾아서 채우기
+            const enhancedMessages = apiMessages.map((msg) => {
+              if (!msg.mbti && msg.nickname) {
+                // sessionStorage에서 찾기 (우선순위 1)
+                const cachedMsg = cachedMessages
+                  .slice()
+                  .reverse()
+                  .find((m) => m.nickname === msg.nickname);
+
+                // localStorage에서 찾기 (우선순위 2)
+                let localStorageMbti = null;
+                if (topicChatMbtiCacheKey) {
+                  const mbtiCache = localStorage.getItem(topicChatMbtiCacheKey);
+                  if (mbtiCache) {
+                    try {
+                      const cacheData = JSON.parse(mbtiCache);
+                      localStorageMbti = cacheData[msg.nickname];
+                    } catch (e) {
+                      console.error("Failed to parse mbti cache", e);
+                    }
+                  }
+                }
+
+                const foundMbti = cachedMsg?.mbti ?? localStorageMbti;
+                if (foundMbti) {
+                  return { ...msg, mbti: foundMbti };
+                }
+              } else if (msg.mbti && topicChatMbtiCacheKey && msg.nickname) {
+                // mbti가 있으면 localStorage에 저장
+                const mbtiCache = localStorage.getItem(topicChatMbtiCacheKey);
+                const cacheData = mbtiCache ? JSON.parse(mbtiCache) : {};
+                cacheData[msg.nickname] = msg.mbti;
+                localStorage.setItem(
+                  topicChatMbtiCacheKey,
+                  JSON.stringify(cacheData)
+                );
+              }
+              return msg;
+            });
+
+            setMessages(enhancedMessages);
           } else {
             setMessages([]);
           }
@@ -281,17 +371,27 @@ const Chat = () => {
         if (storedMessage) {
           setMessages(JSON.parse(storedMessage));
         }
+      } else if (isTopicChat && topicChatStorageKey) {
+        // sessionStorage에서 로드 (탭이 닫히지 않은 경우)
+        const storedMessage = sessionStorage.getItem(topicChatStorageKey);
+        if (storedMessage) {
+          setMessages(JSON.parse(storedMessage));
+        }
+        // sessionStorage가 없으면 API에서 로드된 데이터 사용
       }
     };
 
     fetchMessages();
-  }, [mode, id, storageKey, isTopicChat]);
+  }, [mode, id, storageKey, isTopicChat, topicChatStorageKey]);
 
   useEffect(() => {
     if (mode !== "virtualFriend" && !isTopicChat) {
       sessionStorage.setItem(storageKey, JSON.stringify(messages));
+    } else if (isTopicChat && topicChatStorageKey) {
+      // topicChat은 sessionStorage에 저장 (탭이 닫히면 날아감)
+      sessionStorage.setItem(topicChatStorageKey, JSON.stringify(messages));
     }
-  }, [messages, mode, storageKey, isTopicChat]);
+  }, [messages, mode, storageKey, topicChatStorageKey, isTopicChat]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -463,13 +563,16 @@ const Chat = () => {
                   <div className="mr-[9px] shrink-0">
                     {isTopicChat && msg.nickname ? (
                       <div className="text-center">
-                        <div className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-primary-pale text-xs font-bold text-primary-normal">
-                          {msg.nickname.charAt(0)}
-                        </div>
-                        {msg.mbti && (
-                          <span className="mt-1 text-xs text-gray-500">
-                            {msg.mbti}
-                          </span>
+                        {msg.mbti ? (
+                          <img
+                            src={pickMbtiProfileImage(msg.mbti)}
+                            alt="MBTI Profile"
+                            className="h-[36px] w-[36px] rounded-full border border-gray-200 object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-primary-pale text-xs font-bold text-primary-normal">
+                            {msg.nickname.charAt(0)}
+                          </div>
                         )}
                       </div>
                     ) : (
